@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Account {
 	private String name;
 	private String company;
-	private ArrayList<Project> projects;
+	private ArrayList<Project> projects = new ArrayList<>();
 
     public Account(String name, String company) {
         this.name = name;

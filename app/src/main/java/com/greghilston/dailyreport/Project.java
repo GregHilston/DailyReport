@@ -6,11 +6,17 @@ import java.util.ArrayList;
  * Represents one of the many Projects the user may be working on
  */
 public class Project {
+    private Account account; // The account this project belongs to
 	private String projectName;
-	private ArrayList<Report> reports;
+	private ArrayList<Report> reports = new ArrayList<>();
 
-    public Project(String projectName) {
+    public Project(Account account, String projectName) {
+        this.account = account;
         this.projectName = projectName;
+    }
+
+    public Account getAccount() {
+        return account;
     }
 
 	public String getProjectName() {
