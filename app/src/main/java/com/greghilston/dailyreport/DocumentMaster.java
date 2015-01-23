@@ -13,17 +13,17 @@ public class DocumentMaster {
 
 
     /***
-     * Creates a CSV based on the time line
+     * Creates a CSV based on the report
      */
-    public void createCsvReport() {
+    public void createCsvReport(Report r) {
 
     }
 
 
     /***
-     * Creates a PDF based on the time line
+     * Creates a PDF based on the report
      */
-    public void createPdfReport() {
+    public void createPdfReport(Report r) {
 
     }
 }
