@@ -137,6 +137,40 @@ public class DocumentMaster {
                 equipment.appendChild(equipmentQuantity);
             }
 
+            // Timeline Observation elements
+            Element timeLine = doc.createElement("Timeline");
+            project.appendChild(timeLine);
+
+            // Timeline Observation elements
+            for(Observation o :r.getTimeline().getObservations()) {
+                // Time element
+                Element observationTime = doc.createElement("Time");
+                observationTime.appendChild(doc.createTextNode(o.getTime()));
+                timeLine.appendChild(observationTime);
+
+                if(o instanceof Weather) {
+
+                }
+                else if(o instanceof Text) {
+                    // Text element
+                    Element text = doc.createElement("Text");
+                    text.appendChild(doc.createTextNode(((Text) o).getText()));
+                    timeLine.appendChild(text);
+                }
+                else if(o instanceof Picture){
+
+                }
+                else {
+                    System.err.println("Unknown Instance of Observation");
+                    System.exit(-1);
+                }
+
+                // Note element
+                Element note = doc.createElement("Note");
+                note.appendChild(doc.createTextNode(o.getNote()));
+                timeLine.appendChild(note);
+            }
+
             // Write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();

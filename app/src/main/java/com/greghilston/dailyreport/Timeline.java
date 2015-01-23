@@ -13,4 +13,8 @@ public class Timeline{
         this.report = report;
         observations.add(new Text("Arrived on site"));
     }
+
+     public ArrayList<Observation> getObservations() {
+         return observations;
+     }
 }

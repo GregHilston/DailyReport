@@ -20,4 +20,9 @@ public abstract class Observation implements Notable{
     public String getTime() {
         return new SimpleDateFormat("h:mm:ss a ").format(new Date());
     }
+
+    public String getNote() {
+        return note;
+    }
+
 }

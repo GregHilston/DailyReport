@@ -15,4 +15,8 @@ public class Text extends Observation {
      public String toString() {
          return text + "\n" + "Note: " + note;
      }
+
+     public String getText() {
+         return text;
+     }
  }

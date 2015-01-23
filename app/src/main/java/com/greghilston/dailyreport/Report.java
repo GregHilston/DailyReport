@@ -14,7 +14,7 @@ public class Report {
 	private ArrayList<Company> companies = new ArrayList<>();
 	private ArrayList<Person> people = new ArrayList<>();
 	private ArrayList<Equipment> equipment = new ArrayList<>();
-	private Timeline timeline;
+    private Timeline timeline;
 
     public Report(Project project, int headCount) {
         date = new SimpleDateFormat("MM_dd_yyyy").format(new Date());
@@ -93,4 +93,9 @@ public class Report {
 	public void setEquipment(ArrayList<Equipment> equipment) {
 		this.equipment = equipment;
 	}
+
+    public Timeline getTimeline() {
+        return timeline;
+    }
+
 }
