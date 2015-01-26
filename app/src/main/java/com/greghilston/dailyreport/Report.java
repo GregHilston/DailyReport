@@ -27,7 +27,8 @@ public class Report {
      * Generates a report
      */
     public void generateReport() {
-        DocumentMaster.getInstance().createXml(this);
+        DocumentMaster.getInstance().createXml(date, this);
+        DocumentMaster.getInstance().createCsv(date, this);
     }
 
     /**
@@ -97,5 +98,4 @@ public class Report {
     public Timeline getTimeline() {
         return timeline;
     }
-
 }

@@ -47,9 +47,4 @@ public class Person implements Notable{
     public void setHoursOnSite(int hoursOnSite) {
         this.hoursOnSite = hoursOnSite;
     }
-
-    @Override
-    public String toString() {
-        return name + " / " + company + " / " + jobTitle + " " + hoursOnSite + " hours today.";
-    }
 }

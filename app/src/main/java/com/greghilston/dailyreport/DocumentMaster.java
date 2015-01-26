@@ -8,6 +8,9 @@ import org.w3c.dom.Element;
 
 // For XML File creation
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -21,6 +24,7 @@ import javax.xml.transform.stream.StreamResult;
 /**
  * Responsible for creating human readable documents
  * Source: http://www.mkyong.com/java/how-to-create-xml-file-in-java-dom/
+ *         http://www.mkyong.com/java/how-to-export-data-to-csv-file-java/
  */
 public class DocumentMaster {
     private static DocumentMaster instance = new DocumentMaster();
@@ -33,7 +37,7 @@ public class DocumentMaster {
      * Creates an XML file based on the report
      */
     @TargetApi(Build.VERSION_CODES.FROYO)
-    public void createXml(Report r) {
+    public void createXml(String fileName, Report r) {
         try {
 
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -177,7 +181,7 @@ public class DocumentMaster {
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File("app/src/main/java/com/greghilston/dailyreport/Reports/file.xml"));
+            StreamResult result = new StreamResult(new File("app/src/main/java/com/greghilston/dailyreport/Reports/" + fileName +  ".xml"));
 
             // Output to console for testing
             //StreamResult result = new StreamResult(System.out);
@@ -196,8 +200,73 @@ public class DocumentMaster {
     /**
      * Creates a CSV based on the XML file
      */
-    public void createCsv() {
+    public void createCsv(String fileName, Report r) {
+        try
+        {
+            FileWriter writer = new FileWriter("app/src/main/java/com/greghilston/dailyreport/Reports/" + fileName +  ".csv");
 
+            writer.append(r.getProject().getAccount().getName());
+            writer.append(',');
+            writer.append(r.getProject().getAccount().getCompany());
+            writer.append("\n\n");
+
+            writer.append(r.getDate());
+            writer.append(',');
+            writer.append(r.getProject().getProjectName());
+            writer.append(',');
+            writer.append(String.valueOf(r.getHeadCount() + " employees"));
+
+            writer.append("\n\nCompanies\n");
+            for(Company c : r.getCompanies()) {
+                writer.append(c.getName());
+                writer.append(',');
+                writer.append(c.getQuantity() + "x");
+                writer.append('\n');
+            }
+
+            writer.append("\nPeople\n");
+            for(Person p : r.getPeople()) {
+                writer.append(p.getName());
+                writer.append(',');
+                writer.append(p.getCompany());
+                writer.append(',');
+                writer.append(p.getJobTitle());
+                writer.append(',');
+                writer.append(p.getHoursOnSite() + " hours");
+                writer.append('\n');
+            }
+
+            writer.append("\nEquipment\n");
+            for(Equipment e : r.getEquipment()) {
+                writer.append(e.getName());
+                writer.append(',');
+                writer.append(e.getQuantity() + "x");
+                writer.append('\n');
+            }
+
+            writer.append("\nObservations\n");
+            for(Observation o : r.getTimeline().getObservations()) {
+                writer.append(o.getTime());
+                writer.append(',');
+
+                // Text
+                if(o instanceof Text) {
+                    writer.append(((Text) o).getText());
+                    writer.append(',');
+                }
+
+                writer.append(o.getNote());
+                writer.append(',');
+                writer.append('\n');
+            }
+
+            writer.flush();
+            writer.close();
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
 

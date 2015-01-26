@@ -11,11 +11,6 @@ public class Text extends Observation {
          text = s;
      }
 
-     @Override
-     public String toString() {
-         return text + "\n" + "Note: " + note;
-     }
-
      public String getText() {
          return text;
      }

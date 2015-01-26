@@ -27,9 +27,4 @@ public class Company implements Notable{
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-
-    @Override
-    public String toString() {
-        return  name + " x" + quantity + " employees";
-    }
 }

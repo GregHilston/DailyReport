@@ -9,9 +9,4 @@ public class Picture extends Observation {
      public Picture() {
          super();
      }
-
-     @Override
-     public String toString() {
-         return "Picture's Note Field: " + note;
-     }
  }

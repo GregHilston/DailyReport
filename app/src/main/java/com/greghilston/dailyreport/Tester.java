@@ -33,6 +33,6 @@ public class Tester {
         Equipment e = new Equipment("Deflated Football", 11);
         report.addEquipment(e);
 
-        DocumentMaster.getInstance().createXml(report);
+        report.generateReport();
     }
 }

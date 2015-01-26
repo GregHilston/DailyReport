@@ -19,8 +19,20 @@ public class Weather extends Observation {
         Sunny, Rainy, Cloudy
     }
 
-    @Override
-    public String toString() {
-        return temp + " fahrenheit with  " + (1 - humidity) * 100  +  "humidity \nNote: " + note;
+    /**
+     * Get humidity as a percentage of 100
+     *
+     * @return the humidity
+     */
+    public float getHumidity() {
+        return (1 - humidity) * 100;
+    }
+
+    public float getTemp() {
+        return temp;
+    }
+
+    public Type getType() {
+        return type;
     }
 }
