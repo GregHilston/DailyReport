@@ -2,15 +2,11 @@ package com.greghilston.dailyreport;
 
 import android.annotation.TargetApi;
 import android.os.Build;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 // For XML File creation
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -20,6 +16,9 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * Responsible for creating human readable documents
@@ -273,7 +272,7 @@ public class DocumentMaster {
     /**
      * Creates a PDF based on the XML file
      */
-    public void createPdf() {
+    public void createPdf(String fileName) {
 
     }
 }

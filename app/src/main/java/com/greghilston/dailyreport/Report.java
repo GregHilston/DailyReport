@@ -29,6 +29,12 @@ public class Report {
     public void generateReport() {
         DocumentMaster.getInstance().createXml(date, this);
         DocumentMaster.getInstance().createCsv(date, this);
+
+        try {
+            DocumentMaster.getInstance().createPdf(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

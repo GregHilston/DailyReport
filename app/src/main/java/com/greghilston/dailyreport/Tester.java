@@ -33,6 +33,9 @@ public class Tester {
         Equipment e = new Equipment("Deflated Football", 11);
         report.addEquipment(e);
 
+        Text t = new Text("Won Superbowl");
+        report.getTimeline().addObservation(t);
+
         report.generateReport();
     }
 }

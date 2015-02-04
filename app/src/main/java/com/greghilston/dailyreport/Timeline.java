@@ -14,6 +14,10 @@ public class Timeline{
         observations.add(new Text("Arrived on site"));
     }
 
+     public void addObservation(Observation o) {
+         observations.add(o);
+     }
+
      public ArrayList<Observation> getObservations() {
          return observations;
      }
