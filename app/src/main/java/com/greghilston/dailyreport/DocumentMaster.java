@@ -5,6 +5,7 @@ import android.os.Build;
 
 // For XML File creation
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import javax.xml.parsers.DocumentBuilder;
@@ -27,9 +28,42 @@ import org.w3c.dom.Element;
  */
 public class DocumentMaster {
     private static DocumentMaster instance = new DocumentMaster();
+    private static File reportsDir = new File("app/src/main/java/com/greghilston/dailyreport/Reports/");
+
+    static {
+        createReportFolder();
+    }
 
     public static DocumentMaster getInstance() {
         return instance;
+    }
+
+    /**
+     * Creates the "Reports" directory if does not already exist
+     */
+    public static void createReportFolder() {
+        // If directory doesn't exist, then create it
+        if (reportsDir.exists() || reportsDir.mkdir()) {
+
+            // If file doesn't exist, then create it
+            if (!reportsDir.exists()) {
+                System.err.println("Warning: Reports folder was missing, creating folder now");
+
+                try {
+                    reportsDir.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+            }
+        }
+    }
+
+    /**
+     * Creates a report based on an XML file
+     * @param fileName xml file name
+     */
+    public void createReportFromXml(String fileName) {
+
     }
 
     /**
@@ -200,72 +234,72 @@ public class DocumentMaster {
      * Creates a CSV based on the XML file
      */
     public void createCsv(String fileName, Report r) {
-        try
-        {
-            FileWriter writer = new FileWriter("app/src/main/java/com/greghilston/dailyreport/Reports/" + fileName +  ".csv");
 
-            writer.append(r.getProject().getAccount().getName());
-            writer.append(',');
-            writer.append(r.getProject().getAccount().getCompany());
-            writer.append("\n\n");
 
-            writer.append(r.getDate());
-            writer.append(',');
-            writer.append(r.getProject().getProjectName());
-            writer.append(',');
-            writer.append(String.valueOf(r.getHeadCount() + " employees"));
-
-            writer.append("\n\nCompanies\n");
-            for(Company c : r.getCompanies()) {
-                writer.append(c.getName());
-                writer.append(',');
-                writer.append(c.getQuantity() + "x");
-                writer.append('\n');
-            }
-
-            writer.append("\nPeople\n");
-            for(Person p : r.getPeople()) {
-                writer.append(p.getName());
-                writer.append(',');
-                writer.append(p.getCompany());
-                writer.append(',');
-                writer.append(p.getJobTitle());
-                writer.append(',');
-                writer.append(p.getHoursOnSite() + " hours");
-                writer.append('\n');
-            }
-
-            writer.append("\nEquipment\n");
-            for(Equipment e : r.getEquipment()) {
-                writer.append(e.getName());
-                writer.append(',');
-                writer.append(e.getQuantity() + "x");
-                writer.append('\n');
-            }
-
-            writer.append("\nObservations\n");
-            for(Observation o : r.getTimeline().getObservations()) {
-                writer.append(o.getTime());
-                writer.append(',');
-
-                // Text
-                if(o instanceof Text) {
-                    writer.append(((Text) o).getText());
-                    writer.append(',');
-                }
-
-                writer.append(o.getNote());
-                writer.append(',');
-                writer.append('\n');
-            }
-
-            writer.flush();
-            writer.close();
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-        }
+//        try
+//        {
+//            FileWriter writer = new FileWriter("app/src/main/java/com/greghilston/dailyreport/Reports/" + fileName +  ".csv");
+//
+//            writer.append(r.getProject().getAccount().getName());
+//            writer.append(',');
+//            writer.append(r.getProject().getAccount().getCompany());
+//            writer.append("\n\n");
+//
+//            writer.append(r.getDate());
+//            writer.append(',');
+//            writer.append(r.getProject().getProjectName());
+//            writer.append(',');
+//            writer.append(String.valueOf(r.getHeadCount() + " employees"));
+//
+//            writer.append("\n\nCompanies\n");
+//            for(Company c : r.getCompanies()) {
+//                writer.append(c.getName());
+//                writer.append(',');
+//                writer.append(c.getQuantity() + "x");
+//                writer.append('\n');
+//            }
+//
+//            writer.append("\nPeople\n");
+//            for(Person p : r.getPeople()) {
+//                writer.append(p.getName());
+//                writer.append(',');
+//                writer.append(p.getCompany());
+//                writer.append(',');
+//                writer.append(p.getJobTitle());
+//                writer.append(',');
+//                writer.append(p.getHoursOnSite() + " hours");
+//                writer.append('\n');
+//            }
+//
+//            writer.append("\nEquipment\n");
+//            for(Equipment e : r.getEquipment()) {
+//                writer.append(e.getName());
+//                writer.append(',');
+//                writer.append(e.getQuantity() + "x");
+//                writer.append('\n');
+//            }
+//
+//            writer.append("\nObservations\n");
+//            for(Observation o : r.getTimeline().getObservations()) {
+//                writer.append(o.getTime());
+//                writer.append(',');
+//
+//                // Text
+//                if(o instanceof Text) {
+//                    writer.append(((Text) o).getText());
+//                    writer.append(',');
+//                }
+//
+//                writer.append(o.getNote());
+//                writer.append(',');
+//                writer.append('\n');
+//            }
+//
+//            writer.flush();
+//            writer.close();
+//        } catch(IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
 
