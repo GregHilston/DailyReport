@@ -5,8 +5,6 @@ import android.os.Build;
 
 // For XML File creation
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -20,11 +18,17 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+// For XML File reading
+
 
 /**
  * Responsible for creating human readable documents
  * Source: http://www.mkyong.com/java/how-to-create-xml-file-in-java-dom/
  *         http://www.mkyong.com/java/how-to-export-data-to-csv-file-java/
+ *         http://www.mkyong.com/java/how-to-read-xml-file-in-java-dom-parser/
  */
 public class DocumentMaster {
     private static DocumentMaster instance = new DocumentMaster();
@@ -95,10 +99,10 @@ public class DocumentMaster {
             Element project = doc.createElement("Project");
             accountElement.appendChild(project);
 
-            // set attribute to staff element
-            Attr attr = doc.createAttribute("Name");
-            attr.setValue(r.getProject().getProjectName());
-            project.setAttributeNode(attr);
+            // Name element
+            Element projectName = doc.createElement("Name");
+            projectName.appendChild(doc.createTextNode(r.getProject().getProjectName()));
+            project.appendChild(projectName);
 
             // Date element
             Element date = doc.createElement("Date");
@@ -233,14 +237,56 @@ public class DocumentMaster {
     /**
      * Creates a CSV based on the XML file
      */
+    @TargetApi(Build.VERSION_CODES.FROYO)
     public void createCsv(String fileName, Report r) {
+        try {
+            File file = new File("app/src/main/java/com/greghilston/dailyreport/Reports/" + fileName + ".xml");
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(file);
 
+            //optional, but recommended
+            //read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
+            doc.getDocumentElement().normalize();
 
+            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+            NodeList nList = doc.getElementsByTagName("Account");
+            System.out.println("----------------------------");
+
+            for (int temp = 0; temp < nList.getLength(); temp++) {
+                Node node = nList.item(temp);
+                System.out.println("\nCurrent Node: " + node.getNodeName());
+
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) node;
+
+                    System.out.println("\tName: " + element.getElementsByTagName("Name").item(0).getTextContent());
+                    System.out.println("\tCompany: " + element.getElementsByTagName("Company").item(0).getTextContent());
+                    System.out.println("\tProject: " + element.getElementsByTagName("Name").item(1).getTextContent());
+                    System.out.println("\t\tDate: " + element.getElementsByTagName("Date").item(0).getTextContent());
+                    System.out.println("\t\tHeadcount: " + element.getElementsByTagName("Headcount").item(0).getTextContent());
+
+                    System.out.println("\t\t\tCompany: " + element.getElementsByTagName("Name").item(2).getTextContent());
+                    System.out.println("\t\t\tPerson: " + element.getElementsByTagName("Quantity").item(0).getTextContent());
+
+                    System.out.println("");
+
+                    System.out.println("\t\t\tPerson: " + element.getElementsByTagName("Name").item(3).getTextContent());
+                    System.out.println("\t\t\tCompany: " + element.getElementsByTagName("Company").item(0).getTextContent());
+                    System.out.println("\t\t\tJob: " + element.getElementsByTagName("Company").item(0).getTextContent());
+                    System.out.println("\t\t\tHours: " + element.getElementsByTagName("Hours").item(0).getTextContent());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+//        Commented out, as this creates a CSV from a report, rather than an XML file
 //        try
 //        {
 //            FileWriter writer = new FileWriter("app/src/main/java/com/greghilston/dailyreport/Reports/" + fileName +  ".csv");
 //
-//            writer.append(r.getProject().getAccount().getName());
+//            writer.appenCsvd(r.getProject().getAccount().getName());
 //            writer.append(',');
 //            writer.append(r.getProject().getAccount().getCompany());
 //            writer.append("\n\n");
