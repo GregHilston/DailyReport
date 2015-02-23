@@ -10,16 +10,14 @@ import java.util.Date;
 public class Report {
     private Project project; // The project this report belongs to
 	private String date;
-	private int headCount;
-	private ArrayList<Company> companies = new ArrayList<>();
-	private ArrayList<Person> people = new ArrayList<>();
+    private ArrayList<Person> people = new ArrayList<>(); // People that work for manager
+    private ArrayList<Company> companies = new ArrayList<>();
 	private ArrayList<Equipment> equipment = new ArrayList<>();
     private Timeline timeline;
 
-    public Report(Project project, int headCount) {
+    public Report(Project project) {
         date = new SimpleDateFormat("MM_dd_yyyy").format(new Date());
         this.project = project;
-        this.headCount = headCount;
         this.timeline = new Timeline(this);
     }
 
@@ -70,12 +68,20 @@ public class Report {
 	}
 
 	public int getHeadCount() {
-		return headCount;
+		return people.size();
 	}
 
-	public void setHeadCount(int headCount) {
-		this.headCount = headCount;
-	}
+    public int getCompanyCount() {
+        return companies.size();
+    }
+
+    public int getEquipmentCount() {
+        return equipment.size();
+    }
+
+    public int getObservationsCount() {
+        return timeline.getObservationsCount();
+    }
 
 	public ArrayList<Company> getCompanies() {
 		return companies;

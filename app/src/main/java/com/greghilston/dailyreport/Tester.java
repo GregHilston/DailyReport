@@ -16,7 +16,7 @@ public class Tester {
         account.addProject(project);
 
         // Create a report with one person on site
-        Report report = new Report(project, 1);
+        Report report = new Report(project);
 
         // Add the report to the user's project
         project.addReport(report);
@@ -26,7 +26,7 @@ public class Tester {
         report.addCompany(c);
 
         // Create and add a person to the report
-        Person p = new Person("Tom Brady", "Patriots", "QB", 10);
+        Person p = new Person("Tom Brady", "ACME Systems", "QB", 10);
         report.addPerson(p);
 
         // Create and add a equipment to the report

@@ -15,7 +15,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -110,9 +109,53 @@ public class DocumentMaster {
             project.appendChild(date);
 
             // Headcount element
-            Element headCount = doc.createElement("Headcount");
+            Element headCount = doc.createElement("HeadCount");
             headCount.appendChild(doc.createTextNode(String.valueOf(r.getHeadCount())));
             project.appendChild(headCount);
+
+            // Company count
+            Element companyCount = doc.createElement("CompanyCount");
+            companyCount.appendChild(doc.createTextNode(String.valueOf(r.getCompanyCount())));
+            project.appendChild(companyCount);
+
+            // Equipment count
+            Element equipmentCount = doc.createElement("EquipmentCount");
+            equipmentCount.appendChild(doc.createTextNode(String.valueOf(r.getEquipmentCount())));
+            project.appendChild(equipmentCount);
+
+            // Observations count
+            Element observationsCount = doc.createElement("ObservationsCount");
+            observationsCount.appendChild(doc.createTextNode(String.valueOf(r.getObservationsCount())));
+            project.appendChild(observationsCount);
+
+            // People elements (These people work for the same company as the maanger)
+            for(int i = 0; i < r.getPeople().size(); i++) {
+                String sanitizedPersonName = r.getPeople().get(i).getName().replace(" ", "_"); // XML doesn't allow spaces
+
+                Element person = doc.createElement("Person");
+                project.appendChild(person);
+
+                // Person Name element
+                Element personName = doc.createElement("Name");
+                personName.appendChild(doc.createTextNode(r.getPeople().get(i).getName()));
+                person.appendChild(personName);
+
+                // Not needed, as they work for the Manager
+//                // Person Company element
+//                Element personCompany = doc.createElement("Company");
+//                personCompany.appendChild(doc.createTextNode(r.getPeople().get(i).getCompany()));
+//                person.appendChild(personCompany);
+
+                // Person Job Title element
+                Element personJobTitle = doc.createElement("Job");
+                personJobTitle.appendChild(doc.createTextNode(r.getPeople().get(i).getJobTitle()));
+                person.appendChild(personJobTitle);
+
+                // Hour on Site element
+                Element pesonHours = doc.createElement("Hours");
+                pesonHours.appendChild(doc.createTextNode(String.valueOf(r.getPeople().get(i).getHoursOnSite())));
+                person.appendChild(pesonHours);
+            }
 
             // Companies elements
             for(int i = 0; i < r.getCompanies().size(); i++) {
@@ -130,34 +173,6 @@ public class DocumentMaster {
                 Element quantity = doc.createElement("Quantity");
                 quantity.appendChild(doc.createTextNode(String.valueOf(r.getCompanies().get(i).getQuantity())));
                 otherCompany.appendChild(quantity);
-            }
-
-            // People elements
-            for(int i = 0; i < r.getPeople().size(); i++) {
-                String sanitizedPersonName = r.getPeople().get(i).getName().replace(" ", "_"); // XML doesn't allow spaces
-
-                Element person = doc.createElement("Person");
-                project.appendChild(person);
-
-                // Person Name element
-                Element personName = doc.createElement("Name");
-                personName.appendChild(doc.createTextNode(r.getPeople().get(i).getName()));
-                person.appendChild(personName);
-
-                // Person Company element
-                Element personCompany = doc.createElement("Company");
-                personCompany.appendChild(doc.createTextNode(r.getPeople().get(i).getCompany()));
-                person.appendChild(personCompany);
-
-                // Person Job Title element
-                Element personJobTitle = doc.createElement("Job");
-                personJobTitle.appendChild(doc.createTextNode(r.getPeople().get(i).getJobTitle()));
-                person.appendChild(personJobTitle);
-
-                // Hour on Site element
-                Element pesonHours = doc.createElement("Hours");
-                pesonHours.appendChild(doc.createTextNode(String.valueOf(r.getPeople().get(i).getHoursOnSite())));
-                person.appendChild(pesonHours);
             }
 
             // Equipment elements

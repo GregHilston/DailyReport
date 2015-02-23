@@ -21,4 +21,8 @@ public class Timeline{
      public ArrayList<Observation> getObservations() {
          return observations;
      }
+
+     public int getObservationsCount() {
+         return observations.size();
+     }
 }
