@@ -26,7 +26,8 @@ public class Report {
      */
     public void generateReport() {
         DocumentMaster.getInstance().createXml(date, this);
-        DocumentMaster.getInstance().createCsv(date, this);
+        DocumentMaster.getInstance().printCsv(date, this);
+        // DocumentMaster.getInstance().createCsv(date, this); // TODO: Make based off XML
 
         try {
             DocumentMaster.getInstance().createPdf(date);

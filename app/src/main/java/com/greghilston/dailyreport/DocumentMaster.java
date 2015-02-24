@@ -5,6 +5,7 @@ import android.os.Build;
 
 // For XML File creation
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -84,8 +85,8 @@ public class DocumentMaster {
             Element accountElement = doc.createElement("Account");
             doc.appendChild(accountElement);
 
-            // Name element
-            Element name = doc.createElement("Name");
+            // Account Name element
+            Element name = doc.createElement("aName");
             name.appendChild(doc.createTextNode(r.getProject().getAccount().getName()));
             accountElement.appendChild(name);
 
@@ -98,8 +99,8 @@ public class DocumentMaster {
             Element project = doc.createElement("Project");
             accountElement.appendChild(project);
 
-            // Name element
-            Element projectName = doc.createElement("Name");
+            // Project Name element
+            Element projectName = doc.createElement("prName");
             projectName.appendChild(doc.createTextNode(r.getProject().getProjectName()));
             project.appendChild(projectName);
 
@@ -136,7 +137,7 @@ public class DocumentMaster {
                 project.appendChild(person);
 
                 // Person Name element
-                Element personName = doc.createElement("Name");
+                Element personName = doc.createElement("pName");
                 personName.appendChild(doc.createTextNode(r.getPeople().get(i).getName()));
                 person.appendChild(personName);
 
@@ -165,12 +166,12 @@ public class DocumentMaster {
                 project.appendChild(otherCompany);
 
                 // Company Name element
-                Element otherCompanyName = doc.createElement("Name");
+                Element otherCompanyName = doc.createElement("cName");
                 otherCompanyName.appendChild(doc.createTextNode(sanitizedOtherCompanyName));
                 otherCompany.appendChild(otherCompanyName);
 
-                // Quantity element
-                Element quantity = doc.createElement("Quantity");
+                // Company Quantity element
+                Element quantity = doc.createElement("cQuantity");
                 quantity.appendChild(doc.createTextNode(String.valueOf(r.getCompanies().get(i).getQuantity())));
                 otherCompany.appendChild(quantity);
             }
@@ -183,12 +184,12 @@ public class DocumentMaster {
                 project.appendChild(equipment);
 
                 // Equipment Name element
-                Element equipmentName = doc.createElement("Name");
+                Element equipmentName = doc.createElement("eName");
                 equipmentName.appendChild(doc.createTextNode(r.getEquipment().get(i).getName()));
                 equipment.appendChild(equipmentName);
 
                 // Equipment Quantity element
-                Element equipmentQuantity = doc.createElement("Quantity");
+                Element equipmentQuantity = doc.createElement("eQuantity");
                 equipmentQuantity.appendChild(doc.createTextNode(String.valueOf(r.getEquipment().get(i).getQuantity())));
                 equipment.appendChild(equipmentQuantity);
             }
@@ -250,21 +251,28 @@ public class DocumentMaster {
     }
 
     /**
-     * Creates a CSV based on the XML file
+     * Reads in a CSV file and prints it out to stdOut (Useful for debugging)
+     *
+     * @param fileName  name of csv file
+     * @param r         name of report object
      */
     @TargetApi(Build.VERSION_CODES.FROYO)
-    public void createCsv(String fileName, Report r) {
+    public void printCsv(String fileName, Report r) {
         try {
             File file = new File("app/src/main/java/com/greghilston/dailyreport/Reports/" + fileName + ".xml");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(file);
+            int pCount = 0;     // Person count
+            int cCount = 0;     // Company count
+            int eCount = 0;     // Equipment count
+            int oCount = 0;     // Observation count
 
             //optional, but recommended
             //read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
             doc.getDocumentElement().normalize();
 
-            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+            System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
             NodeList nList = doc.getElementsByTagName("Account");
             System.out.println("----------------------------");
 
@@ -275,92 +283,127 @@ public class DocumentMaster {
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) node;
 
-                    System.out.println("\tName: " + element.getElementsByTagName("Name").item(0).getTextContent());
+                    System.out.println("\taName: " + element.getElementsByTagName("aName").item(0).getTextContent());
                     System.out.println("\tCompany: " + element.getElementsByTagName("Company").item(0).getTextContent());
-                    System.out.println("\tProject: " + element.getElementsByTagName("Name").item(1).getTextContent());
+                    System.out.println("\tprName: " + element.getElementsByTagName("prName").item(0).getTextContent());
                     System.out.println("\t\tDate: " + element.getElementsByTagName("Date").item(0).getTextContent());
-                    System.out.println("\t\tHeadcount: " + element.getElementsByTagName("Headcount").item(0).getTextContent());
 
-                    System.out.println("\t\t\tCompany: " + element.getElementsByTagName("Name").item(2).getTextContent());
-                    System.out.println("\t\t\tPerson: " + element.getElementsByTagName("Quantity").item(0).getTextContent());
+                    pCount = Integer.valueOf(element.getElementsByTagName("HeadCount").item(0).getTextContent());
+                    System.out.println("\t\tHeadcount: " + element.getElementsByTagName("HeadCount").item(0).getTextContent());
 
-                    System.out.println("");
+                    cCount = Integer.valueOf(element.getElementsByTagName("CompanyCount").item(0).getTextContent());
+                    System.out.println("\t\tCompanyCount: " + element.getElementsByTagName("CompanyCount").item(0).getTextContent());
 
-                    System.out.println("\t\t\tPerson: " + element.getElementsByTagName("Name").item(3).getTextContent());
-                    System.out.println("\t\t\tCompany: " + element.getElementsByTagName("Company").item(0).getTextContent());
-                    System.out.println("\t\t\tJob: " + element.getElementsByTagName("Company").item(0).getTextContent());
-                    System.out.println("\t\t\tHours: " + element.getElementsByTagName("Hours").item(0).getTextContent());
+                    eCount = Integer.valueOf(element.getElementsByTagName("EquipmentCount").item(0).getTextContent());
+                    System.out.println("\t\tEquipmentCount: " + element.getElementsByTagName("EquipmentCount").item(0).getTextContent());
+
+                    oCount = Integer.valueOf(element.getElementsByTagName("ObservationsCount").item(0).getTextContent());
+                    System.out.println("\t\tObservationsCount: " + element.getElementsByTagName("ObservationsCount").item(0).getTextContent());
+
+                    System.out.println("\t\tPeople:");
+                    for(int i = 0; i < pCount; i++) {
+                        System.out.println("\t\t\tpName: " + element.getElementsByTagName("pName").item(i).getTextContent());
+                        System.out.println("\t\t\tJob: " + element.getElementsByTagName("Job").item(i).getTextContent()); // - 2 due to how the XML is laid out
+                        System.out.println("\t\t\tHours: " + element.getElementsByTagName("Hours").item(i).getTextContent() + "\n"); // - 2 due to how the XML is laid out
+                    }
+
+
+                    System.out.println("\t\tCompanies:");
+                    for(int i = 0; i < cCount; i++) {
+                        System.out.println("\t\t\tcName: " + element.getElementsByTagName("cName").item(i).getTextContent());
+                        System.out.println("\t\t\tcQuantity: " + element.getElementsByTagName("cQuantity").item(i).getTextContent() + "\n");
+                    }
+
+                    System.out.println("\t\tEquipment:");
+                    for(int i = 0; i < eCount; i++) {
+                        System.out.println("\t\t\teName: " + element.getElementsByTagName("eName").item(i).getTextContent());
+                        System.out.println("\t\t\teQuantity: " + element.getElementsByTagName("eQuantity").item(i).getTextContent() + "\n");
+                    }
+
+                    System.out.println("\t\tObservatons:");
+                    for(int i = 0; i < oCount; i++) {
+                        System.out.println("\t\t\tTime: " + element.getElementsByTagName("Time").item(i).getTextContent());
+                        System.out.println("\t\t\tText: " + element.getElementsByTagName("Text").item(i).getTextContent());
+                        System.out.println("\t\t\tNote: " + element.getElementsByTagName("Note").item(i).getTextContent() + "\n");
+                    }
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
-//        Commented out, as this creates a CSV from a report, rather than an XML file
-//        try
-//        {
-//            FileWriter writer = new FileWriter("app/src/main/java/com/greghilston/dailyreport/Reports/" + fileName +  ".csv");
-//
-//            writer.appenCsvd(r.getProject().getAccount().getName());
-//            writer.append(',');
-//            writer.append(r.getProject().getAccount().getCompany());
-//            writer.append("\n\n");
-//
-//            writer.append(r.getDate());
-//            writer.append(',');
-//            writer.append(r.getProject().getProjectName());
-//            writer.append(',');
-//            writer.append(String.valueOf(r.getHeadCount() + " employees"));
-//
-//            writer.append("\n\nCompanies\n");
-//            for(Company c : r.getCompanies()) {
-//                writer.append(c.getName());
-//                writer.append(',');
-//                writer.append(c.getQuantity() + "x");
-//                writer.append('\n');
-//            }
-//
-//            writer.append("\nPeople\n");
-//            for(Person p : r.getPeople()) {
-//                writer.append(p.getName());
-//                writer.append(',');
-//                writer.append(p.getCompany());
-//                writer.append(',');
-//                writer.append(p.getJobTitle());
-//                writer.append(',');
-//                writer.append(p.getHoursOnSite() + " hours");
-//                writer.append('\n');
-//            }
-//
-//            writer.append("\nEquipment\n");
-//            for(Equipment e : r.getEquipment()) {
-//                writer.append(e.getName());
-//                writer.append(',');
-//                writer.append(e.getQuantity() + "x");
-//                writer.append('\n');
-//            }
-//
-//            writer.append("\nObservations\n");
-//            for(Observation o : r.getTimeline().getObservations()) {
-//                writer.append(o.getTime());
-//                writer.append(',');
-//
-//                // Text
-//                if(o instanceof Text) {
-//                    writer.append(((Text) o).getText());
-//                    writer.append(',');
-//                }
-//
-//                writer.append(o.getNote());
-//                writer.append(',');
-//                writer.append('\n');
-//            }
-//
-//            writer.flush();
-//            writer.close();
-//        } catch(IOException e) {
-//            e.printStackTrace();
-//        }
+    /**
+     * Creates a CSV based on the XML file
+     */
+    @TargetApi(Build.VERSION_CODES.FROYO)
+    public void createCsv(String fileName, Report r) {
+        // Commented out, as this creates a CSV from a report, rather than an XML file
+
+        try
+        {
+            FileWriter writer = new FileWriter("app/src/main/java/com/greghilston/dailyreport/Reports/" + fileName +  ".csv");
+
+            writer.append(r.getProject().getAccount().getName());
+            writer.append(',');
+            writer.append(r.getProject().getAccount().getCompany());
+            writer.append("\n\n");
+
+            writer.append(r.getDate());
+            writer.append(',');
+            writer.append(r.getProject().getProjectName());
+            writer.append(',');
+            writer.append(String.valueOf(r.getHeadCount() + " employees"));
+
+            writer.append("\n\nCompanies\n");
+            for(Company c : r.getCompanies()) {
+                writer.append(c.getName());
+                writer.append(',');
+                writer.append(c.getQuantity() + "x");
+                writer.append('\n');
+            }
+
+            writer.append("\nPeople\n");
+            for(Person p : r.getPeople()) {
+                writer.append(p.getName());
+                writer.append(',');
+                writer.append(p.getCompany());
+                writer.append(',');
+                writer.append(p.getJobTitle());
+                writer.append(',');
+                writer.append(p.getHoursOnSite() + " hours");
+                writer.append('\n');
+            }
+
+            writer.append("\nEquipment\n");
+            for(Equipment e : r.getEquipment()) {
+                writer.append(e.getName());
+                writer.append(',');
+                writer.append(e.getQuantity() + "x");
+                writer.append('\n');
+            }
+
+            writer.append("\nObservations\n");
+            for(Observation o : r.getTimeline().getObservations()) {
+                writer.append(o.getTime());
+                writer.append(',');
+
+                // Text
+                if(o instanceof Text) {
+                    writer.append(((Text) o).getText());
+                    writer.append(',');
+                }
+
+                writer.append(o.getNote());
+                writer.append(',');
+                writer.append('\n');
+            }
+
+            writer.flush();
+            writer.close();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
