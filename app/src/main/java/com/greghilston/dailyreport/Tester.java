@@ -1,9 +1,24 @@
 package com.greghilston.dailyreport;
 
+import android.content.Intent;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Represents the interaction a user will have with the Android Application
  */
 public class Tester {
+
+    /**
+     *
+     */
+    public static void testReport(String reportDescription, Report r) {
+        System.out.println(reportDescription);
+        System.out.println("----------------------------");
+
+        r.printReport();
+    }
 
     public static void main(String args[]) {
         // Create the user's account
@@ -16,26 +31,32 @@ public class Tester {
         account.addProject(project);
 
         // Create a report with one person on site
-        Report report = new Report(project);
+        Report reportHandMade = new Report(project);
 
         // Add the report to the user's project
-        project.addReport(report);
+        project.addReport(reportHandMade);
 
         // Create and add a company to the report
         Company c = new Company("Patriots", 2);
-        report.addCompany(c);
+        reportHandMade.addCompany(c);
 
         // Create and add a person to the report
-        Person p = new Person("Tom Brady", "ACME Systems", "QB", 10);
-        report.addPerson(p);
+        Person p = new Person("Tom Brady", "QB", 10);
+        reportHandMade.addPerson(p);
 
         // Create and add a equipment to the report
         Equipment e = new Equipment("Deflated Football", 11);
-        report.addEquipment(e);
+        reportHandMade.addEquipment(e);
 
         Text t = new Text("Won Superbowl");
-        report.getTimeline().addObservation(t);
+        reportHandMade.addObservation(t);
 
-        report.generateReport();
+        testReport("Hand Made Report", reportHandMade); // Testing the hand made report object
+        reportHandMade.generateReport();
+
+        // Testing the XML -> Report
+        String filename = new SimpleDateFormat("MM_dd_yyyy").format(new Date());
+        Report reportFromXml = DocumentMaster.getInstance().createReportFromXml(filename);
+        testReport("Report (from XML)", reportFromXml); // Testing the report object made from the XML file
     }
 }

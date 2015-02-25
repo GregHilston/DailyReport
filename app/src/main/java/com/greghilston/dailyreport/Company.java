@@ -3,7 +3,7 @@ package com.greghilston.dailyreport;
 /**
  * Represents an entire company
  */
-public class Company implements Notable{
+public class Company extends Notable{
     private String name;
     private int quantity; // The number of employees on site for said company
 

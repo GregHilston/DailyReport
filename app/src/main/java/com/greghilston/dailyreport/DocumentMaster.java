@@ -66,8 +66,86 @@ public class DocumentMaster {
      * Creates a report based on an XML file
      * @param fileName xml file name
      */
-    public void createReportFromXml(String fileName) {
+    @TargetApi(Build.VERSION_CODES.FROYO)
+    public Report createReportFromXml(String fileName) {
+        Report r = new Report();
 
+        try {
+            File file = new File("app/src/main/java/com/greghilston/dailyreport/Reports/" + fileName + ".xml");
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(file);
+            int pCount = 0;     // Person count
+            int cCount = 0;     // Company count
+            int eCount = 0;     // Equipment count
+            int oCount = 0;     // Observation count
+
+            //optional, but recommended
+            //read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
+            doc.getDocumentElement().normalize();
+
+            NodeList nList = doc.getElementsByTagName("Account");
+
+            for (int temp = 0; temp < nList.getLength(); temp++) {
+                Node node = nList.item(temp);
+
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) node;
+
+                    r.setAccountName(element.getElementsByTagName("aName").item(0).getTextContent());
+                    r.setCompanyName(element.getElementsByTagName("Company").item(0).getTextContent());
+                    r.setProjectName(element.getElementsByTagName("prName").item(0).getTextContent());
+                    r.setDate(element.getElementsByTagName("Date").item(0).getTextContent());
+
+                    pCount = Integer.valueOf(element.getElementsByTagName("HeadCount").item(0).getTextContent());
+                    cCount = Integer.valueOf(element.getElementsByTagName("CompanyCount").item(0).getTextContent());
+                    eCount = Integer.valueOf(element.getElementsByTagName("EquipmentCount").item(0).getTextContent());
+                    oCount = Integer.valueOf(element.getElementsByTagName("ObservationsCount").item(0).getTextContent());
+
+                    // People
+                    for(int i = 0; i < pCount; i++) {
+                        String pName = element.getElementsByTagName("pName").item(0).getTextContent();
+                        String job = element.getElementsByTagName("Job").item(0).getTextContent();
+                        int hours = Integer.valueOf(element.getElementsByTagName("Hours").item(0).getTextContent());
+
+                        Person p = new Person(pName, job, hours);
+                        r.addPerson(p);
+                    }
+
+                    // Companies
+                    for(int i = 0; i < cCount; i++) {
+                        String cName = element.getElementsByTagName("cName").item(i).getTextContent();
+                        int cQuantity = Integer.valueOf(element.getElementsByTagName("cQuantity").item(i).getTextContent());
+
+                        Company c = new Company(cName, cQuantity);
+                        r.addCompany(c);
+                    }
+
+                    // Equipment
+                    for(int i = 0; i < eCount; i++) {
+                        String eName = element.getElementsByTagName("eName").item(i).getTextContent();
+                        int eQuantity = Integer.valueOf(element.getElementsByTagName("eQuantity").item(i).getTextContent());
+
+                        Equipment e = new Equipment(eName, eQuantity);
+                        r.addEquipment(e);
+                    }
+
+                    // Observations
+                    for(int i = 0; i < oCount; i++) {
+                        String time = element.getElementsByTagName("Time").item(i).getTextContent();
+                        String text = element.getElementsByTagName("Text").item(i).getTextContent();
+                        String note = element.getElementsByTagName("Note").item(i).getTextContent();
+
+                        Text o = new Text(time, text, note);
+                        r.addObservation(o);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return r;
     }
 
     /**
@@ -194,16 +272,18 @@ public class DocumentMaster {
                 equipment.appendChild(equipmentQuantity);
             }
 
-            // Timeline Observation elements
-            Element timeLine = doc.createElement("Timeline");
-            project.appendChild(timeLine);
+            // Observation elements
+            Element observations = doc.createElement("Observations");
+            project.appendChild(observations);
 
-            // Timeline Observation elements
-            for(Observation o :r.getTimeline().getObservations()) {
+            // Observation elements
+            for(int i = 0; i < r.getObservationsCount(); i++) {
+                Observation o = r.observations.get(i);
+
                 // Time element
                 Element observationTime = doc.createElement("Time");
                 observationTime.appendChild(doc.createTextNode(o.getTime()));
-                timeLine.appendChild(observationTime);
+                observations.appendChild(observationTime);
 
                 if(o instanceof Weather) {
 
@@ -212,7 +292,7 @@ public class DocumentMaster {
                     // Text element
                     Element text = doc.createElement("Text");
                     text.appendChild(doc.createTextNode(((Text) o).getText()));
-                    timeLine.appendChild(text);
+                    observations.appendChild(text);
                 }
                 else if(o instanceof Picture){
 
@@ -225,7 +305,7 @@ public class DocumentMaster {
                 // Note element
                 Element note = doc.createElement("Note");
                 note.appendChild(doc.createTextNode(o.getNote()));
-                timeLine.appendChild(note);
+                observations.appendChild(note);
             }
 
             // Write the content into xml file
@@ -251,13 +331,13 @@ public class DocumentMaster {
     }
 
     /**
-     * Reads in a CSV file and prints it out to stdOut (Useful for debugging)
+     * Reads in a XML file and prints it out to stdOut (Useful for debugging)
      *
      * @param fileName  name of csv file
      * @param r         name of report object
      */
     @TargetApi(Build.VERSION_CODES.FROYO)
-    public void printCsv(String fileName, Report r) {
+    public void printXml(String fileName, Report r) {
         try {
             File file = new File("app/src/main/java/com/greghilston/dailyreport/Reports/" + fileName + ".xml");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -367,8 +447,6 @@ public class DocumentMaster {
             for(Person p : r.getPeople()) {
                 writer.append(p.getName());
                 writer.append(',');
-                writer.append(p.getCompany());
-                writer.append(',');
                 writer.append(p.getJobTitle());
                 writer.append(',');
                 writer.append(p.getHoursOnSite() + " hours");
@@ -384,7 +462,7 @@ public class DocumentMaster {
             }
 
             writer.append("\nObservations\n");
-            for(Observation o : r.getTimeline().getObservations()) {
+            for(Observation o : r.getObservations()) {
                 writer.append(o.getTime());
                 writer.append(',');
 

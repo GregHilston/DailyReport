@@ -3,15 +3,13 @@ package com.greghilston.dailyreport;
 /**
  * Represents a person on site
  */
-public class Person implements Notable{
+public class Person extends Notable{
     private String name;
-    private String company;
     private String jobTitle;
     private int hoursOnSite;
 
-    public Person(String name, String company, String jobTitle, int hoursOnSite) {
+    public Person(String name, String jobTitle, int hoursOnSite) {
         this.name = name;
-        this.company = company;
         this.jobTitle = jobTitle;
         this.hoursOnSite = hoursOnSite;
     }
@@ -22,14 +20,6 @@ public class Person implements Notable{
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getCompany() {
-        return company;
-    }
-
-    public void setCompany(String company) {
-        this.company = company;
     }
 
     public String getJobTitle() {

@@ -6,8 +6,8 @@
  /***
  * Represents an observation being made by the user
  */
-public abstract class Observation implements Notable{
-    private String time;
+public abstract class Observation extends Notable{
+     protected String time;
 
      public Observation() {
          time = getTime();
@@ -21,8 +21,7 @@ public abstract class Observation implements Notable{
         return new SimpleDateFormat("h:mm:ss a ").format(new Date());
     }
 
-    public String getNote() {
-        return note;
+    public void setTime(String time) {
+        this.time = time;
     }
-
 }

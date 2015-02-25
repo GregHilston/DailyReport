@@ -3,7 +3,7 @@ package com.greghilston.dailyreport;
 /**
  * Represents a piece of equipment
  */
-public class Equipment implements Notable {
+public class Equipment extends Notable {
     private String name;
     private int quantity;
 
