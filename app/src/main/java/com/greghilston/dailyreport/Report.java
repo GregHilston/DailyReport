@@ -38,22 +38,6 @@ public class Report {
     }
 
     /**
-     * Generates a report
-     */
-    public void generateReport() {
-        //this.printReport();
-        DocumentMaster.getInstance().createXml(date, this);
-        // DocumentMaster.getInstance().printXml(date, this);
-        // DocumentMaster.getInstance().createCsv(date, this); // TODO: Make based off XML
-
-//        try {
-//            DocumentMaster.getInstance().createPdf(date);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-    }
-
-    /**
      * Adds a company to the list of companies for this report
      * @param c company to add
      */
@@ -139,6 +123,16 @@ public class Report {
 	public String getDate() {
 		return date;
 	}
+
+
+    /**
+     * File naming convention is just the report's date
+     *
+     * @return filename
+     */
+    public String getFileName() {
+        return getDate();
+    }
 
 	public int getHeadCount() {
 		return people.size();

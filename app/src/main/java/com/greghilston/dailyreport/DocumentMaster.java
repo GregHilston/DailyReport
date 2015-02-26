@@ -152,9 +152,10 @@ public class DocumentMaster {
      * Creates an XML file based on the report
      */
     @TargetApi(Build.VERSION_CODES.FROYO)
-    public void createXml(String fileName, Report r) {
-        try {
+    public void createXml(Report r) {
+        String fileName = r.getFileName();
 
+        try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
@@ -321,7 +322,7 @@ public class DocumentMaster {
 
             transformer.transform(source, result);
 
-            System.out.println("File saved!");
+            System.out.println("XML File saved!");
 
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
@@ -417,8 +418,9 @@ public class DocumentMaster {
      * Creates a CSV based on the XML file
      */
     @TargetApi(Build.VERSION_CODES.FROYO)
-    public void createCsv(String fileName, Report r) {
+    public void createCsv(Report r) {
         // Commented out, as this creates a CSV from a report, rather than an XML file
+        String fileName = r.getFileName();
 
         try
         {
@@ -434,22 +436,28 @@ public class DocumentMaster {
             writer.append(r.getProject().getProjectName());
             writer.append(',');
             writer.append(String.valueOf(r.getHeadCount() + " employees"));
+            writer.append(',');
+            writer.append(String.valueOf(r.getCompanyCount() + " companies"));
+            writer.append(',');
+            writer.append(String.valueOf(r.getEquipmentCount() + " equipment"));
+            writer.append(',');
+            writer.append(String.valueOf(r.getObservationsCount() + " observations"));
 
-            writer.append("\n\nCompanies\n");
-            for(Company c : r.getCompanies()) {
-                writer.append(c.getName());
-                writer.append(',');
-                writer.append(c.getQuantity() + "x");
-                writer.append('\n');
-            }
-
-            writer.append("\nPeople\n");
+            writer.append("\n\nPeople\n");
             for(Person p : r.getPeople()) {
                 writer.append(p.getName());
                 writer.append(',');
                 writer.append(p.getJobTitle());
                 writer.append(',');
                 writer.append(p.getHoursOnSite() + " hours");
+                writer.append('\n');
+            }
+
+            writer.append("\nCompanies\n");
+            for(Company c : r.getCompanies()) {
+                writer.append(c.getName());
+                writer.append(',');
+                writer.append(c.getQuantity() + "x");
                 writer.append('\n');
             }
 
@@ -476,6 +484,8 @@ public class DocumentMaster {
                 writer.append(',');
                 writer.append('\n');
             }
+
+            System.out.println("CSV File saved!");
 
             writer.flush();
             writer.close();

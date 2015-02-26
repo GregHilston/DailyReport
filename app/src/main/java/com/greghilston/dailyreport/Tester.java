@@ -17,7 +17,7 @@ public class Tester {
         System.out.println(reportDescription);
         System.out.println("----------------------------");
 
-        r.printReport();
+        // r.printReport();
     }
 
     public static void main(String args[]) {
@@ -52,11 +52,16 @@ public class Tester {
         reportHandMade.addObservation(t);
 
         testReport("Hand Made Report", reportHandMade); // Testing the hand made report object
-        reportHandMade.generateReport();
 
-        // Testing the XML -> Report
-        String filename = new SimpleDateFormat("MM_dd_yyyy").format(new Date());
-        Report reportFromXml = DocumentMaster.getInstance().createReportFromXml(filename);
-        testReport("Report (from XML)", reportFromXml); // Testing the report object made from the XML file
+        // Testing Report -> CSV
+        DocumentMaster.getInstance().createCsv(reportHandMade);
+
+//        // Testing Report -> XML (Works)
+//        DocumentMaster.getInstance().createXml(reportHandMade);
+
+//        // Testing the XML -> Report (Works)
+//        Report reportFromXml = DocumentMaster.getInstance().createReportFromXml(reportHandMade.getFileName());
+//        testReport("Report (from XML)", reportFromXml); // Testing the report object made from the XML file
+//        reportFromXml.printReport();
     }
 }
