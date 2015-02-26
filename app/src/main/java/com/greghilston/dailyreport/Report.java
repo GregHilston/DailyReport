@@ -22,7 +22,7 @@ public class Report {
      * Creates a report. Used when created a report from an XML file
      */
     public Report() {
-        // observations.add(new Text("Arrived on Site"));
+        // Left intentionally blank
     }
 
     /**
@@ -33,8 +33,8 @@ public class Report {
     public Report(Project project) {
         this.project = project;
         accountName = project.getAccount().getName();
-        accountName = project.getAccount().getCompany();
-        accountName = project.getProjectName();
+        companyName = project.getAccount().getCompany();
+        projectName = project.getProjectName();
     }
 
     /**
