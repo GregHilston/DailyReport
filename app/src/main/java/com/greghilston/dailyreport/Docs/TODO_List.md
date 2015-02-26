@@ -1,6 +1,4 @@
 Greg
-    Write DocumentMaster's createReportFromXml()
-    Change DocumentMaster's createCsv to be based off the XML file
     Update UML diagram
     /*Write ServerApp
     /*Write ClientApp
