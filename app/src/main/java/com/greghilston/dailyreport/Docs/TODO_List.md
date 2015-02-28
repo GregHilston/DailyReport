@@ -1,4 +1,6 @@
 Greg
+    Add Picture Observationst to the XML / CSV file output (file paths)
+    Add Weather Observationst to the XML / CSV file output (file paths)
     Update UML diagram
     /*Write ServerApp
     /*Write ClientApp
