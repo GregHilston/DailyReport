@@ -2,8 +2,14 @@ package com.greghilston.dailyreport;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
 
 public class MainActivity extends Activity {
@@ -12,6 +18,36 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        final Button cameraButton = (Button) findViewById(R.id.cameraButton);
+        cameraButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                System.out.println("Create a new Camera Observation!");
+            }
+        });
+
+        final Button weatherButton = (Button) findViewById(R.id.weatherButton);
+        weatherButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                System.out.println("Create a new Weather Observation!");
+            }
+        });
+
+        final Button noteButton = (Button) findViewById(R.id.noteButton);
+        noteButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                System.out.println("Create a new Note Observation!");
+
+                LinearLayout linearLayout = (LinearLayout) findViewById(R.id.timeLine);
+
+                TextView tv = new TextView(getApplicationContext());
+                tv.setId((int)System.currentTimeMillis());
+                tv.setText("Time: "+System.currentTimeMillis());
+
+                linearLayout.addView(tv);
+            }
+        });
+
     }
 
     @Override
