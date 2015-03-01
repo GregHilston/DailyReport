@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">DailyReport</string>
+    <string name="text_observation_activity">TxtObservationActitiy</string>
     <string name="action_settings">Settings</string>
 
 </resources>

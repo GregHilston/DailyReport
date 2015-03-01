@@ -283,7 +283,7 @@ public class DocumentMaster {
 
                 // Time element
                 Element observationTime = doc.createElement("Time");
-                observationTime.appendChild(doc.createTextNode(o.getTime()));
+                observationTime.appendChild(doc.createTextNode(o.generateTime()));
                 observations.appendChild(observationTime);
 
                 if(o instanceof Weather) {
@@ -471,7 +471,7 @@ public class DocumentMaster {
 
             writer.append("\nObservations\n");
             for(Observation o : r.getObservations()) {
-                writer.append(o.getTime());
+                writer.append(o.generateTime());
                 writer.append(',');
 
                 // Text

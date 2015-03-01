@@ -20,11 +20,22 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent i = getIntent();
+        System.out.println("MainActivity.java's OnCreate() being called");
 
-        String example = i.getStringExtra("extext");
-        Log.e("returned: ", example);
+        // TODO: Fix this so we have the correct account and project listed
+        Account account = new Account("Greg Hilston", "ACME Systems");
+        Project project = new Project(account, "Construction");
+        account.addProject(project);
+        final Report r = new Report(project);
+        final LinearLayout linearLayout = (LinearLayout) findViewById(R.id.timeLine);
 
+        Text textObservation = new Text("Arrived on site");
+        // GUI component
+        TextView tv = new TextView(getApplicationContext());
+        // tv.setId((int)System.currentTimeMillis()); // May need later to reference TextView
+        tv.setText(textObservation.getText() + " : " + textObservation.getTime());
+
+        linearLayout.addView(tv);
 
         final Button cameraButton = (Button) findViewById(R.id.cameraButton);
         cameraButton.setOnClickListener(new View.OnClickListener() {
@@ -48,16 +59,27 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 System.out.println("Create a new Note Observation!");
 
-                LinearLayout linearLayout = (LinearLayout) findViewById(R.id.timeLine);
+                // TODO: Change text string to whatever "New Text Observation" activity returns
+                // Java component
+                Text textObservation = new Text("Saw a cat");
 
+                // GUI component
                 TextView tv = new TextView(getApplicationContext());
-                tv.setId((int)System.currentTimeMillis());
-                tv.setText("Time: "+System.currentTimeMillis());
+                // tv.setId((int)System.currentTimeMillis()); // May need later to reference TextView
+                tv.setText(textObservation.getText() + " : " + textObservation.getTime());
 
                 linearLayout.addView(tv);
             }
         });
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();  // Always call the superclass method first
+
+        Intent i = getIntent();
+        String example = i.getStringExtra("extext");
+        System.out.println("returned: " + example);
     }
 
     @Override

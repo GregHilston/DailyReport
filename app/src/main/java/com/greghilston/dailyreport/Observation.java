@@ -10,18 +10,22 @@ public abstract class Observation extends Notable{
      protected String time;
 
      public Observation() {
-         time = getTime();
+         time = generateTime();
      }
 
      /**
       * Gets the time in the form of h:mm:ss with a following am / pm
       * @return time stamp
       */
-    public String getTime() {
+    public static String generateTime() {
         return new SimpleDateFormat("h:mm:ss a ").format(new Date());
     }
 
-    public void setTime(String time) {
-        this.time = time;
-    }
+     /**
+      * Returns the time stamp for when this observation was made
+      * @return time
+      */
+     public String getTime() {
+         return time;
+     }
 }

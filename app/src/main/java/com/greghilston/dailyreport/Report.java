@@ -104,7 +104,7 @@ public class Report {
 
         System.out.println("Observations:");
         for(int i = 0; i < this.observations.size(); i++) {
-            System.out.println("\t" + this.observations.get(i).getTime());
+            System.out.println("\t" + this.observations.get(i).generateTime());
 
             if(this.observations.get(i) instanceof Text) {
                 System.out.println("\t" + ((Text) this.observations.get(i)).getText());
