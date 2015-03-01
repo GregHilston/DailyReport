@@ -1,6 +1,7 @@
 package com.greghilston.dailyreport;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -28,8 +29,11 @@ public class MainActivity extends Activity {
 
         final Button weatherButton = (Button) findViewById(R.id.weatherButton);
         weatherButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                System.out.println("Create a new Weather Observation!");
+            public void onClick(View v) { //Changing this to open up txt obs screen
+                Intent nextScreen = new Intent(getApplicationContext(),txtObservationActivity.class);
+                startActivity(nextScreen);
+
+                //System.out.println("Create a new Weather Observation!");
             }
         });
 
