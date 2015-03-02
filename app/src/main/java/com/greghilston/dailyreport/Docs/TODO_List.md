@@ -22,6 +22,7 @@ All
     Unit Testing ( With Gradle )
 
 For Thursday
+    Fix creating an observation relying on onResume to get a string, as its called at start
     Create a Text Observation from GUI (Greg)
     Create a Weather Observation from GUI (Evan)
     Create a Camera Observation from GUI (Tyler)

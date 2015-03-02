@@ -49,16 +49,14 @@ public class MainActivity extends Activity {
         final Button weatherButton = (Button) findViewById(R.id.weatherButton);
         weatherButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) { //Changing this to open up txt obs screen
-                Intent nextScreen = new Intent(getApplicationContext(),txtObservationActivity.class);
-                startActivity(nextScreen);
-
-                //System.out.println("Create a new Weather Observation!");
+                System.out.println("Weather Observation Button Pressed!");
             }
         });
 
         final Button noteButton = (Button) findViewById(R.id.noteButton);
         noteButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                /*
                 System.out.println("Create a new Note Observation!");
 
                 // TODO: Change text string to whatever "New Text Observation" activity returns
@@ -71,6 +69,10 @@ public class MainActivity extends Activity {
                 tv.setText(textObservation.getText() + " : " + textObservation.getTime());
 
                 linearLayout.addView(tv);
+                */
+
+                Intent nextScreen = new Intent(getApplicationContext(), txtObservationActivity.class);
+                startActivity(nextScreen);
             }
         });
     }
@@ -82,7 +84,13 @@ public class MainActivity extends Activity {
 
         Intent i = getIntent();
         String example = i.getStringExtra("extext");
-        System.out.println("returned: " + example);
+
+        if(example == null) {
+            System.out.println("Text Observation Cancelled");
+        }
+        else {
+            System.out.println("Text Observation Returned: " + example);
+        }
     }
 
     @Override
