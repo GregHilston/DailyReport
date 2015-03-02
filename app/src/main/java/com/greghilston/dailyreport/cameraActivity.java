@@ -6,22 +6,19 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
-import android.os.Environment.*;
-
 import java.io.File;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
 
-
-
 /**
- * Created by HTPC on 3/1/2015.
+ * Created by Tyler on 3/1/2015.
  */
 public class cameraActivity extends Activity {
 
@@ -34,6 +31,17 @@ public class cameraActivity extends Activity {
     ImageView picture;
     Button snapButton;
 
+    // Observation type variables
+    ImageButton sel1;
+    ImageButton sel2;
+    ImageButton sel3;
+    ImageButton sel4;
+    ImageButton sel5;
+    ImageButton sel6;
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,19 +50,51 @@ public class cameraActivity extends Activity {
         picture = (ImageView) findViewById(R.id.imageView);
         snapButton = (Button) findViewById(R.id.picButton);
 
-            snapButton.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
-                    i.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+        snapButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+                //fileUri = getOutputMediaFile(MEDIA_TYPE_IMAGE);
+                i.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
 
-                    startActivityForResult(i, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+                startActivityForResult(i, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 
-                    //finish() ?????
-                    // I think if we just finish this it will default back to Timeline screen
+                //finish() ?????
+                // I think if we just finish this it will default back to Timeline screen
+            }
+        });
+
+        //Type Button code, this handles if the type is selected
+
+        sel1 = (ImageButton) findViewById(R.id.sel1);
+        sel2 = (ImageButton) findViewById(R.id.sel2);
+        sel3 = (ImageButton) findViewById(R.id.sel3);
+        sel4 = (ImageButton) findViewById(R.id.sel4);
+        sel5 = (ImageButton) findViewById(R.id.sel5);
+        sel6 = (ImageButton) findViewById(R.id.sel6);
+        unselectGuiElements();
+
+        sel1.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                unselectGuiElements();
+                if (event.getAction() == MotionEvent.ACTION_DOWN ) {
+                    sel1.setImageResource(R.drawable.newforma_logo);
+                    // Need to create the obsSelected image mirrors for each sel button
                 }
-
-                });
+                return false;
+            }
+        });
+        sel2.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                unselectGuiElements();
+                if (event.getAction() == MotionEvent.ACTION_DOWN ) {
+                    sel2.setImageResource(R.drawable.newforma_logo);
+                    //GG
+                    // Need to create the obsSelected image mirrors for each sel button
+                }
+                return false;
+            }
+        });
 
 
 
@@ -114,7 +154,15 @@ public class cameraActivity extends Activity {
         return mediaFile;
     }
 
+    public void unselectGuiElements(){
 
+        System.out.println("Defaulting all GUI elements to grey");
+        sel1.setImageResource(R.drawable.ic_launcher);
+        sel2.setImageResource(R.drawable.ic_launcher);
+        sel3.setImageResource(R.drawable.ic_launcher);
+
+
+    }
 
 /*
     @Override
@@ -124,11 +172,4 @@ public class cameraActivity extends Activity {
             startActivityForResult(tpIntent, CAP_Req);
         }
     } */
-
-
-
-
-
-
-
 }

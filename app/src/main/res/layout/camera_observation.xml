@@ -51,37 +51,37 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/imageButton"
+            android:id="@+id/sel1"
             android:layout_weight="0.1666" />
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/imageButton2"
+            android:id="@+id/sel2"
             android:layout_weight="0.1666"
             android:layout_gravity="center_horizontal" />
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/imageButton3"
+            android:id="@+id/sel3"
             android:layout_weight="0.1666" />
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/imageButton4"
+            android:id="@+id/sel4"
             android:layout_weight="0.1666"
             android:layout_gravity="center_horizontal" />
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/imageButton5"
+            android:id="@+id/sel5"
             android:layout_weight="0.1666" />
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/imageButton6"
+            android:id="@+id/sel6"
             android:layout_weight="0.1666"
             android:layout_gravity="center_horizontal" />
 
