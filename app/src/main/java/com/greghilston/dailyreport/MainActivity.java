@@ -40,7 +40,9 @@ public class MainActivity extends Activity {
         final Button cameraButton = (Button) findViewById(R.id.cameraButton);
         cameraButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                System.out.println("Create a new Camera Observation!");
+                Intent camScreen = new Intent(getApplicationContext(),cameraActivity.class);
+                startActivity(camScreen);
+
             }
         });
 
@@ -72,6 +74,7 @@ public class MainActivity extends Activity {
             }
         });
     }
+
 
     @Override
     public void onResume() {

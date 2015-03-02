@@ -28,6 +28,9 @@ public class txtObservationActivity extends Activity {
                 Intent nxtScreen = new Intent(getApplicationContext(),MainActivity.class);
                 nxtScreen.putExtra("extext",  obs.getText().toString());
                 startActivity(nxtScreen);
+                //finish();
+                //
+
             }
         });
     }
