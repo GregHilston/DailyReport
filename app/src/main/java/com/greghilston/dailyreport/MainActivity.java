@@ -20,8 +20,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        System.out.println("MainActivity.java's OnCreate() being called");
-
         // TODO: Fix this so we have the correct account and project listed
         Account account = new Account("Greg Hilston", "ACME Systems");
         Project project = new Project(account, "Construction");
@@ -72,26 +70,26 @@ public class MainActivity extends Activity {
                 */
 
                 Intent nextScreen = new Intent(getApplicationContext(), txtObservationActivity.class);
-                startActivity(nextScreen);
+                startActivityForResult(nextScreen, 1);
             }
         });
     }
 
 
-    @Override
-    public void onResume() {
-        super.onResume();  // Always call the superclass method first
-
-        Intent i = getIntent();
-        String example = i.getStringExtra("extext");
-
-        if(example == null) {
-            System.out.println("Text Observation Cancelled");
-        }
-        else {
-            System.out.println("Text Observation Returned: " + example);
-        }
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();  // Always call the superclass method first
+//
+//        Intent i = getIntent();
+//        String example = i.getStringExtra("extext");
+//
+//        if(example == null) {
+//            System.out.println("Text Observation Cancelled");
+//        }
+//        else {
+//            System.out.println("Text Observation Returned: " + example);
+//        }
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -113,5 +111,20 @@ public class MainActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK) {
+                String result =  data.getStringExtra("result");
+
+                if(result != "") { // Do not make an observation for an empty string
+                    System.out.println("Text Observation Returned: " + result);
+                }
+            }
+            if (resultCode == RESULT_CANCELED) {
+                System.out.println("Text Observation Cancelled!");
+            }
+        }
     }
 }
