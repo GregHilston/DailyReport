@@ -125,7 +125,6 @@ public class Report {
      */
     public void reportToGui(LinearLayout ll, TextView textView) {
         String text = "";
-        textView.setText(""); // Clear out the text
         ll.removeView(textView);
 
         for(Observation o : getObservations()) {
