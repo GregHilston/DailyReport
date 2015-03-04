@@ -1,5 +1,8 @@
 package com.greghilston.dailyreport;
 
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -114,6 +117,25 @@ public class Report {
         }
 
         System.out.println("\n");
+    }
+
+    /**
+     * Transcribes the Report's timeLine to the GUI
+     * TODO: See if this is the correct thing to do
+     */
+    public void reportToGui(LinearLayout ll, TextView textView) {
+        String text = "";
+        textView.setText(""); // Clear out the text
+        ll.removeView(textView);
+
+        for(Observation o : getObservations()) {
+            if(o instanceof Text) {
+                text = textView.getText() + "\n" + ((Text) o).getText() + " : " + o.getTime();
+            }
+        }
+
+        textView.setText(text);
+        ll.addView(textView);
     }
 
     public Project getProject() {

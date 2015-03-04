@@ -14,20 +14,21 @@ import android.widget.TextView;
 
 
 public class MainActivity extends Activity {
+    Account account = new Account("Greg Hilston", "ACME Systems");
+    Project project = new Project(account, "Construction");
+    final Report r = new Report(project);
+    LinearLayout linearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // TODO: Fix this so we have the correct account and project listed
-        Account account = new Account("Greg Hilston", "ACME Systems");
-        Project project = new Project(account, "Construction");
-        account.addProject(project);
-        final Report r = new Report(project);
-        final LinearLayout linearLayout = (LinearLayout) findViewById(R.id.timeLine);
+        linearLayout = (LinearLayout) findViewById(R.id.timeLine);
+        account.addProject(project); // THIS WILL BREAK IF ONCREATE IS CALLED MORE THAN ONCE TODO: CHECK!
 
         Text textObservation = new Text("Arrived on site");
+        r.addObservation(textObservation);
         // GUI component
         TextView tv = new TextView(getApplicationContext());
         // tv.setId((int)System.currentTimeMillis()); // May need later to reference TextView
@@ -54,27 +55,11 @@ public class MainActivity extends Activity {
         final Button noteButton = (Button) findViewById(R.id.noteButton);
         noteButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                /*
-                System.out.println("Create a new Note Observation!");
-
-                // TODO: Change text string to whatever "New Text Observation" activity returns
-                // Java component
-                Text textObservation = new Text("Saw a cat");
-
-                // GUI component
-                TextView tv = new TextView(getApplicationContext());
-                // tv.setId((int)System.currentTimeMillis()); // May need later to reference TextView
-                tv.setText(textObservation.getText() + " : " + textObservation.getTime());
-
-                linearLayout.addView(tv);
-                */
-
                 Intent nextScreen = new Intent(getApplicationContext(), txtObservationActivity.class);
                 startActivityForResult(nextScreen, 1);
             }
         });
     }
-
 
 //    @Override
 //    public void onResume() {
@@ -120,6 +105,8 @@ public class MainActivity extends Activity {
 
                 if(result != "") { // Do not make an observation for an empty string
                     System.out.println("Text Observation Returned: " + result);
+                    r.addObservation(new Text(result));
+                    r.reportToGui((LinearLayout) findViewById(R.id.timeLine), new TextView(getApplicationContext()));
                 }
             }
             if (resultCode == RESULT_CANCELED) {

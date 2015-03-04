@@ -45,7 +45,6 @@ public class txtObservationActivity extends Activity {
                 returnIntent.putExtra("result", obs.getText().toString());
                 setResult(RESULT_OK, returnIntent);
                 finish();
-
             }
         });
     }
