@@ -16,31 +16,14 @@ import java.io.File;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
-
-/**
- * Created by Tyler on 3/1/2015.
- */
-public class cameraActivity extends Activity {
-
-
+public class CameraActivity extends Activity {
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
     private Uri fileUri;
     public static final int MEDIA_TYPE_IMAGE = 1;
 
-    //Instantiating variables
     ImageView picture;
     Button snapButton;
-
-    // Observation type variables
-    ImageButton sel1;
-    ImageButton sel2;
-    ImageButton sel3;
-    ImageButton sel4;
-    ImageButton sel5;
-    ImageButton sel6;
-
-
-
+    ImageButton sel1, sel2, sel3, sel4, sel5, sel6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,13 +42,12 @@ public class cameraActivity extends Activity {
 
                 startActivityForResult(i, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 
-                //finish() ?????
+                //finish() ????? // TODO: Tyler - We should figure this out - Greg
                 // I think if we just finish this it will default back to Timeline screen
             }
         });
 
         //Type Button code, this handles if the type is selected
-
         sel1 = (ImageButton) findViewById(R.id.sel1);
         sel2 = (ImageButton) findViewById(R.id.sel2);
         sel3 = (ImageButton) findViewById(R.id.sel3);
@@ -84,6 +66,7 @@ public class cameraActivity extends Activity {
                 return false;
             }
         });
+
         sel2.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
                 unselectGuiElements();
@@ -95,9 +78,6 @@ public class cameraActivity extends Activity {
                 return false;
             }
         });
-
-
-
     }
 
     @Override
@@ -115,12 +95,10 @@ public class cameraActivity extends Activity {
         }
     }
 
-
     /** Create a file Uri for saving an image or video */
     private static Uri getOutputMediaFileUri(int type){
         return Uri.fromFile(getOutputMediaFile(type));
     }
-
 
     /** Create a File for saving an image or video */
     private static File getOutputMediaFile(int type){
@@ -148,7 +126,7 @@ public class cameraActivity extends Activity {
                     "IMG_"+ timeStamp + ".jpg");
         }
         else {
-            return null;
+            return null; // TODO: Tyler, why is this here? -Greg
         }
 
         return mediaFile;

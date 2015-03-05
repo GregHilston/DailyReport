@@ -25,7 +25,7 @@ public class Report {
      * Creates a report. Used when created a report from an XML file
      */
     public Report() {
-        // Left intentionally blank
+        observations.add(new Text("Arrived on site"));
     }
 
     /**
@@ -34,6 +34,7 @@ public class Report {
      * @param project
      */
     public Report(Project project) {
+        this(); // Calls the above constructor, ensuring our first observation is made
         this.project = project;
         accountName = project.getAccount().getName();
         companyName = project.getAccount().getCompany();
