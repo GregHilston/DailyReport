@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="java-json">
+    <CLASSES />
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/app/src/main/java/com/greghilston/dailyreport/ForecastIOLibrary/jarfiles/java-json.jar!/" />
+    </SOURCES>
+  </library>
+</component>
