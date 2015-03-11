@@ -2,25 +2,22 @@ package com.greghilston.dailyreport;
 
 import android.content.Intent;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Represents the interaction a user will have with the Android Application
+ * Represents the interaction a user will have with the Android Application.
+ * This class is used to test core backend functionality before the GUI of the application has been
+ * developed
  */
-public class Tester {
+public class DocumentMasterTester {
     /**
      *
      */
     public static void testCreateXmlFromHandmade() {
-        // Create the user's account
-        Account account = new Account("Greg Hilston", "ACME Systems");
-
         // Create a project for the user
-        Project project = new Project(account, "Construction");
-
-        // Add the project to the user's account
-        account.addProject(project);
+        Project project = new Project("Construction", "ACME");
 
         // Create a report with one person on site
         Report reportHandMade = new Report(project);
@@ -43,18 +40,12 @@ public class Tester {
         Text t = new Text("Won Superbowl");
         reportHandMade.addObservation(t);
 
-        DocumentMaster.getInstance().createXml(reportHandMade);
+        DocumentMaster.getInstance().createXml(reportHandMade, new File("app/src/main/java/com/greghilston/dailyreport/Reports/"));
     }
 
     public static void testCreateCsvFromHandmade() {
-        // Create the user's account
-        Account account = new Account("Greg Hilston", "ACME Systems");
-
         // Create a project for the user
-        Project project = new Project(account, "Construction");
-
-        // Add the project to the user's account
-        account.addProject(project);
+        Project project = new Project("Construction", "ACME");
 
         // Create a report with one person on site
         Report reportHandMade = new Report(project);
@@ -77,18 +68,12 @@ public class Tester {
         Text t = new Text("Won Superbowl");
         reportHandMade.addObservation(t);
 
-        DocumentMaster.getInstance().createCsv(reportHandMade);
+        DocumentMaster.getInstance().createCsv(reportHandMade, new File("app/src/main/java/com/greghilston/dailyreport/Reports/"));
     }
 
     public static void testCreateReportFromXml() {
-        // Create the user's account
-        Account account = new Account("Greg Hilston", "ACME Systems");
-
         // Create a project for the user
-        Project project = new Project(account, "Construction");
-
-        // Add the project to the user's account
-        account.addProject(project);
+        Project project = new Project("Construction", "ACME");
 
         // Create a report with one person on site
         Report reportHandMade = new Report(project);
@@ -111,7 +96,7 @@ public class Tester {
         Text t = new Text("Won Superbowl");
         reportHandMade.addObservation(t);
 
-        DocumentMaster.getInstance().createXml(reportHandMade);
+        DocumentMaster.getInstance().createXml(reportHandMade, new File("app/src/main/java/com/greghilston/dailyreport/Reports/"));
 
         // Testing the XML -> Report (Works)
         Report reportFromXml = DocumentMaster.getInstance().createReportFromXml(reportHandMade.getFileName());
@@ -121,5 +106,6 @@ public class Tester {
 
     public static void main(String args[]) {
         // Run your tests here
+        testCreateReportFromXml();
     }
 }

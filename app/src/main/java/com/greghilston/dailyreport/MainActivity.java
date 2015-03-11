@@ -13,8 +13,7 @@ import com.greghilston.dailyreport.Forecast.io.v2.network.services.ForecastServi
 import com.greghilston.dailyreport.Forecast.io.v2.transfer.LatLng;
 
 public class MainActivity extends Activity {
-    Account account = new Account("Greg Hilston", "ACME Systems");
-    Project project = new Project(account, "Construction");
+    Project project = new Project("Construction", "ACME");
     final Report r = new Report(project);
     LinearLayout linearLayout;
     TextView textView;
@@ -24,7 +23,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        account.addProject(project); // THIS WILL BREAK IF ONCREATE IS CALLED MORE THAN ONCE TODO: CHECK!
         linearLayout = (LinearLayout) findViewById(R.id.timeLine);
         textView = new TextView(getApplicationContext());
 
@@ -97,11 +95,11 @@ public class MainActivity extends Activity {
 
         else if (id == R.id.create_xml) {
             System.out.println("Generating a XML Document");
-            DocumentMaster.getInstance().createXml(r); // TODO:
+            DocumentMaster.getInstance().createXml(r, getApplicationContext().getFilesDir());
         }
         else if (id == R.id.create_csv) {
             System.out.println("Generating a CSV Document");
-            DocumentMaster.getInstance().createCsv(r);
+            DocumentMaster.getInstance().createCsv(r, getApplicationContext().getFilesDir());
         }
 
 

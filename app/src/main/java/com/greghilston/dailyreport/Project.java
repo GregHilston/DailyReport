@@ -6,20 +6,14 @@ import java.util.ArrayList;
  * Represents one of the many Projects the user may be working on
  */
 public class Project {
-    private Account account; // The account this project belongs to
 	private String projectName;
+    private String companyName;
 	private ArrayList<Report> reports = new ArrayList<>();
 
-    public Project(Account account, String projectName) {
-        this.account = account;
-        this.projectName = projectName;
-    }
 
-    /**
-     * @return  this project's account
-     */
-    public Account getAccount() {
-        return account;
+    public Project(String projectName, String companyName) {
+        this.projectName = projectName;
+        this.companyName = companyName;
     }
 
     /**
@@ -55,5 +49,19 @@ public class Project {
      */
     public void removeReport(Report r) {
         reports.remove(r);
+    }
+
+    /**
+     * @return  this project's company name
+     */
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    /**
+     * @param company the company name this project is for
+     */
+    public void setCompanyName(String company) {
+        this.companyName = company;
     }
 }

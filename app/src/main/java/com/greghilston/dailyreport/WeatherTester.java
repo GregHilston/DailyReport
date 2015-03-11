@@ -4,7 +4,8 @@ import com.greghilston.dailyreport.Forecast.io.v2.network.services.ForecastServi
 import com.greghilston.dailyreport.Forecast.io.v2.transfer.LatLng;
 
 /**
- * Created by ejo78 on 2/28/15.
+ * This class is used to test core weather functionality of the API we are using (ForecastIO).
+ * This is being used as the GUI has not been setup yet.
  */
 public class WeatherTester {
     static String API_KEY = "cbbd1fc614026e05d5429175cdfb0d10";

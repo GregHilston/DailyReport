@@ -84,7 +84,7 @@ public class DocumentMaster {
             //read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
             doc.getDocumentElement().normalize();
 
-            NodeList nList = doc.getElementsByTagName("Account");
+            NodeList nList = doc.getElementsByTagName("Project");
 
             for (int temp = 0; temp < nList.getLength(); temp++) {
                 Node node = nList.item(temp);
@@ -92,7 +92,6 @@ public class DocumentMaster {
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) node;
 
-                    r.setAccountName(element.getElementsByTagName("aName").item(0).getTextContent());
                     r.setCompanyName(element.getElementsByTagName("Company").item(0).getTextContent());
                     r.setProjectName(element.getElementsByTagName("prName").item(0).getTextContent());
                     r.setDate(element.getElementsByTagName("Date").item(0).getTextContent());
@@ -152,31 +151,24 @@ public class DocumentMaster {
      * Creates an XML file based on the report
      */
     @TargetApi(Build.VERSION_CODES.FROYO)
-    public void createXml(Report r) {
+    public void createXml(Report r, File file) {
         String fileName = r.getFileName();
+        String outputFilePath = file + "/" + fileName +  ".xml";
 
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
-            // Account element
             Document doc = docBuilder.newDocument();
-            Element accountElement = doc.createElement("Account");
-            doc.appendChild(accountElement);
-
-            // Account Name element
-            Element name = doc.createElement("aName");
-            name.appendChild(doc.createTextNode(r.getProject().getAccount().getName()));
-            accountElement.appendChild(name);
-
-            // Company element
-            Element company = doc.createElement("Company");
-            company.appendChild(doc.createTextNode(r.getProject().getAccount().getCompany()));
-            accountElement.appendChild(company);
 
             // Project element
             Element project = doc.createElement("Project");
-            accountElement.appendChild(project);
+            doc.appendChild(project);
+
+            // Company element
+            Element company = doc.createElement("Company");
+            company.appendChild(doc.createTextNode(r.getProject().getCompanyName()));
+            project.appendChild(company);
 
             // Project Name element
             Element projectName = doc.createElement("prName");
@@ -315,15 +307,15 @@ public class DocumentMaster {
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File("app/src/main/java/com/greghilston/dailyreport/Reports/" + fileName +  ".xml"));
+            StreamResult result = new StreamResult(outputFilePath);
 
             // Output to console for testing
             //StreamResult result = new StreamResult(System.out);
 
             transformer.transform(source, result);
 
-            System.out.println("XML File saved!");
-
+            System.out.println("XML File saved: " + outputFilePath);
+            printXml(outputFilePath); // TODO: Remove this after demo
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
         } catch (TransformerException tfe) {
@@ -335,12 +327,12 @@ public class DocumentMaster {
      * Reads in a XML file and prints it out to stdOut (Useful for debugging)
      *
      * @param fileName  name of csv file
-     * @param r         name of report object
      */
     @TargetApi(Build.VERSION_CODES.FROYO)
-    public void printXml(String fileName, Report r) {
+    public void printXml(String fileName) {
         try {
-            File file = new File("app/src/main/java/com/greghilston/dailyreport/Reports/" + fileName + ".xml");
+            // File file = new File("app/src/main/java/com/greghilston/dailyreport/Reports/" + fileName + ".xml");
+            File file = new File(fileName);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(file);
@@ -354,7 +346,7 @@ public class DocumentMaster {
             doc.getDocumentElement().normalize();
 
             System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
-            NodeList nList = doc.getElementsByTagName("Account");
+            NodeList nList = doc.getElementsByTagName("Project");
             System.out.println("----------------------------");
 
             for (int temp = 0; temp < nList.getLength(); temp++) {
@@ -364,7 +356,6 @@ public class DocumentMaster {
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) node;
 
-                    System.out.println("\taName: " + element.getElementsByTagName("aName").item(0).getTextContent());
                     System.out.println("\tCompany: " + element.getElementsByTagName("Company").item(0).getTextContent());
                     System.out.println("\tprName: " + element.getElementsByTagName("prName").item(0).getTextContent());
                     System.out.println("\t\tDate: " + element.getElementsByTagName("Date").item(0).getTextContent());
@@ -418,22 +409,21 @@ public class DocumentMaster {
      * Creates a CSV based on the XML file
      */
     @TargetApi(Build.VERSION_CODES.FROYO)
-    public void createCsv(Report r) {
+    public void createCsv(Report r, File file) {
         // Commented out, as this creates a CSV from a report, rather than an XML file
         String fileName = r.getFileName();
+        String outputFilePath = file + "/" + fileName +  ".csv";
 
         try
         {
-            FileWriter writer = new FileWriter("app/src/main/java/com/greghilston/dailyreport/Reports/" + fileName +  ".csv");
+            FileWriter writer = new FileWriter(outputFilePath);
 
-            writer.append(r.getProject().getAccount().getName());
+            writer.append(r.getProject().getProjectName());
             writer.append(',');
-            writer.append(r.getProject().getAccount().getCompany());
+            writer.append(r.getProject().getCompanyName());
             writer.append("\n\n");
 
             writer.append(r.getDate());
-            writer.append(',');
-            writer.append(r.getProject().getProjectName());
             writer.append(',');
             writer.append(String.valueOf(r.getHeadCount() + " employees"));
             writer.append(',');
@@ -485,7 +475,7 @@ public class DocumentMaster {
                 writer.append('\n');
             }
 
-            System.out.println("CSV File saved!");
+            System.out.println("CSV File saved: " + outputFilePath);
 
             writer.flush();
             writer.close();
