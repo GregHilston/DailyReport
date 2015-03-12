@@ -12,9 +12,8 @@ import java.util.Date;
  */
 public class Report {
     protected Project project; // The project this report belongs to
-    protected String accountName; // Used when generating report objects, as no account/project obj is made
-    protected String companyName; // Used when generating report objects, as no account/project obj is made
-    protected String projectName; // Used when generating report objects, as no account/project obj is made
+    protected String companyName; // Name of company that this report is for
+    protected String projectName; // Name of project that this company is running
     protected String date = new SimpleDateFormat("MM_dd_yyyy").format(new Date());
     protected ArrayList<Person> people = new ArrayList<>(); // People that work for manager
     protected ArrayList<Company> companies = new ArrayList<>();
@@ -36,8 +35,7 @@ public class Report {
     public Report(Project project) {
         this(); // Calls the above constructor, ensuring our first observation is made
         this.project = project;
-        accountName = project.getAccount().getName();
-        companyName = project.getAccount().getCompany();
+        companyName = project.getCompanyName();
         projectName = project.getProjectName();
     }
 
@@ -77,7 +75,6 @@ public class Report {
      * Prints a friendly overview of the report to Standard Out
      */
     public void printReport() {
-        System.out.println("Account Name: " + this.accountName);
         System.out.println("Company Name: " + this.companyName);
 
         System.out.println("Project Name: " + this.projectName);
@@ -138,92 +135,114 @@ public class Report {
         ll.addView(textView);
     }
 
+    /**
+     * @return  this report's project
+     */
     public Project getProject() {
         return project;
     }
 
+    /**
+     * @return  the date this report was made
+     */
 	public String getDate() {
 		return date;
 	}
 
-
     /**
-     * File naming convention is just the report's date
-     *
-     * @return filename
+     * @return filename (convention is just the report's date)
      */
     public String getFileName() {
         return getDate();
     }
 
+    /**
+     * @return  the headcount
+     */
 	public int getHeadCount() {
 		return people.size();
 	}
 
+    /**
+     * @return  the company count
+     */
     public int getCompanyCount() {
         return companies.size();
     }
 
+    /**
+     * @return  the equipment count
+     */
     public int getEquipmentCount() {
         return equipment.size();
     }
 
+    /**
+     * @return  the observation count
+     */
     public int getObservationsCount() {
         return observations.size();
     }
 
+    /**
+     * @return  list of companies for this report
+     */
 	public ArrayList<Company> getCompanies() {
 		return companies;
 	}
 
+    /**
+     * @return  list of observations for this report (also being called the "timeline")
+     */
     public ArrayList<Observation> getObservations() {
         return observations;
     }
 
-	public void setCompanies(ArrayList<Company> companies) {
-		this.companies = companies;
-	}
-
+    /**
+     * @return  list of people for this report
+     */
 	public ArrayList<Person> getPeople() {
 		return people;
 	}
 
-	public void setPeople(ArrayList<Person> people) {
-		this.people = people;
-	}
-
+    /**
+     * @return  list of equipment for this report
+     */
 	public ArrayList<Equipment> getEquipment() {
 		return equipment;
 	}
 
-	public void setEquipment(ArrayList<Equipment> equipment) {
-		this.equipment = equipment;
-	}
-
-    public String getAccountName() {
-        return accountName;
-    }
-
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
-    }
-
+    /**
+     * @return  the company name for the report
+     */
     public String getCompanyName() {
         return companyName;
     }
 
+    /**
+     * @param companyName  the company name for this report
+     */
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
     }
 
+    /**
+     * @return  the project name for this report
+     */
     public String getProjectName() {
         return projectName;
     }
 
+    /**
+     * @param projectName  the name of the project for this report
+     */
     public void setProjectName(String projectName) {
         this.projectName = projectName;
     }
 
+    /**
+     * @param date  the date for this report
+     */
     public void setDate(String date) {
         this.date = date;
     }

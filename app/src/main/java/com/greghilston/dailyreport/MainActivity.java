@@ -9,12 +9,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.greghilston.dailyreport.Forecast.io.v2.network.services.ForecastService;
-import com.greghilston.dailyreport.Forecast.io.v2.transfer.LatLng;
+
+import com.greghilston.dailyreport.ForecastIOLibrary.src.com.arcusweather.forecastio.ForecastIO;
+import com.greghilston.dailyreport.ForecastIOLibrary.src.com.arcusweather.forecastio.ForecastIODataPoint;
+import com.greghilston.dailyreport.ForecastIOLibrary.src.com.arcusweather.forecastio.ForecastIOResponse;
+
+import java.util.HashMap;
 
 public class MainActivity extends Activity {
-    Account account = new Account("Greg Hilston", "ACME Systems");
-    Project project = new Project(account, "Construction");
+    Project project = new Project("Construction", "ACME");
     final Report r = new Report(project);
     LinearLayout linearLayout;
     TextView textView;
@@ -24,7 +27,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        account.addProject(project); // THIS WILL BREAK IF ONCREATE IS CALLED MORE THAN ONCE TODO: CHECK!
         linearLayout = (LinearLayout) findViewById(R.id.timeLine);
         textView = new TextView(getApplicationContext());
 
@@ -48,21 +50,46 @@ public class MainActivity extends Activity {
                 System.out.println("Weather Observation Button Pressed!");
 
                 String API_KEY = "cbbd1fc614026e05d5429175cdfb0d10";
+                Double Lat = 43.1339;
+                Double Lang = 70.9264;
 
-                ForecastService.Builder forcastServiceBuilder = new ForecastService.Builder(API_KEY);
-                LatLng.Builder latLngBuilder = new LatLng.Builder();
+                //Set the API key, Lat, and Lang
+                ForecastIO forecast = new ForecastIO(API_KEY,Lat, Lang);
 
-                // Durham, NH
-                latLngBuilder.setLatitude(43.1339);
-                latLngBuilder.setLongitude(70.9264);
+                //Set the request parameters
+                //ability to set the units, exclude blocks, extend options and user agent for the request. This is not required.
+                HashMap<String, String> requestParam = new HashMap<String, String>();
+                requestParam.put("units", "us");
+                requestParam.put("userAgent", "Custom User Agent 1.0");
+                forecast.setRequestParams(requestParam);
+                forecast.makeRequest();
 
-                //Build the Lat & Lang
-                LatLng ll = new LatLng(latLngBuilder);
+                String responseString = forecast.getResponseString();
+                ForecastIOResponse FIOR = new ForecastIOResponse(responseString);
 
-                //Set the Lat and Lang
-                forcastServiceBuilder.setLatLng(ll);
-                ForecastService.Request r = forcastServiceBuilder.build();
+                /*
+                //The library provides an easy way to access values as strings and data points as a list.
+                String currentSummary = FIOR.getValue("current-summary");
 
+                String thirdHourlyTemperature = FIOR.getValue("hourly-2-temperature");
+                String firstDailyIcon = FIOR.getValue("daily-0-icon");
+
+                //alerts defaults to first alert if not given an index. (Usually there is only one alert).
+                String alertDescription = FIOR.getValue("alerts-description");
+
+                ForecastIODataPoint[] minutelyPoints = FIOR.getDataPoints("minutely");
+                double thirtiethMinutePrecipitation = minutelyPoints[29].getValueAsDouble("precipitationIntensity");
+
+                ForecastIODataPoint[] hourlyPoints = FIOR.getDataPoints("hourly");
+                ForecastIODataPoint[] dailyPoints = FIOR.getDataPoints("daily");
+
+
+                //you can also do it the hard way
+                //String currentSummary = FIOR.getCurrently().getValue("summary");
+                //String firstDailyIcon = FIOR.getDaily().getData[0].getValue("icon");
+                */
+
+                System.out.print("Response String: " + responseString);
                 // TODO: Finish completing the request
             }
         });
@@ -97,11 +124,11 @@ public class MainActivity extends Activity {
 
         else if (id == R.id.create_xml) {
             System.out.println("Generating a XML Document");
-            DocumentMaster.getInstance().createXml(r); // TODO:
+            DocumentMaster.getInstance().createXml(r, getApplicationContext().getFilesDir());
         }
         else if (id == R.id.create_csv) {
             System.out.println("Generating a CSV Document");
-            DocumentMaster.getInstance().createCsv(r);
+            DocumentMaster.getInstance().createCsv(r, getApplicationContext().getFilesDir());
         }
 
 

@@ -29,6 +29,9 @@ public class Text extends Observation {
          this.note = note;
      }
 
+     /**
+      * @return text for this text observation
+      */
      public String getText() {
          return text;
      }

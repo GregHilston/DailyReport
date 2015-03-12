@@ -8,6 +8,10 @@ public class Weather extends Observation {
     private float humidity = 0.0f;
     private Type type;
 
+    public enum Type {
+        Sunny, Rainy, Cloudy
+    }
+
     public Weather(float temp, float humidity, Type type) {
         super();
         this.temp = temp;
@@ -15,23 +19,23 @@ public class Weather extends Observation {
         this.type = type;
     }
 
-    public enum Type {
-        Sunny, Rainy, Cloudy
-    }
-
     /**
-     * Get humidity as a percentage of 100
-     *
-     * @return the humidity
+     * @return the humidity as a percentage of 100
      */
     public float getHumidity() {
         return (1 - humidity) * 100;
     }
 
+    /**
+     * @return  temperature
+     */
     public float getTemp() {
         return temp;
     }
 
+    /**
+     * @return type (enum)
+     */
     public Type getType() {
         return type;
     }

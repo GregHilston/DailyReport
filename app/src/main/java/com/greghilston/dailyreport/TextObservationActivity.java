@@ -7,24 +7,23 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-/**
- * Created by Tyler on 3/1/2015.
- */
 public class TextObservationActivity extends Activity {
-
-    Button submit; //submit button
+    Button submitButton;
     Button cancelButton;
-    EditText obs;
+    EditText text; // Text entered by the user for this TextObservation
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.txt_observation);
 
-        submit = (Button) findViewById(R.id.button2);
+        submitButton = (Button) findViewById(R.id.button2);
         cancelButton = (Button) findViewById(R.id.button);
-        obs = (EditText) findViewById(R.id.edtxtInput);
+        text = (EditText) findViewById(R.id.edtxtInput);
 
+        /**
+         * Cancels the creation of the TextObservation, returning to the MainActivity
+         */
         cancelButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 Intent returnIntent = new Intent();
@@ -33,16 +32,13 @@ public class TextObservationActivity extends Activity {
             }
         });
 
-        submit.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View arg0){
-//                Intent nxtScreen = new Intent(getApplicationContext(),MainActivity.class);
-//                nxtScreen.putExtra("extext",  obs.getText().toString());
-//                startActivity(nxtScreen);
-//                //finish();
-//                //
-
+        /**
+         * Returns the text entered by the user so a TextObservation can be created
+         */
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
                 Intent returnIntent = new Intent();
-                returnIntent.putExtra("result", obs.getText().toString());
+                returnIntent.putExtra("result", text.getText().toString());
                 setResult(RESULT_OK, returnIntent);
                 finish();
             }
