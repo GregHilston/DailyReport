@@ -2,6 +2,7 @@ package com.greghilston.dailyreport;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -34,18 +35,44 @@ public class CameraActivity extends Activity {
         snapButton = (Button) findViewById(R.id.picButton);
 
         snapButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
             public void onClick(View v) {
-                Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
-                //fileUri = getOutputMediaFile(MEDIA_TYPE_IMAGE);
-                i.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-
-                startActivityForResult(i, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-
-                //finish() ????? // TODO: Tyler - We should figure this out - Greg
-                // I think if we just finish this it will default back to Timeline screen
+                open();
             }
+            //Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            //fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+            //fileUri = getOutputMediaFile(MEDIA_TYPE_IMAGE);
+            //i.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+
+            //startActivityForResult(i, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+
+
+            //finish() ????? // TODO: Tyler - We should figure this out - Greg
+            // I think if we just finish this it will default back to Timeline screen
+
         });
+    }
+
+
+        public void open (){
+            Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(intent, 0);
+        }
+
+        @Override
+        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+            // TODO Auto-generated method stub
+            super.onActivityResult(requestCode, resultCode, data);
+            Bitmap bp = (Bitmap) data.getExtras().get("data");
+            picture.setImageBitmap(bp);
+        }
+
+
+
+
+
+/*
 
         //Type Button code, this handles if the type is selected
         sel1 = (ImageButton) findViewById(R.id.sel1);
@@ -79,7 +106,8 @@ public class CameraActivity extends Activity {
             }
         });
     }
-
+*/
+/*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
@@ -93,14 +121,14 @@ public class CameraActivity extends Activity {
                 // Image capture failed, advise user
             }
         }
-    }
-
-    /** Create a file Uri for saving an image or video */
+    }*/
+/*
+    *//** Create a file Uri for saving an image or video *//*
     private static Uri getOutputMediaFileUri(int type){
         return Uri.fromFile(getOutputMediaFile(type));
     }
 
-    /** Create a File for saving an image or video */
+    *//** Create a File for saving an image or video *//*
     private static File getOutputMediaFile(int type){
         // To be safe, you should check that the SDCard is mounted
         // using Environment.getExternalStorageState() before doing this.
@@ -131,6 +159,8 @@ public class CameraActivity extends Activity {
 
         return mediaFile;
     }
+
+    */
 
     public void unselectGuiElements(){
 

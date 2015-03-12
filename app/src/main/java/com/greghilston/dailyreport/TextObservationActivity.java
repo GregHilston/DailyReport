@@ -10,7 +10,7 @@ import android.widget.EditText;
 /**
  * Created by Tyler on 3/1/2015.
  */
-public class txtObservationActivity extends Activity {
+public class TextObservationActivity extends Activity {
 
     Button submit; //submit button
     Button cancelButton;
