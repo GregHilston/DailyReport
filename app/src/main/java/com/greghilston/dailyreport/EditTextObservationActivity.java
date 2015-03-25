@@ -7,10 +7,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class TextObservationActivity extends Activity {
+public class EditTextObservationActivity extends Activity {
     Button submitButton;
     Button cancelButton;
-    EditText text; // Text entered by the user for this TextObservation
+    EditText editText; // Text entered by the user for this TextObservation
+    Observation observation; // Observation to be edited by the user
+    Text text;
+    int index;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,14 +22,23 @@ public class TextObservationActivity extends Activity {
 
         submitButton = (Button) findViewById(R.id.button2);
         cancelButton = (Button) findViewById(R.id.button);
-        text = (EditText) findViewById(R.id.edtxtInput);
+        editText = (EditText) findViewById(R.id.edtxtInput);
+
+        observation = (Observation) getIntent().getSerializableExtra("observation");
+        index = (int) getIntent().getSerializableExtra("index");
+
+        if(observation instanceof Text) {
+            text = (Text) observation;
+        }
+
+        editText.setText(text.getText());
 
         /**
          * Cancels the creation of the TextObservation, returning to the MainActivity
          */
         cancelButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                System.out.println("Text Observation Cancel Button Clicked!");
+                System.out.println("Edit Text Observation Cancel Button Clicked!");
 
                 Intent returnIntent = new Intent();
                 setResult(RESULT_CANCELED, returnIntent);
@@ -39,10 +51,11 @@ public class TextObservationActivity extends Activity {
          */
         submitButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                System.out.println("Text Observation Submit Button Clicked!");
+                System.out.println("Edit Text Observation Submit Button Clicked!");
 
                 Intent returnIntent = new Intent();
-                returnIntent.putExtra("result", text.getText().toString());
+                returnIntent.putExtra("text", text.getText().toString());
+                returnIntent.putExtra("index", index);
                 setResult(RESULT_OK, returnIntent);
                 finish();
             }

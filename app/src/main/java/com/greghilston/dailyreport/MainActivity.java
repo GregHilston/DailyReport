@@ -9,17 +9,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.greghilston.dailyreport.ForecastIOLibrary.src.com.arcusweather.forecastio.ForecastIO;
-import com.greghilston.dailyreport.ForecastIOLibrary.src.com.arcusweather.forecastio.ForecastIODataPoint;
 import com.greghilston.dailyreport.ForecastIOLibrary.src.com.arcusweather.forecastio.ForecastIOResponse;
-
 import java.util.HashMap;
 
 public class MainActivity extends Activity {
     Project project = new Project("Construction", "ACME");
     final Report r = new Report(project);
-    LinearLayout linearLayout;
+    public LinearLayout linearLayout;
     TextView textView;
 
     @Override
@@ -30,14 +27,13 @@ public class MainActivity extends Activity {
         linearLayout = (LinearLayout) findViewById(R.id.timeLine);
         textView = new TextView(getApplicationContext());
 
-        r.reportToGui(linearLayout, textView);
+        r.reportToGui(linearLayout, this);
 
         final Button cameraButton = (Button) findViewById(R.id.cameraButton);
         cameraButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent camScreen = new Intent(getApplicationContext(),CameraActivity.class);
                 startActivity(camScreen);
-
             }
         });
 
@@ -47,8 +43,6 @@ public class MainActivity extends Activity {
         final Button weatherButton = (Button) findViewById(R.id.weatherButton);
         weatherButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) { //Changing this to open up txt text screen
-                System.out.println("Weather Observation Button Pressed!");
-
                 String API_KEY = "cbbd1fc614026e05d5429175cdfb0d10";
                 Double Lat = 43.1339;
                 Double Lang = 70.9264;
@@ -135,19 +129,43 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        System.out.println("onActivityResult");
+
         if (requestCode == 1) {
+            System.out.println("\t requestCode: 1");
+            System.out.println("\t resultCode: " + resultCode);
+
             if(resultCode == RESULT_OK) {
                 String result =  data.getStringExtra("result");
 
                 if(result != "") { // Do not make an observation for an empty string
-                    System.out.println("Text Observation Returned: " + result);
+                    System.out.println("\t\tText Observation Returned: " + result);
                     r.addObservation(new Text(result));
-                    r.reportToGui((LinearLayout) findViewById(R.id.timeLine), new TextView(getApplicationContext()));
+                    r.reportToGui((LinearLayout) findViewById(R.id.timeLine), this);
                 }
             }
-            if (resultCode == RESULT_CANCELED) {
-                System.out.println("Text Observation Cancelled!");
+            else if (resultCode == RESULT_CANCELED) {
+                System.out.println("\t\tText Observation: Cancelled!");
+            }
+        }
+        else if (requestCode == 2) {
+            System.out.println("\t requestCode: 2");
+            System.out.println("\t resultCode: " + resultCode);
+
+            if(resultCode == RESULT_OK) {
+                System.out.println("\t\tEdit Text Observation: changes made!");
+
+                String t =  data.getStringExtra("text");
+                int index = data.getIntExtra("index", 0);
+
+                Text text = (Text) r.getObservations().remove(index);
+                text.setText(t);
+                r.getObservations().add(index, text);
+            }
+            else if (resultCode == RESULT_CANCELED) {
+                System.out.println("\t\tEdit Text Observation: Cancelled!");
             }
         }
     }

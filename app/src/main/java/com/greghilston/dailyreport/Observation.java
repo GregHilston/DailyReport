@@ -1,12 +1,13 @@
  package com.greghilston.dailyreport;
 
+ import java.io.Serializable;
  import java.text.SimpleDateFormat;
  import java.util.Date;
 
  /***
  * Represents an observation being made by the user
  */
-public abstract class Observation extends Notable{
+public abstract class Observation extends Notable implements Serializable {
      protected String time;
 
      public Observation() {

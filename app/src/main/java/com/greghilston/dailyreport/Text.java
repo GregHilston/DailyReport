@@ -35,4 +35,11 @@ public class Text extends Observation {
      public String getText() {
          return text;
      }
+
+     /**
+      * sets the Text's text
+      */
+     public void setText(String text) {
+         this.text = text;
+     }
  }
