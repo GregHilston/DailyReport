@@ -75,7 +75,7 @@ public class Report {
      * Adds an observation to the timeline for this report
      * @param o observation to add
      */
-    public void addObservation(Text o) {
+    public void addObservation(Observation o) {
         observations.add(o);
     }
 
@@ -136,9 +136,11 @@ public class Report {
 
     /**
      * Transcribes the Report's timeLine to the GUI
-     * TODO: See if this is the correct thing to do
+     * TODO: See if this is the correct thing to do, or the correct place to do it
      */
     public void reportToGui(LinearLayout ll, final Context context) {
+        System.out.println("reportToGui");
+
         ll.removeAllViews();
 
         for(int i = 0; i < getObservationsCount(); i++) {
@@ -160,11 +162,27 @@ public class Report {
                     }
                 });
 
-                textView.setText(((Text) o).getText() + " : " + o.getTime());
+                textView.setText(o.getTime() + ": " + ((Text) o).getText() + "\n");
                 ll.addView(textView);
             }
-            else if(o instanceof Weather) { // TODO
+            else if(o instanceof Weather) {
+                TextView textView = new TextView(context);
 
+                final int finalI = i;
+                final Observation finalO = o;
+                textView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent nextScreen = new Intent(context, EditWeatherObservationActivity.class);
+                        nextScreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        nextScreen.putExtra("observation", finalO);
+                        nextScreen.putExtra("index", finalI);
+                        ((Activity)context).startActivityForResult(nextScreen, 3);
+                    }
+                });
+
+                textView.setText(o.getTime() + ": " + ((Weather) o).toString() + "\n");
+                ll.addView(textView);
             }
             else if(o instanceof Picture) { // TODO
 

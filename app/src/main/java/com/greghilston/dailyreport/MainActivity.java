@@ -1,6 +1,7 @@
 package com.greghilston.dailyreport;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -17,6 +18,7 @@ public class MainActivity extends Activity {
     Project project = new Project("Construction", "ACME");
     final Report r = new Report(project);
     public LinearLayout linearLayout;
+    public Context context = this;
     TextView textView;
 
     @Override
@@ -61,56 +63,25 @@ public class MainActivity extends Activity {
                 String responseString = forecast.getResponseString();
                 ForecastIOResponse FIOR = new ForecastIOResponse(responseString);
 
-
-                //The library provides an easy way to access values as strings and data points as a list.
-                //String currently = FIOR.getValue("currently");
-/*
-                String thirdHourlyTemperature = FIOR.getValue("hourly-2-temperature");
-                String firstDailyIcon = FIOR.getValue("daily-0-icon");
-
-                //alerts defaults to first alert if not given an index. (Usually there is only one alert).
-                String alertDescription = FIOR.getValue("alerts-description");
-
-                ForecastIODataPoint[] minutelyPoints = FIOR.getDataPoints("minutely");
-                double thirtiethMinutePrecipitation = minutelyPoints[29].getValueAsDouble("precipitationIntensity");
-
-                ForecastIODataPoint[] hourlyPoints = FIOR.getDataPoints("hourly");
-                ForecastIODataPoint[] dailyPoints = FIOR.getDataPoints("daily");
-
-
-                //you can also do it the hard way
-
-                //String firstDailyIcon = FIOR.getDaily().getData[0].getValue("icon");
-                */
-
                 //Retreive the current weather conditions
                 String currently = FIOR.getCurrently().getValue("summary");
-                String temp = FIOR.getCurrently().getValue("temperature");
-                String humid = FIOR.getCurrently().getValue("humidity");
-                String pressure = FIOR.getCurrently().getValue("pressure");
+                float temperature = Float.parseFloat(FIOR.getCurrently().getValue("temperature"));
+                float humid = Float.parseFloat(FIOR.getCurrently().getValue("humidity"));
+                float pressure = Float.parseFloat(FIOR.getCurrently().getValue("pressure"));
 
                 //Humidity is given in a float that ranges from 0-1 inclusive
                 //Change to a percentage out of 100
-                float relativeHumid = Float.parseFloat(humid);
+                float relativeHumid = Float.parseFloat(Float.toString(humid));
                 relativeHumid = relativeHumid*100;
-
-                System.out.println("Currently: " + currently + "\n");
-                System.out.println("Temperature: " + temp +"°F"+ "\n");
-                System.out.println("Humidity: " + relativeHumid + "%" + "\n");
-                System.out.println("Pressure: " + pressure + " millibar" + "\n");
-                System.out.print("Response String: " + responseString + "\n");
 
                 // TODO: Change what is returned? Or let the user choose
                 //Add the weather observation
                 String weatherResult = "Currently: " + currently + "\n"
-                                    +"Temperature: " + temp +"°F"+ "\n"
+                                    +"Temperature: " + temperature +"°F"+ "\n"
                                     +"Humidity: " + relativeHumid + "%" + "\n"
                                     +"Pressure: " + pressure + " millibar" + "\n";
-                r.addObservation(new Text(weatherResult));
-                r.reportToGui((LinearLayout) findViewById(R.id.timeLine)
-                        , new TextView(getApplicationContext()));
-
-
+                r.addObservation(new Weather(currently, temperature, relativeHumid, pressure));
+                r.reportToGui(linearLayout, context);
             }
         });
 
@@ -183,8 +154,9 @@ public class MainActivity extends Activity {
             if(resultCode == RESULT_OK) {
                 System.out.println("\t\tEdit Text Observation: changes made!");
 
-                String t =  data.getStringExtra("text");
+                // TODO: Time
                 int index = data.getIntExtra("index", 0);
+                String t =  data.getStringExtra("text");
 
                 Text text = (Text) r.getObservations().remove(index);
                 text.setText(t);
@@ -194,5 +166,29 @@ public class MainActivity extends Activity {
                 System.out.println("\t\tEdit Text Observation: Cancelled!");
             }
         }
+        else if (requestCode == 3) {
+            System.out.println("\t requestCode: 3");
+            System.out.println("\t resultCode: " + resultCode);
+
+            if(resultCode == RESULT_OK) {
+                System.out.println("\t\tWeather Observation: changes made!");
+
+                int index = data.getIntExtra("index", 0);
+                String time = data.getStringExtra("time");
+                String currently = data.getStringExtra("currently");
+                String temperature = data.getStringExtra("temperature");
+                String humidity = data.getStringExtra("humidity");
+                String pressure = data.getStringExtra("pressure");
+
+                Weather weather = (Weather) r.getObservations().remove(index);
+                // TODO SET EVERYTHING
+                r.getObservations().add(index, weather);
+            }
+            else if (resultCode == RESULT_CANCELED) {
+                System.out.println("\t\tEdit Text Observation: Cancelled!");
+            }
+        }
+
+        r.reportToGui(linearLayout, context);
     }
 }

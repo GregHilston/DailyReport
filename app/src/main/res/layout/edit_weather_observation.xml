@@ -6,17 +6,38 @@
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="141dp"
-        android:inputType="time|textMultiLine"
+        android:layout_height="52dp"
+        android:inputType="time|textMultiLine|numberDecimal"
         android:ems="10"
         android:id="@+id/timeEditText" />
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="141dp"
-        android:inputType="textMultiLine"
+        android:layout_height="52dp"
+        android:inputType="textMultiLine|numberDecimal"
         android:ems="10"
-        android:id="@+id/textEditText" />
+        android:id="@+id/currentlyEditText" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:inputType="textMultiLine|numberDecimal"
+        android:ems="10"
+        android:id="@+id/temperatureEditText" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:inputType="textMultiLine|numberDecimal"
+        android:ems="10"
+        android:id="@+id/humidityEditText" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:inputType="textMultiLine|numberDecimal"
+        android:ems="10"
+        android:id="@+id/pressureEditText" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -39,4 +60,5 @@
             android:layout_gravity="center_horizontal"
             android:layout_weight="1" />
         </LinearLayout>
+
 </LinearLayout>

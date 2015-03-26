@@ -10,7 +10,8 @@ import android.widget.EditText;
 public class EditTextObservationActivity extends Activity {
     Button submitButton;
     Button cancelButton;
-    EditText editText; // Text entered by the user for this TextObservation
+    EditText timeEditText;
+    EditText textEditText; // Text entered by the user for this TextObservation
     Observation observation; // Observation to be edited by the user
     Text text;
     int index;
@@ -18,23 +19,22 @@ public class EditTextObservationActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.text_observation);
+        setContentView(R.layout.edit_text_observation);
 
         submitButton = (Button) findViewById(R.id.button2);
         cancelButton = (Button) findViewById(R.id.button);
-        editText = (EditText) findViewById(R.id.edtxtInput);
+        timeEditText = (EditText) findViewById(R.id.timeEditText);
+        textEditText = (EditText) findViewById(R.id.textEditText);
 
         observation = (Observation) getIntent().getSerializableExtra("observation");
         index = (int) getIntent().getSerializableExtra("index");
+        text = (Text) observation;
 
-        if(observation instanceof Text) {
-            text = (Text) observation;
-        }
-
-        editText.setText(text.getText());
+        timeEditText.setText(text.getTime());
+        textEditText.setText(text.getText());
 
         /**
-         * Cancels the creation of the TextObservation, returning to the MainActivity
+         * Cancels the creation of the Text Observation, returning to the MainActivity
          */
         cancelButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
@@ -47,7 +47,7 @@ public class EditTextObservationActivity extends Activity {
         });
 
         /**
-         * Returns the text entered by the user so a TextObservation can be created
+         * Returns the text entered by the user so a Text Observation can be created
          */
         submitButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
@@ -55,6 +55,7 @@ public class EditTextObservationActivity extends Activity {
 
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("text", text.getText().toString());
+                returnIntent.putExtra("time", timeEditText.getText().toString());
                 returnIntent.putExtra("index", index);
                 setResult(RESULT_OK, returnIntent);
                 finish();

@@ -3,6 +3,7 @@
     <string name="app_name">DailyReport</string>
     <string name="text_observation_activity">TextObservationActitiy</string>
     <string name="edit_text_observation_activity">EditTextObservationActivity</string>
+    <string name="edit_weather_observation_activity">EditWeatherObservationActivity</string>
     <string name="camera_observation_activity">CameraObservationActitiy</string>
     <string name="action_settings">Settings</string>
     <string name="create_xml">Generate XML</string>
