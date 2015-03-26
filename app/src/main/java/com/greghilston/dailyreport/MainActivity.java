@@ -61,10 +61,10 @@ public class MainActivity extends Activity {
                 String responseString = forecast.getResponseString();
                 ForecastIOResponse FIOR = new ForecastIOResponse(responseString);
 
-                /*
-                //The library provides an easy way to access values as strings and data points as a list.
-                String currentSummary = FIOR.getValue("current-summary");
 
+                //The library provides an easy way to access values as strings and data points as a list.
+                //String currently = FIOR.getValue("currently");
+/*
                 String thirdHourlyTemperature = FIOR.getValue("hourly-2-temperature");
                 String firstDailyIcon = FIOR.getValue("daily-0-icon");
 
@@ -79,12 +79,38 @@ public class MainActivity extends Activity {
 
 
                 //you can also do it the hard way
-                //String currentSummary = FIOR.getCurrently().getValue("summary");
+
                 //String firstDailyIcon = FIOR.getDaily().getData[0].getValue("icon");
                 */
 
-                System.out.print("Response String: " + responseString);
-                // TODO: Finish completing the request
+                //Retreive the current weather conditions
+                String currently = FIOR.getCurrently().getValue("summary");
+                String temp = FIOR.getCurrently().getValue("temperature");
+                String humid = FIOR.getCurrently().getValue("humidity");
+                String pressure = FIOR.getCurrently().getValue("pressure");
+
+                //Humidity is given in a float that ranges from 0-1 inclusive
+                //Change to a percentage out of 100
+                float relativeHumid = Float.parseFloat(humid);
+                relativeHumid = relativeHumid*100;
+
+                System.out.println("Currently: " + currently + "\n");
+                System.out.println("Temperature: " + temp +"°F"+ "\n");
+                System.out.println("Humidity: " + relativeHumid + "%" + "\n");
+                System.out.println("Pressure: " + pressure + " millibar" + "\n");
+                System.out.print("Response String: " + responseString + "\n");
+
+                // TODO: Change what is returned? Or let the user choose
+                //Add the weather observation
+                String weatherResult = "Currently: " + currently + "\n"
+                                    +"Temperature: " + temp +"°F"+ "\n"
+                                    +"Humidity: " + relativeHumid + "%" + "\n"
+                                    +"Pressure: " + pressure + " millibar" + "\n";
+                r.addObservation(new Text(weatherResult));
+                r.reportToGui((LinearLayout) findViewById(R.id.timeLine)
+                        , new TextView(getApplicationContext()));
+
+
             }
         });
 
