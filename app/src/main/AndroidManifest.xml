@@ -39,7 +39,18 @@
         </activity>
 
         <activity
-            android:name=".TextObservationActivity"
+        android:name=".TextObservationActivity"
+        android:label="@string/text_observation_activity" >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+    </activity>
+
+
+        <activity
+            android:name=".CalendarActivity"
             android:label="@string/text_observation_activity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

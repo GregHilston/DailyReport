@@ -45,6 +45,34 @@ public class Weather extends Observation {
         return pressure;
     }
 
+    /**
+     * @param currently  what the weather is like currently
+     */
+    public void setCurrently(String currently) {
+        this.currently = currently;
+    }
+
+    /**
+     * @param temperature  temperature at the time of the observation
+     */
+    public void setTemperature(String temperature) {
+        this.temperature = Float.valueOf(temperature);
+    }
+
+    /**
+     * @param humidity  humidity at the time of the observation
+     */
+    public void setHumidity(String humidity) {
+        this.humidity = Float.valueOf(humidity);
+    }
+
+    /**
+     * @param pressure  pressure at the time of the observation
+     */
+    public void setPressure(String pressure) {
+        this.pressure = Float.valueOf(pressure);
+    }
+
     @Override
     public String toString() {
         return currently + "\nTemperature: " + temperature + "\nHumidity: " + humidity + "\nPressure: " + pressure;

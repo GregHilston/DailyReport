@@ -29,4 +29,12 @@ public abstract class Observation extends Notable implements Serializable {
      public String getTime() {
          return time;
      }
+
+
+     /**
+      * @param time  time to set for this observation
+      */
+     public void setTime(String time) {
+        this.time = time;
+     }
 }

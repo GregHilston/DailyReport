@@ -155,7 +155,7 @@ public class Report {
                     @Override
                     public void onClick(View v) {
                         Intent nextScreen = new Intent(context, EditTextObservationActivity.class);
-                        nextScreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        nextScreen.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);   // The SingleTop - makes it act Modal (from : http://mono-for-android.1047100.n5.nabble.com/OnActivityResult-not-being-called-td4802915.html)
                         nextScreen.putExtra("observation", finalO);
                         nextScreen.putExtra("index", finalI);
                         ((Activity)context).startActivityForResult(nextScreen, 2);
@@ -174,7 +174,7 @@ public class Report {
                     @Override
                     public void onClick(View v) {
                         Intent nextScreen = new Intent(context, EditWeatherObservationActivity.class);
-                        nextScreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        nextScreen.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);   // The SingleTop - makes it act Modal (from : http://mono-for-android.1047100.n5.nabble.com/OnActivityResult-not-being-called-td4802915.html)
                         nextScreen.putExtra("observation", finalO);
                         nextScreen.putExtra("index", finalI);
                         ((Activity)context).startActivityForResult(nextScreen, 3);

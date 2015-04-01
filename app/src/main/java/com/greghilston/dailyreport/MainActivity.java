@@ -154,11 +154,15 @@ public class MainActivity extends Activity {
             if(resultCode == RESULT_OK) {
                 System.out.println("\t\tEdit Text Observation: changes made!");
 
-                // TODO: Time
                 int index = data.getIntExtra("index", 0);
+                String time = data.getStringExtra("time");
                 String t =  data.getStringExtra("text");
 
+                System.out.print(time);
+                System.out.print(t);
+
                 Text text = (Text) r.getObservations().remove(index);
+                text.setTime(time);
                 text.setText(t);
                 r.getObservations().add(index, text);
             }
@@ -181,7 +185,13 @@ public class MainActivity extends Activity {
                 String pressure = data.getStringExtra("pressure");
 
                 Weather weather = (Weather) r.getObservations().remove(index);
-                // TODO SET EVERYTHING
+
+                weather.setTime(time);
+                weather.setCurrently(currently);
+                weather.setTemperature(temperature);
+                weather.setHumidity(humidity);
+                weather.setPressure(pressure);
+
                 r.getObservations().add(index, weather);
             }
             else if (resultCode == RESULT_CANCELED) {

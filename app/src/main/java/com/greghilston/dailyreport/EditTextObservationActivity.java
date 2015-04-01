@@ -54,7 +54,7 @@ public class EditTextObservationActivity extends Activity {
                 System.out.println("Edit Text Observation Submit Button Clicked!");
 
                 Intent returnIntent = new Intent();
-                returnIntent.putExtra("text", text.getText().toString());
+                returnIntent.putExtra("text", textEditText.getText().toString());
                 returnIntent.putExtra("time", timeEditText.getText().toString());
                 returnIntent.putExtra("index", index);
                 setResult(RESULT_OK, returnIntent);
