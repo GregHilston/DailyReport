@@ -1,6 +1,10 @@
  package com.greghilston.dailyreport;
 
  import java.io.Serializable;
+ import android.content.Context;
+ import android.location.Location;
+ import android.location.LocationManager;
+
  import java.text.SimpleDateFormat;
  import java.util.Date;
 
