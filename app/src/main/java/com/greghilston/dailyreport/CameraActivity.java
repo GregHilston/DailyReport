@@ -14,6 +14,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
@@ -21,6 +24,8 @@ public class CameraActivity extends Activity {
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
     private Uri fileUri;
     public static final int MEDIA_TYPE_IMAGE = 1;
+    static Uri capturedImageUri=null;
+
 
     ImageView picture;
     Button snapButton;
@@ -55,18 +60,63 @@ public class CameraActivity extends Activity {
     }
 
 
-        public void open (){
-            Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(intent, 0);
+    public void open (){
+        //Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        //startActivityForResult(intent, 0);
+
+
+        Calendar cal = Calendar.getInstance();
+        File file = new File(Environment.getExternalStorageDirectory(),  (cal.getTimeInMillis()+".jpg"));
+        if(!file.exists()){
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }else{
+            file.delete();
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        capturedImageUri = Uri.fromFile(file);
+        Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        i.putExtra(MediaStore.EXTRA_OUTPUT, capturedImageUri);
+        startActivityForResult(i, 2);
+
+
+
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        // super.onActivityResult(requestCode, resultCode, data);
+        // Bitmap bp = (Bitmap) data.getExtras().get("data");
+        // picture.setImageBitmap(bp);
+
+        if (requestCode == 2) {
+            //Bitmap photo = (Bitmap) data.getExtras().get("data");
+            //imageView.setImageBitmap(photo);
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap( getApplicationContext().getContentResolver(),  capturedImageUri);
+                picture.setImageBitmap(bitmap);
+            } catch (FileNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
 
-        @Override
-        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-            // TODO Auto-generated method stub
-            super.onActivityResult(requestCode, resultCode, data);
-            Bitmap bp = (Bitmap) data.getExtras().get("data");
-            picture.setImageBitmap(bp);
-        }
+
+    }
 
 
 

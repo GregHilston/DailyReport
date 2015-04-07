@@ -3,6 +3,7 @@ package com.greghilston.dailyreport;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +13,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.greghilston.dailyreport.ForecastIOLibrary.src.com.arcusweather.forecastio.ForecastIO;
 import com.greghilston.dailyreport.ForecastIOLibrary.src.com.arcusweather.forecastio.ForecastIOResponse;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 
 public class MainActivity extends Activity {
@@ -94,6 +101,22 @@ public class MainActivity extends Activity {
         });
     }
 
+    /**
+     * Opens an intent for emailing
+     * @param filePath  file attached in the email intent
+     */
+    public void emailFile(String filePath) {
+        Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+        emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, "Grehgh@gmail.com");
+        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Sent usng Daily Report App");
+        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Daily Report File");
+        emailIntent.setType("application/image");
+
+        Uri uri = Uri.parse("file://" + filePath);
+        emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
+        startActivity(emailIntent);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -115,13 +138,18 @@ public class MainActivity extends Activity {
 
         else if (id == R.id.create_xml) {
             System.out.println("Generating a XML Document");
-            DocumentMaster.getInstance().createXml(r, getApplicationContext().getFilesDir());
+            String filePath = DocumentMaster.getInstance().createXml(r, getApplicationContext().getExternalFilesDir(null));
+            System.out.println("filePath: " + filePath);
+
+            emailFile(filePath);
         }
         else if (id == R.id.create_csv) {
             System.out.println("Generating a CSV Document");
-            DocumentMaster.getInstance().createCsv(r, getApplicationContext().getFilesDir());
-        }
+            String filePath = DocumentMaster.getInstance().createCsv(r, getApplicationContext().getExternalFilesDir(null));
+            System.out.println("filePath: " + filePath);
 
+            emailFile(filePath);
+        }
 
         return super.onOptionsItemSelected(item);
     }
