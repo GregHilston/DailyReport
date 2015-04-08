@@ -10,6 +10,7 @@ import android.widget.EditText;
 public class EditTextObservationActivity extends Activity {
     Button submitButton;
     Button cancelButton;
+    Button removeButton;
     EditText timeEditText;
     EditText textEditText; // Text entered by the user for this TextObservation
     Observation observation; // Observation to be edited by the user
@@ -23,6 +24,7 @@ public class EditTextObservationActivity extends Activity {
 
         submitButton = (Button) findViewById(R.id.button2);
         cancelButton = (Button) findViewById(R.id.button);
+        removeButton = (Button) findViewById(R.id.button3);
         timeEditText = (EditText) findViewById(R.id.timeEditText);
         textEditText = (EditText) findViewById(R.id.textEditText);
 
@@ -61,7 +63,27 @@ public class EditTextObservationActivity extends Activity {
                 finish();
             }
         });
+
+        /**
+         * Removes the current index
+         */
+        removeButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+                System.out.println("Remove Text Observation Button Clicked!");
+
+                Intent returnIntent = new Intent();
+                setResult(RESULT_FIRST_USER, returnIntent);
+                finish();
+
+            }
+        });
+
     }
+
+
+
+
+
 }
 
 

@@ -169,6 +169,11 @@ public class MainActivity extends Activity {
             else if (resultCode == RESULT_CANCELED) {
                 System.out.println("\t\tEdit Text Observation: Cancelled!");
             }
+            else if (resultCode == RESULT_FIRST_USER){
+                System.out.println("Removing Text Observation");
+                int index = data.getIntExtra("index", 0);
+                Text text = (Text) r.getObservations().remove(index);
+            }
         }
         else if (requestCode == 3) {
             System.out.println("\t requestCode: 3");
