@@ -49,10 +49,10 @@ public class MainActivity extends Activity {
         weatherButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) { //Changing this to open up txt text screen
                 String API_KEY = "cbbd1fc614026e05d5429175cdfb0d10";
-                //Double Lat = LocationMaster.getInstance().getLatitude();
-                //Double Long = LocationMaster.getInstance().getLongitude();
-                Double Lat = 43.1339;
-                Double Long = 70.9264;
+                Double Lat = LocationMaster.getInstance().getLatitude();
+                Double Long = LocationMaster.getInstance().getLongitude();
+                //Double Lat = 43.1339;
+                //Double Long = 70.9264;
 
                 //Set the API key, Lat, and Lang
                 ForecastIO forecast = new ForecastIO(API_KEY,Lat, Long);

@@ -4,12 +4,14 @@ package com.greghilston.dailyreport;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
+import android.widget.Toast;
 
 public class LocationMaster {
 
     private static LocationMaster instance = new LocationMaster();
     private static LocationManager locationManager;
     private static Boolean initialized = false;
+    private static Context con;
 
     public static LocationMaster getInstance() {
         if(!initialized) {
@@ -25,6 +27,7 @@ public class LocationMaster {
      */
     public static void init(Context context) {
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        con = context;
         // android.location.Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         initialized = true;
     }
@@ -35,6 +38,13 @@ public class LocationMaster {
      */
     public Double getLongitude() {
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if(location == null)
+        {
+            Toast.makeText(con, "Location unavailable, using Durham",
+                    Toast.LENGTH_LONG).show();
+            Double Long = 70.9264;
+            return Long;
+        }
         return location.getLongitude();
     }
 
@@ -44,6 +54,15 @@ public class LocationMaster {
      */
     public Double getLatitude() {
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if(location == null)
+        {
+            Toast.makeText(con, "Location unavailable, using Durham",
+                    Toast.LENGTH_LONG).show();
+            Double Lat = 43.1339;
+            return Lat;
+        }
         return location.getLatitude();
     }
+
+
 }
