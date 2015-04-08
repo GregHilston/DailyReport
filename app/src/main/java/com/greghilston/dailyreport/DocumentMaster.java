@@ -1,12 +1,17 @@
 package com.greghilston.dailyreport;
 
 import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 
 // For XML File creation
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -149,9 +154,12 @@ public class DocumentMaster {
 
     /**
      * Creates an XML file based on the report
+     * @param r  the report to make the XML file from
+     * @param file  the file to write the xml from
+     * @return  the file path or NULL if the file creation failed
      */
     @TargetApi(Build.VERSION_CODES.FROYO)
-    public void createXml(Report r, File file) {
+    public String createXml(Report r, File file) {
         String fileName = r.getFileName();
         String outputFilePath = file + "/" + fileName +  ".xml";
 
@@ -315,12 +323,15 @@ public class DocumentMaster {
             transformer.transform(source, result);
 
             System.out.println("XML File saved: " + outputFilePath);
-            printXml(outputFilePath); // TODO: Remove this after demo
+            // printXml(outputFilePath); // TODO: Remove this after demo
+            return outputFilePath;
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
         } catch (TransformerException tfe) {
             tfe.printStackTrace();
         }
+
+        return null; // TODO: Handle this
     }
 
     /**
@@ -407,9 +418,12 @@ public class DocumentMaster {
 
     /**
      * Creates a CSV based on the XML file
+     * @param r  the report to make the CSV file from
+     * @param file  the file to write the csv from
+     * @return  the file path or NULL if the file creation failed
      */
     @TargetApi(Build.VERSION_CODES.FROYO)
-    public void createCsv(Report r, File file) {
+    public String createCsv(Report r, File file) {
         // Commented out, as this creates a CSV from a report, rather than an XML file
         String fileName = r.getFileName();
         String outputFilePath = file + "/" + fileName +  ".csv";
@@ -479,9 +493,13 @@ public class DocumentMaster {
 
             writer.flush();
             writer.close();
+
+            return outputFilePath;
         } catch(IOException e) {
             e.printStackTrace();
         }
+
+        return null; // TODO: Handle this
     }
 
 

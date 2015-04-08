@@ -4,39 +4,77 @@
  * Represents a weather observation being made by the user
  */
 public class Weather extends Observation {
-    private float temp = 0.0f;
+    private String currently = ""; // TODO: Change to enum?
+    private float temperature = 0.0f;
     private float humidity = 0.0f;
-    private Type type;
+    private float pressure = 0.0f;
 
-    public enum Type {
-        Sunny, Rainy, Cloudy
-    }
-
-    public Weather(float temp, float humidity, Type type) {
+    public Weather(String currently, float temperature, float humidity, float pressure) {
         super();
-        this.temp = temp;
+        this.currently = currently;
+        this.temperature = temperature;
         this.humidity = humidity;
-        this.type = type;
+        this.pressure = pressure;
     }
 
     /**
-     * @return the humidity as a percentage of 100
+     * @return  the current weather
+     */
+    public String getCurrently() {
+        return currently;
+    }
+
+    /**
+     * @return  temperature
+     */
+    public float getTemperature() {
+        return temperature;
+    }
+
+    /**
+     * @return  the humidity as a percentage of 100
      */
     public float getHumidity() {
         return (1 - humidity) * 100;
     }
 
     /**
-     * @return  temperature
+     * @return  pressure
      */
-    public float getTemp() {
-        return temp;
+    public float getPressure() {
+        return pressure;
     }
 
     /**
-     * @return type (enum)
+     * @param currently  what the weather is like currently
      */
-    public Type getType() {
-        return type;
+    public void setCurrently(String currently) {
+        this.currently = currently;
+    }
+
+    /**
+     * @param temperature  temperature at the time of the observation
+     */
+    public void setTemperature(String temperature) {
+        this.temperature = Float.valueOf(temperature);
+    }
+
+    /**
+     * @param humidity  humidity at the time of the observation
+     */
+    public void setHumidity(String humidity) {
+        this.humidity = Float.valueOf(humidity);
+    }
+
+    /**
+     * @param pressure  pressure at the time of the observation
+     */
+    public void setPressure(String pressure) {
+        this.pressure = Float.valueOf(pressure);
+    }
+
+    @Override
+    public String toString() {
+        return currently + "\nTemperature: " + temperature + "\nHumidity: " + humidity + "\nPressure: " + pressure;
     }
 }

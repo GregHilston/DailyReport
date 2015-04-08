@@ -15,7 +15,7 @@ public class TextObservationActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.txt_observation);
+        setContentView(R.layout.text_observation);
 
         submitButton = (Button) findViewById(R.id.button2);
         cancelButton = (Button) findViewById(R.id.button);
@@ -26,6 +26,8 @@ public class TextObservationActivity extends Activity {
          */
         cancelButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
+                System.out.println("Text Observation Cancel Button Clicked!");
+
                 Intent returnIntent = new Intent();
                 setResult(RESULT_CANCELED, returnIntent);
                 finish();
@@ -37,6 +39,8 @@ public class TextObservationActivity extends Activity {
          */
         submitButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
+                System.out.println("Text Observation Submit Button Clicked!");
+
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("result", text.getText().toString());
                 setResult(RESULT_OK, returnIntent);

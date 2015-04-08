@@ -16,15 +16,17 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.io.*;
+
 
 public class CameraActivity extends Activity {
-    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
-    private Uri fileUri;
-    public static final int MEDIA_TYPE_IMAGE = 1;
 
+
+    ImageButton sel1, sel2, sel3, sel4, sel5, sel6;
+
+    private Uri capturedImageUri;
     ImageView picture;
     Button snapButton;
-    ImageButton sel1, sel2, sel3, sel4, sel5, sel6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,21 +56,50 @@ public class CameraActivity extends Activity {
         });
     }
 
+    public void open (){
+        File file = new File(Environment.getExternalStorageDirectory(),  ("test"+".jpg"));
+        if(!file.exists()){
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }else{
+            file.delete();
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        capturedImageUri = Uri.fromFile(file);
+        Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        i.putExtra(MediaStore.EXTRA_OUTPUT, capturedImageUri);
+        startActivityForResult(i, 2);
 
-        public void open (){
-            Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(intent, 0);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        // super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 2) {
+            //Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), capturedImageUri);
+                picture.setImageBitmap(bitmap);
+            } catch (FileNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
 
-        @Override
-        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-            // TODO Auto-generated method stub
-            super.onActivityResult(requestCode, resultCode, data);
-            Bitmap bp = (Bitmap) data.getExtras().get("data");
-            picture.setImageBitmap(bp);
-        }
-
-
+    }
 
 
 

@@ -1,7 +1,13 @@
 package com.greghilston.dailyreport;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Camera;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,6 +25,8 @@ public class Report {
     protected ArrayList<Company> companies = new ArrayList<>();
     protected ArrayList<Equipment> equipment = new ArrayList<>();
     protected ArrayList<Observation> observations = new ArrayList<>();
+    public static final int RESULT_CANCELED    = 0;
+    public static final int RESULT_OK           = -1;
 
     /**
      * Creates a report. Used when created a report from an XML file
@@ -67,8 +75,17 @@ public class Report {
      * Adds an observation to the timeline for this report
      * @param o observation to add
      */
-    public void addObservation(Text o) {
+    public void addObservation(Observation o) {
         observations.add(o);
+    }
+
+    /**
+     * Removes the Observation form the timeline at inde xi
+     * @param index index of Observation to remove
+     * @return removed observation
+     */
+    public Observation removeObservation(int index) {
+        return observations.remove(index);
     }
 
     /**
@@ -119,20 +136,58 @@ public class Report {
 
     /**
      * Transcribes the Report's timeLine to the GUI
-     * TODO: See if this is the correct thing to do
+     * TODO: See if this is the correct thing to do, or the correct place to do it
      */
-    public void reportToGui(LinearLayout ll, TextView textView) {
-        String text = "";
-        ll.removeView(textView);
+    public void reportToGui(LinearLayout ll, final Context context) {
+        System.out.println("reportToGui");
 
-        for(Observation o : getObservations()) {
+        ll.removeAllViews();
+
+        for(int i = 0; i < getObservationsCount(); i++) {
+            Observation o = getObservations().get(i);
+
             if(o instanceof Text) {
-                text = textView.getText() + "\n" + ((Text) o).getText() + " : " + o.getTime();
+                TextView textView = new TextView(context);
+
+                final int finalI = i;
+                final Observation finalO = o;
+                textView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent nextScreen = new Intent(context, EditTextObservationActivity.class);
+                        nextScreen.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);   // The SingleTop - makes it act Modal (from : http://mono-for-android.1047100.n5.nabble.com/OnActivityResult-not-being-called-td4802915.html)
+                        nextScreen.putExtra("observation", finalO);
+                        nextScreen.putExtra("index", finalI);
+                        ((Activity)context).startActivityForResult(nextScreen, 2);
+                    }
+                });
+
+                textView.setText(o.getTime() + ": " + ((Text) o).getText() + "\n");
+                ll.addView(textView);
+            }
+            else if(o instanceof Weather) {
+                TextView textView = new TextView(context);
+
+                final int finalI = i;
+                final Observation finalO = o;
+                textView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent nextScreen = new Intent(context, EditWeatherObservationActivity.class);
+                        nextScreen.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);   // The SingleTop - makes it act Modal (from : http://mono-for-android.1047100.n5.nabble.com/OnActivityResult-not-being-called-td4802915.html)
+                        nextScreen.putExtra("observation", finalO);
+                        nextScreen.putExtra("index", finalI);
+                        ((Activity)context).startActivityForResult(nextScreen, 3);
+                    }
+                });
+
+                textView.setText(o.getTime() + ": " + ((Weather) o).toString() + "\n");
+                ll.addView(textView);
+            }
+            else if(o instanceof Picture) { // TODO
+
             }
         }
-
-        textView.setText(text);
-        ll.addView(textView);
     }
 
     /**

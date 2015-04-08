@@ -1,7 +1,9 @@
 package com.greghilston.dailyreport;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,17 +11,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.greghilston.dailyreport.ForecastIOLibrary.src.com.arcusweather.forecastio.ForecastIO;
-import com.greghilston.dailyreport.ForecastIOLibrary.src.com.arcusweather.forecastio.ForecastIODataPoint;
 import com.greghilston.dailyreport.ForecastIOLibrary.src.com.arcusweather.forecastio.ForecastIOResponse;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 
 public class MainActivity extends Activity {
     Project project = new Project("Construction", "ACME");
     final Report r = new Report(project);
-    LinearLayout linearLayout;
+    public LinearLayout linearLayout;
+    public Context context = this;
     TextView textView;
 
     @Override
@@ -31,14 +37,13 @@ public class MainActivity extends Activity {
         linearLayout = (LinearLayout) findViewById(R.id.timeLine);
         textView = new TextView(getApplicationContext());
 
-        r.reportToGui(linearLayout, textView);
+        r.reportToGui(linearLayout, this);
 
         final Button cameraButton = (Button) findViewById(R.id.cameraButton);
         cameraButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent camScreen = new Intent(getApplicationContext(),CameraActivity.class);
                 startActivity(camScreen);
-
             }
         });
 
@@ -48,8 +53,6 @@ public class MainActivity extends Activity {
         final Button weatherButton = (Button) findViewById(R.id.weatherButton);
         weatherButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) { //Changing this to open up txt text screen
-                System.out.println("Weather Observation Button Pressed!");
-
                 String API_KEY = "cbbd1fc614026e05d5429175cdfb0d10";
                 Double Lat = LocationMaster.getInstance().getLatitude();
                 Double Long = LocationMaster.getInstance().getLongitude();
@@ -70,56 +73,25 @@ public class MainActivity extends Activity {
                 String responseString = forecast.getResponseString();
                 ForecastIOResponse FIOR = new ForecastIOResponse(responseString);
 
-
-                //The library provides an easy way to access values as strings and data points as a list.
-                //String currently = FIOR.getValue("currently");
-/*
-                String thirdHourlyTemperature = FIOR.getValue("hourly-2-temperature");
-                String firstDailyIcon = FIOR.getValue("daily-0-icon");
-
-                //alerts defaults to first alert if not given an index. (Usually there is only one alert).
-                String alertDescription = FIOR.getValue("alerts-description");
-
-                ForecastIODataPoint[] minutelyPoints = FIOR.getDataPoints("minutely");
-                double thirtiethMinutePrecipitation = minutelyPoints[29].getValueAsDouble("precipitationIntensity");
-
-                ForecastIODataPoint[] hourlyPoints = FIOR.getDataPoints("hourly");
-                ForecastIODataPoint[] dailyPoints = FIOR.getDataPoints("daily");
-
-
-                //you can also do it the hard way
-
-                //String firstDailyIcon = FIOR.getDaily().getData[0].getValue("icon");
-                */
-
                 //Retreive the current weather conditions
                 String currently = FIOR.getCurrently().getValue("summary");
-                String temp = FIOR.getCurrently().getValue("temperature");
-                String humid = FIOR.getCurrently().getValue("humidity");
-                String pressure = FIOR.getCurrently().getValue("pressure");
+                float temperature = Float.parseFloat(FIOR.getCurrently().getValue("temperature"));
+                float humid = Float.parseFloat(FIOR.getCurrently().getValue("humidity"));
+                float pressure = Float.parseFloat(FIOR.getCurrently().getValue("pressure"));
 
                 //Humidity is given in a float that ranges from 0-1 inclusive
                 //Change to a percentage out of 100
-                float relativeHumid = Float.parseFloat(humid);
+                float relativeHumid = Float.parseFloat(Float.toString(humid));
                 relativeHumid = relativeHumid*100;
-
-                System.out.println("Currently: " + currently + "\n");
-                System.out.println("Temperature: " + temp +"°F"+ "\n");
-                System.out.println("Humidity: " + relativeHumid + "%" + "\n");
-                System.out.println("Pressure: " + pressure + " millibar" + "\n");
-                System.out.print("Response String: " + responseString + "\n");
 
                 // TODO: Change what is returned? Or let the user choose
                 //Add the weather observation
                 String weatherResult = "Currently: " + currently + "\n"
-                                    +"Temperature: " + temp +"°F"+ "\n"
+                                    +"Temperature: " + temperature +"°F"+ "\n"
                                     +"Humidity: " + relativeHumid + "%" + "\n"
                                     +"Pressure: " + pressure + " millibar" + "\n";
-                r.addObservation(new Text(weatherResult));
-                r.reportToGui((LinearLayout) findViewById(R.id.timeLine)
-                        , new TextView(getApplicationContext()));
-
-
+                r.addObservation(new Weather(currently, temperature, relativeHumid, pressure));
+                r.reportToGui(linearLayout, context);
             }
         });
 
@@ -130,6 +102,22 @@ public class MainActivity extends Activity {
                 startActivityForResult(nextScreen, 1);
             }
         });
+    }
+
+    /**
+     * Opens an intent for emailing
+     * @param filePath  file attached in the email intent
+     */
+    public void emailFile(String filePath) {
+        Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+        emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, "Grehgh@gmail.com");
+        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Sent usng Daily Report App");
+        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Daily Report File");
+        emailIntent.setType("application/image");
+
+        Uri uri = Uri.parse("file://" + filePath);
+        emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
+        startActivity(emailIntent);
     }
 
     @Override
@@ -153,31 +141,100 @@ public class MainActivity extends Activity {
 
         else if (id == R.id.create_xml) {
             System.out.println("Generating a XML Document");
-            DocumentMaster.getInstance().createXml(r, getApplicationContext().getFilesDir());
+            String filePath = DocumentMaster.getInstance().createXml(r, getApplicationContext().getExternalFilesDir(null));
+            System.out.println("filePath: " + filePath);
+
+            emailFile(filePath);
         }
         else if (id == R.id.create_csv) {
             System.out.println("Generating a CSV Document");
-            DocumentMaster.getInstance().createCsv(r, getApplicationContext().getFilesDir());
-        }
+            String filePath = DocumentMaster.getInstance().createCsv(r, getApplicationContext().getExternalFilesDir(null));
+            System.out.println("filePath: " + filePath);
 
+            emailFile(filePath);
+        }
 
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        System.out.println("onActivityResult");
+
         if (requestCode == 1) {
+            System.out.println("\t requestCode: 1");
+            System.out.println("\t resultCode: " + resultCode);
+
             if(resultCode == RESULT_OK) {
                 String result =  data.getStringExtra("result");
 
                 if(result != "") { // Do not make an observation for an empty string
-                    System.out.println("Text Observation Returned: " + result);
+                    System.out.println("\t\tText Observation Returned: " + result);
                     r.addObservation(new Text(result));
-                    r.reportToGui((LinearLayout) findViewById(R.id.timeLine), new TextView(getApplicationContext()));
+                    r.reportToGui((LinearLayout) findViewById(R.id.timeLine), this);
                 }
             }
-            if (resultCode == RESULT_CANCELED) {
-                System.out.println("Text Observation Cancelled!");
+            else if (resultCode == RESULT_CANCELED) {
+                System.out.println("\t\tText Observation: Cancelled!");
             }
         }
+        else if (requestCode == 2) {
+            System.out.println("\t requestCode: 2");
+            System.out.println("\t resultCode: " + resultCode);
+
+            if(resultCode == RESULT_OK) {
+                System.out.println("\t\tEdit Text Observation: changes made!");
+
+                int index = data.getIntExtra("index", 0);
+                String time = data.getStringExtra("time");
+                String t =  data.getStringExtra("text");
+
+                System.out.print(time);
+                System.out.print(t);
+
+                Text text = (Text) r.getObservations().remove(index);
+                text.setTime(time);
+                text.setText(t);
+                r.getObservations().add(index, text);
+            }
+            else if (resultCode == RESULT_CANCELED) {
+                System.out.println("\t\tEdit Text Observation: Cancelled!");
+            }
+            else if (resultCode == RESULT_FIRST_USER){
+                System.out.println("Removing Text Observation");
+                int index = data.getIntExtra("index", 0);
+                Text text = (Text) r.getObservations().remove(index);
+            }
+        }
+        else if (requestCode == 3) {
+            System.out.println("\t requestCode: 3");
+            System.out.println("\t resultCode: " + resultCode);
+
+            if(resultCode == RESULT_OK) {
+                System.out.println("\t\tWeather Observation: changes made!");
+
+                int index = data.getIntExtra("index", 0);
+                String time = data.getStringExtra("time");
+                String currently = data.getStringExtra("currently");
+                String temperature = data.getStringExtra("temperature");
+                String humidity = data.getStringExtra("humidity");
+                String pressure = data.getStringExtra("pressure");
+
+                Weather weather = (Weather) r.getObservations().remove(index);
+
+                weather.setTime(time);
+                weather.setCurrently(currently);
+                weather.setTemperature(temperature);
+                weather.setHumidity(humidity);
+                weather.setPressure(pressure);
+
+                r.getObservations().add(index, weather);
+            }
+            else if (resultCode == RESULT_CANCELED) {
+                System.out.println("\t\tEdit Text Observation: Cancelled!");
+            }
+        }
+
+        r.reportToGui(linearLayout, context);
     }
 }
