@@ -10,6 +10,7 @@ import android.widget.EditText;
 public class EditWeatherObservationActivity extends Activity {
     Button submitButton;
     Button cancelButton;
+    Button removeButton;
     EditText timeEditText;
     EditText currentlyEditText;
     EditText temperatureEditText;
@@ -18,6 +19,7 @@ public class EditWeatherObservationActivity extends Activity {
     Observation observation; // Observation to be edited by the user
     Weather weather;
     int index;
+    public static final int RESULT_DELETE_WEATHER_OBSERVATION   = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +28,7 @@ public class EditWeatherObservationActivity extends Activity {
 
         submitButton = (Button) findViewById(R.id.button2);
         cancelButton = (Button) findViewById(R.id.button);
+        removeButton = (Button) findViewById(R.id.button3);
         timeEditText = (EditText) findViewById(R.id.timeEditText);
         currentlyEditText = (EditText) findViewById(R.id.currentlyEditText);
         temperatureEditText = (EditText) findViewById(R.id.temperatureEditText);
@@ -74,6 +77,20 @@ public class EditWeatherObservationActivity extends Activity {
                 System.out.println("\tBefore finish!");
                 finish();
                 System.out.println("\tAfter finish!");
+            }
+        });
+
+        /**
+         * Removes the current index
+         */
+        removeButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+                System.out.println("Remove Weather Observation Button Clicked!");
+
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("index", index);
+                setResult(RESULT_DELETE_WEATHER_OBSERVATION, returnIntent);
+                finish();
             }
         });
     }

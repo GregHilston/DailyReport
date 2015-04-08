@@ -197,10 +197,13 @@ public class MainActivity extends Activity {
             else if (resultCode == RESULT_CANCELED) {
                 System.out.println("\t\tEdit Text Observation: Cancelled!");
             }
-            else if (resultCode == RESULT_FIRST_USER){
+            else if (resultCode == EditTextObservationActivity.RESULT_DELETE_TEXT_OBSERVATION){
                 System.out.println("Removing Text Observation");
-                int index = data.getIntExtra("index", 0);
-                Text text = (Text) r.getObservations().remove(index);
+                r.getObservations().remove(data.getIntExtra("index", 0));
+            }
+            else if (resultCode == EditWeatherObservationActivity.RESULT_DELETE_WEATHER_OBSERVATION){
+                System.out.println("Removing Weather Observation");
+                r.getObservations().remove(data.getIntExtra("index", 0));
             }
         }
         else if (requestCode == 3) {
