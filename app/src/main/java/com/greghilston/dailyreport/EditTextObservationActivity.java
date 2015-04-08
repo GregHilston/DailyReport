@@ -33,7 +33,7 @@ public class EditTextObservationActivity extends Activity {
         index = (int) getIntent().getSerializableExtra("index");
         text = (Text) observation;
 
-        timeEditText.setText(text.getDate().toString());
+        timeEditText.setText(text.getTime());
         textEditText.setText(text.getText());
 
         /**

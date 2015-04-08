@@ -39,7 +39,7 @@ public class EditWeatherObservationActivity extends Activity {
         index = (int) getIntent().getSerializableExtra("index");
         weather = (Weather) observation;
 
-        timeEditText.setText(weather.getDate().toString());
+        timeEditText.setText(weather.getTime());
         currentlyEditText.setText(weather.getCurrently());
         temperatureEditText.setText(Float.toString(weather.getTemperature()));
         humidityEditText.setText(Float.toString(weather.getHumidity()));

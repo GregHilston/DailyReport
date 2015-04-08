@@ -9,7 +9,7 @@
  /***
  * Represents an observation being made by the user
  */
-public abstract class Observation extends Notable implements Serializable {
+public abstract class Observation extends Notable implements Serializable{
      protected Date date;
 
      public Observation() {
@@ -50,7 +50,7 @@ public abstract class Observation extends Notable implements Serializable {
       * @param date  date to set for this observation
       */
      public void setDate(String date) {
-         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss a");
+         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
 
          try {
              this.date = formatter.parse(date);

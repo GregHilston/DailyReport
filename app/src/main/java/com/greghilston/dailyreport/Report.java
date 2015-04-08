@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 /**
@@ -138,6 +140,12 @@ public class Report {
      */
     public void reportToGui(LinearLayout ll, final Context context) {
         System.out.println("reportToGui");
+
+        Collections.sort(observations, new Comparator<Observation>() {
+            public int compare(Observation o1, Observation o2) {
+                return o1.getDate().compareTo(o2.getDate());
+            }
+        });
 
         ll.removeAllViews();
 
