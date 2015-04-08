@@ -26,6 +26,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        LocationMaster.init(getApplicationContext());
 
         linearLayout = (LinearLayout) findViewById(R.id.timeLine);
         textView = new TextView(getApplicationContext());
@@ -50,11 +51,13 @@ public class MainActivity extends Activity {
                 System.out.println("Weather Observation Button Pressed!");
 
                 String API_KEY = "cbbd1fc614026e05d5429175cdfb0d10";
-                Double Lat = 43.1339;
-                Double Lang = 70.9264;
+                Double Lat = LocationMaster.getInstance().getLatitude();
+                Double Long = LocationMaster.getInstance().getLongitude();
+                //Double Lat = 43.1339;
+                //Double Lang = 70.9264;
 
                 //Set the API key, Lat, and Lang
-                ForecastIO forecast = new ForecastIO(API_KEY,Lat, Lang);
+                ForecastIO forecast = new ForecastIO(API_KEY,Lat, Long);
 
                 //Set the request parameters
                 //ability to set the units, exclude blocks, extend options and user agent for the request. This is not required.

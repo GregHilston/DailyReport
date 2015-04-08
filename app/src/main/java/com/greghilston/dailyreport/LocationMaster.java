@@ -33,16 +33,16 @@ public class LocationMaster {
      * Gets the last known location's longitude
      * @return  longitude ot NULL
      */
-    public static Double getLongitude() {
+    public Double getLongitude() {
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         return location.getLongitude();
     }
 
     /**
      * Gets the last known location's latitude
-     * @return  latitude ot NULL
+     * @return  latitude or NULL
      */
-    public static Double getLatitude() {
+    public Double getLatitude() {
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         return location.getLatitude();
     }
