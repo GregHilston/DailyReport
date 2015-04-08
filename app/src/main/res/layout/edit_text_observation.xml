@@ -7,7 +7,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="141dp"
-        android:inputType="time|textMultiLine"
+        android:inputType="date|textMultiLine"
         android:ems="10"
         android:id="@+id/timeEditText" />
 

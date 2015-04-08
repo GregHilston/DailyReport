@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -277,7 +278,7 @@ public class DocumentMaster {
 
                 // Time element
                 Element observationTime = doc.createElement("Time");
-                observationTime.appendChild(doc.createTextNode(o.generateTime()));
+                observationTime.appendChild(doc.createTextNode(o.getTime()));
                 observations.appendChild(observationTime);
 
                 if(o instanceof Weather) {
@@ -476,7 +477,7 @@ public class DocumentMaster {
 
             writer.append("\nObservations\n");
             for(Observation o : r.getObservations()) {
-                writer.append(o.generateTime());
+                writer.append(o.getTime());
                 writer.append(',');
 
                 // Text

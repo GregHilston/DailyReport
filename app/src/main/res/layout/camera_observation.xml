@@ -9,7 +9,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="3dp"
-        android:inputType="time"
+        android:inputType="date"
         android:ems="10"
         android:id="@+id/editText2"
         android:layout_weight="0.20 "

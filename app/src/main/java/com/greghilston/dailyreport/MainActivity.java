@@ -14,11 +14,6 @@ import android.widget.TextView;
 import com.greghilston.dailyreport.ForecastIOLibrary.src.com.arcusweather.forecastio.ForecastIO;
 import com.greghilston.dailyreport.ForecastIOLibrary.src.com.arcusweather.forecastio.ForecastIOResponse;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.HashMap;
 
 public class MainActivity extends Activity {
@@ -179,14 +174,14 @@ public class MainActivity extends Activity {
                 System.out.println("\t\tEdit Text Observation: changes made!");
 
                 int index = data.getIntExtra("index", 0);
-                String time = data.getStringExtra("time");
+                String time = data.getStringExtra("date");
                 String t = data.getStringExtra("text");
 
                 System.out.print(time);
                 System.out.print(t);
 
                 Text text = (Text) r.getObservations().remove(index);
-                text.setTime(time);
+                text.setDate(time);
                 text.setText(t);
                 r.getObservations().add(index, text);
             }
@@ -203,7 +198,7 @@ public class MainActivity extends Activity {
                 System.out.println("\t\tWeather Observation: changes made!");
 
                 int index = data.getIntExtra("index", 0);
-                String time = data.getStringExtra("time");
+                String time = data.getStringExtra("date");
                 String currently = data.getStringExtra("currently");
                 String temperature = data.getStringExtra("temperature");
                 String humidity = data.getStringExtra("humidity");
@@ -211,7 +206,7 @@ public class MainActivity extends Activity {
 
                 Weather weather = (Weather) r.getObservations().remove(index);
 
-                weather.setTime(time);
+                weather.setDate(time);
                 weather.setCurrently(currently);
                 weather.setTemperature(temperature);
                 weather.setHumidity(humidity);

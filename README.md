@@ -1,6 +1,6 @@
 # DailyReport
 TODO:
-Add delete button to editing Observations
+Handle time as java.util.Date
 Get last location for weather observations (Evan)
     XML backend for Weather (Greg)
 Editing a field should pull up the appropiate keyboard

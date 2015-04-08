@@ -3,11 +3,9 @@ package com.greghilston.dailyreport;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Camera;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,7 +22,7 @@ public class Report {
     protected ArrayList<Person> people = new ArrayList<>(); // People that work for manager
     protected ArrayList<Company> companies = new ArrayList<>();
     protected ArrayList<Equipment> equipment = new ArrayList<>();
-    protected ArrayList<Observation> observations = new ArrayList<>();
+    protected ArrayList<Observation> observations = new ArrayList<Observation>();
     public static final int RESULT_CANCELED    = 0;
     public static final int RESULT_OK           = -1;
 
