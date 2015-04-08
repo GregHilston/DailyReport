@@ -157,11 +157,10 @@ public class MainActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         System.out.println("onActivityResult");
+        System.out.println("\t requestCode: " + requestCode);
+        System.out.println("\t resultCode: " + resultCode);
 
         if (requestCode == 1) {
-            System.out.println("\t requestCode: 1");
-            System.out.println("\t resultCode: " + resultCode);
-
             if(resultCode == RESULT_OK) {
                 String result =  data.getStringExtra("result");
 
@@ -176,15 +175,12 @@ public class MainActivity extends Activity {
             }
         }
         else if (requestCode == 2) {
-            System.out.println("\t requestCode: 2");
-            System.out.println("\t resultCode: " + resultCode);
-
             if(resultCode == RESULT_OK) {
                 System.out.println("\t\tEdit Text Observation: changes made!");
 
                 int index = data.getIntExtra("index", 0);
                 String time = data.getStringExtra("time");
-                String t =  data.getStringExtra("text");
+                String t = data.getStringExtra("text");
 
                 System.out.print(time);
                 System.out.print(t);
@@ -201,15 +197,8 @@ public class MainActivity extends Activity {
                 System.out.println("Removing Text Observation");
                 r.getObservations().remove(data.getIntExtra("index", 0));
             }
-            else if (resultCode == EditWeatherObservationActivity.RESULT_DELETE_WEATHER_OBSERVATION){
-                System.out.println("Removing Weather Observation");
-                r.getObservations().remove(data.getIntExtra("index", 0));
-            }
         }
         else if (requestCode == 3) {
-            System.out.println("\t requestCode: 3");
-            System.out.println("\t resultCode: " + resultCode);
-
             if(resultCode == RESULT_OK) {
                 System.out.println("\t\tWeather Observation: changes made!");
 
@@ -232,6 +221,10 @@ public class MainActivity extends Activity {
             }
             else if (resultCode == RESULT_CANCELED) {
                 System.out.println("\t\tEdit Text Observation: Cancelled!");
+            }
+            else if (resultCode == EditWeatherObservationActivity.RESULT_DELETE_WEATHER_OBSERVATION){
+                System.out.println("Removing Weather Observation");
+                r.getObservations().remove(data.getIntExtra("index", 0));
             }
         }
 
