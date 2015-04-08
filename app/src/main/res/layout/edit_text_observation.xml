@@ -7,7 +7,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="141dp"
-        android:inputType="time|textMultiLine"
+        android:inputType="date|textMultiLine"
         android:ems="10"
         android:id="@+id/timeEditText" />
 
@@ -45,7 +45,6 @@
             android:text="Remove Observation"
             android:id="@+id/button3"
             android:layout_weight="1" />
-    </LinearLayout>
     </LinearLayout>
 
     <TimePicker

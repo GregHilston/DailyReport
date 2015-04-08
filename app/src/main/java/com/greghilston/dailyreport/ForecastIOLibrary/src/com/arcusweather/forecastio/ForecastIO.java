@@ -79,7 +79,7 @@ public class ForecastIO {
 		URL forecastUrl = null;
 		try {
 			String forecastUrlString = mBaseUrl + mApiKey + "/" + mLatitude + "," + mLongitude + "?";
-			//TODO add in the time parameter for time machine requests
+			//TODO add in the date parameter for date machine requests
 			for(String key: mRequestOptions.keySet()) {
 				if(key == "userAgent") {
 					mUserAgent = mRequestOptions.get(key);

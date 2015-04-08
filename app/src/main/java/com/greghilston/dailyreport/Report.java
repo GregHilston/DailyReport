@@ -3,14 +3,14 @@ package com.greghilston.dailyreport;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Camera;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 /**
@@ -24,7 +24,7 @@ public class Report {
     protected ArrayList<Person> people = new ArrayList<>(); // People that work for manager
     protected ArrayList<Company> companies = new ArrayList<>();
     protected ArrayList<Equipment> equipment = new ArrayList<>();
-    protected ArrayList<Observation> observations = new ArrayList<>();
+    protected ArrayList<Observation> observations = new ArrayList<Observation>();
     public static final int RESULT_CANCELED    = 0;
     public static final int RESULT_OK           = -1;
 
@@ -140,6 +140,12 @@ public class Report {
      */
     public void reportToGui(LinearLayout ll, final Context context) {
         System.out.println("reportToGui");
+
+        Collections.sort(observations, new Comparator<Observation>() {
+            public int compare(Observation o1, Observation o2) {
+                return o1.getDate().compareTo(o2.getDate());
+            }
+        });
 
         ll.removeAllViews();
 

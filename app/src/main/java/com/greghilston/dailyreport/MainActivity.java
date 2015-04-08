@@ -14,11 +14,6 @@ import android.widget.TextView;
 import com.greghilston.dailyreport.ForecastIOLibrary.src.com.arcusweather.forecastio.ForecastIO;
 import com.greghilston.dailyreport.ForecastIOLibrary.src.com.arcusweather.forecastio.ForecastIOResponse;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.HashMap;
 
 public class MainActivity extends Activity {
@@ -160,11 +155,10 @@ public class MainActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         System.out.println("onActivityResult");
+        System.out.println("\t requestCode: " + requestCode);
+        System.out.println("\t resultCode: " + resultCode);
 
         if (requestCode == 1) {
-            System.out.println("\t requestCode: 1");
-            System.out.println("\t resultCode: " + resultCode);
-
             if(resultCode == RESULT_OK) {
                 String result =  data.getStringExtra("result");
 
@@ -179,42 +173,35 @@ public class MainActivity extends Activity {
             }
         }
         else if (requestCode == 2) {
-            System.out.println("\t requestCode: 2");
-            System.out.println("\t resultCode: " + resultCode);
-
             if(resultCode == RESULT_OK) {
                 System.out.println("\t\tEdit Text Observation: changes made!");
 
                 int index = data.getIntExtra("index", 0);
-                String time = data.getStringExtra("time");
-                String t =  data.getStringExtra("text");
+                String time = data.getStringExtra("date");
+                String t = data.getStringExtra("text");
 
                 System.out.print(time);
                 System.out.print(t);
 
                 Text text = (Text) r.getObservations().remove(index);
-                text.setTime(time);
+                text.setDate(time);
                 text.setText(t);
                 r.getObservations().add(index, text);
             }
             else if (resultCode == RESULT_CANCELED) {
                 System.out.println("\t\tEdit Text Observation: Cancelled!");
             }
-            else if (resultCode == RESULT_FIRST_USER){
+            else if (resultCode == EditTextObservationActivity.RESULT_DELETE_TEXT_OBSERVATION){
                 System.out.println("Removing Text Observation");
-                int index = data.getIntExtra("index", 0);
-                Text text = (Text) r.getObservations().remove(index);
+                r.getObservations().remove(data.getIntExtra("index", 0));
             }
         }
         else if (requestCode == 3) {
-            System.out.println("\t requestCode: 3");
-            System.out.println("\t resultCode: " + resultCode);
-
             if(resultCode == RESULT_OK) {
                 System.out.println("\t\tWeather Observation: changes made!");
 
                 int index = data.getIntExtra("index", 0);
-                String time = data.getStringExtra("time");
+                String time = data.getStringExtra("date");
                 String currently = data.getStringExtra("currently");
                 String temperature = data.getStringExtra("temperature");
                 String humidity = data.getStringExtra("humidity");
@@ -222,7 +209,7 @@ public class MainActivity extends Activity {
 
                 Weather weather = (Weather) r.getObservations().remove(index);
 
-                weather.setTime(time);
+                weather.setDate(time);
                 weather.setCurrently(currently);
                 weather.setTemperature(temperature);
                 weather.setHumidity(humidity);
@@ -232,6 +219,10 @@ public class MainActivity extends Activity {
             }
             else if (resultCode == RESULT_CANCELED) {
                 System.out.println("\t\tEdit Text Observation: Cancelled!");
+            }
+            else if (resultCode == EditWeatherObservationActivity.RESULT_DELETE_WEATHER_OBSERVATION){
+                System.out.println("Removing Weather Observation");
+                r.getObservations().remove(data.getIntExtra("index", 0));
             }
         }
 

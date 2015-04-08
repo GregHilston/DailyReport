@@ -53,21 +53,21 @@ public class Weather extends Observation {
     }
 
     /**
-     * @param temperature  temperature at the time of the observation
+     * @param temperature  temperature at the date of the observation
      */
     public void setTemperature(String temperature) {
         this.temperature = Float.valueOf(temperature);
     }
 
     /**
-     * @param humidity  humidity at the time of the observation
+     * @param humidity  humidity at the date of the observation
      */
     public void setHumidity(String humidity) {
         this.humidity = Float.valueOf(humidity);
     }
 
     /**
-     * @param pressure  pressure at the time of the observation
+     * @param pressure  pressure at the date of the observation
      */
     public void setPressure(String pressure) {
         this.pressure = Float.valueOf(pressure);

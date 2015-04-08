@@ -16,6 +16,7 @@ public class EditTextObservationActivity extends Activity {
     Observation observation; // Observation to be edited by the user
     Text text;
     int index;
+    public static final int RESULT_DELETE_TEXT_OBSERVATION   = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +58,7 @@ public class EditTextObservationActivity extends Activity {
 
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("text", textEditText.getText().toString());
-                returnIntent.putExtra("time", timeEditText.getText().toString());
+                returnIntent.putExtra("date", timeEditText.getText().toString());
                 returnIntent.putExtra("index", index);
                 setResult(RESULT_OK, returnIntent);
                 finish();
@@ -72,9 +73,9 @@ public class EditTextObservationActivity extends Activity {
                 System.out.println("Remove Text Observation Button Clicked!");
 
                 Intent returnIntent = new Intent();
-                setResult(RESULT_FIRST_USER, returnIntent);
+                returnIntent.putExtra("index", index);
+                setResult(RESULT_DELETE_TEXT_OBSERVATION, returnIntent);
                 finish();
-
             }
         });
 
