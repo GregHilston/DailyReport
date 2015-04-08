@@ -220,12 +220,6 @@ public class DocumentMaster {
                 personName.appendChild(doc.createTextNode(r.getPeople().get(i).getName()));
                 person.appendChild(personName);
 
-                // Not needed, as they work for the Manager
-//                // Person Company element
-//                Element personCompany = doc.createElement("Company");
-//                personCompany.appendChild(doc.createTextNode(r.getPeople().get(i).getCompany()));
-//                person.appendChild(personCompany);
-
                 // Person Job Title element
                 Element personJobTitle = doc.createElement("Job");
                 personJobTitle.appendChild(doc.createTextNode(r.getPeople().get(i).getJobTitle()));
@@ -287,7 +281,14 @@ public class DocumentMaster {
                 observations.appendChild(observationTime);
 
                 if(o instanceof Weather) {
-
+                    // Weather element
+                    Element weather = doc.createElement("Weather");
+                    // TODO: GREHG HERE
+                    weather.appendChild(doc.createTextNode(((Weather) o).getCurrently()));
+                    weather.appendChild(doc.createTextNode(Float.toString(((Weather) o).getTemperature())));
+                    weather.appendChild(doc.createTextNode(Float.toString(((Weather) o).getHumidity())));
+                    weather.appendChild(doc.createTextNode(Float.toString(((Weather) o).getPressure())));
+                    observations.appendChild(weather);
                 }
                 else if(o instanceof Text) {
                     // Text element

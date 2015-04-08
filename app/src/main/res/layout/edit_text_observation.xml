@@ -46,7 +46,6 @@
             android:id="@+id/button3"
             android:layout_weight="1" />
     </LinearLayout>
-    </LinearLayout>
 
     <TimePicker
         android:id="@+id/timePicker1"

@@ -70,10 +70,7 @@ public class EditWeatherObservationActivity extends Activity {
                 returnIntent.putExtra("humidity", humidityEditText.getText().toString());
                 returnIntent.putExtra("pressure", pressureEditText.getText().toString());
                 setResult(RESULT_OK, returnIntent);
-
-                System.out.println("\tBefore finish!");
                 finish();
-                System.out.println("\tAfter finish!");
             }
         });
     }
