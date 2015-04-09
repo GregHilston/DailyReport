@@ -51,17 +51,6 @@
         </intent-filter>
     </activity>
 
-
-        <activity
-            android:name=".CalendarActivity"
-            android:label="@string/text_observation_activity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
         <activity
             android:name=".EditTextObservationActivity"
             android:label="@string/edit_text_observation_activity" >
