@@ -3,8 +3,12 @@ package com.greghilston.dailyreport;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +18,11 @@ import android.widget.TextView;
 import com.greghilston.dailyreport.ForecastIOLibrary.src.com.arcusweather.forecastio.ForecastIO;
 import com.greghilston.dailyreport.ForecastIOLibrary.src.com.arcusweather.forecastio.ForecastIOResponse;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 public class MainActivity extends Activity {
@@ -22,6 +31,7 @@ public class MainActivity extends Activity {
     public LinearLayout linearLayout;
     public Context context = this;
     TextView textView;
+    private File destination;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +46,12 @@ public class MainActivity extends Activity {
         final Button cameraButton = (Button) findViewById(R.id.cameraButton);
         cameraButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent camScreen = new Intent(getApplicationContext(),CameraActivity.class);
-                startActivity(camScreen);
+                String name =   dateToString(new Date(),"yyyy-MM-dd-hh-mm-ss");
+                destination = new File(Environment.getExternalStorageDirectory(), name  +  ".jpg");
+
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(destination));
+                startActivityForResult(takePictureIntent, CameraActivity.TAKE_PHOTO_CODE);
             }
         });
 
@@ -94,6 +108,11 @@ public class MainActivity extends Activity {
                 startActivityForResult(nextScreen, 1);
             }
         });
+    }
+
+    public String dateToString(Date date, String format) {
+        SimpleDateFormat df = new SimpleDateFormat(format);
+        return df.format(date);
     }
 
     /**
@@ -220,6 +239,20 @@ public class MainActivity extends Activity {
             else if (resultCode == EditWeatherObservationActivity.RESULT_DELETE_WEATHER_OBSERVATION){
                 System.out.println("Removing Weather Observation");
                 r.getObservations().remove(data.getIntExtra("index", 0));
+            }
+        }
+        else if(requestCode == 4 && resultCode == RESULT_OK) {
+            try {
+                FileInputStream in = new FileInputStream(destination);
+                String imagePath = destination.getAbsolutePath();
+
+                System.out.println("imagePath: " + imagePath);
+
+                Intent cameraActivityIntent = new Intent(getApplicationContext(),CameraActivity.class);
+                cameraActivityIntent.putExtra("imagePath", imagePath);
+                startActivity(cameraActivityIntent);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
         }
 
