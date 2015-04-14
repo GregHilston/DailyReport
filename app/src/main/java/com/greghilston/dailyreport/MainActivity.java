@@ -23,6 +23,9 @@ public class MainActivity extends Activity {
     public Context context = this;
     TextView textView;
 
+    private final String API_KEY = "cbbd1fc614026e05d5429175cdfb0d10";
+    GPSLocation gps;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,45 +51,56 @@ public class MainActivity extends Activity {
         final Button weatherButton = (Button) findViewById(R.id.weatherButton);
         weatherButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) { //Changing this to open up txt text screen
-                String API_KEY = "cbbd1fc614026e05d5429175cdfb0d10";
-                Double Lat = LocationMaster.getInstance().getLatitude();
-                Double Long = LocationMaster.getInstance().getLongitude();
+
+                //Double Lat = LocationMaster.getInstance().getLatitude();
+                //Double Long = LocationMaster.getInstance().getLongitude();
                 //Double Lat = 43.1339;
                 //Double Long = 70.9264;
 
-                //Set the API key, Lat, and Lang
-                ForecastIO forecast = new ForecastIO(API_KEY,Lat, Long);
+                //Set up the GPS location
+                gps = new GPSLocation(MainActivity.this);
 
-                //Set the request parameters
-                //ability to set the units, exclude blocks, extend options and user agent for the request. This is not required.
-                HashMap<String, String> requestParam = new HashMap<String, String>();
-                requestParam.put("units", "us");
-                requestParam.put("userAgent", "Custom User Agent 1.0");
-                forecast.setRequestParams(requestParam);
-                forecast.makeRequest();
+                if(gps.canGetLocation){
+                    Double latitude = gps.getLatitude();
+                    Double longitude = gps.getLongitude();
 
-                String responseString = forecast.getResponseString();
-                ForecastIOResponse FIOR = new ForecastIOResponse(responseString);
+                    //Set the API key, Lat, and Lang
+                    ForecastIO forecast = new ForecastIO(API_KEY,latitude, longitude);
 
-                //Retreive the current weather conditions
-                String currently = FIOR.getCurrently().getValue("summary");
-                float temperature = Float.parseFloat(FIOR.getCurrently().getValue("temperature"));
-                float humid = Float.parseFloat(FIOR.getCurrently().getValue("humidity"));
-                float pressure = Float.parseFloat(FIOR.getCurrently().getValue("pressure"));
+                    //Set the request parameters
+                    //ability to set the units, exclude blocks, extend options and user agent for the request. This is not required.
+                    HashMap<String, String> requestParam = new HashMap<String, String>();
+                    requestParam.put("units", "us");
+                    requestParam.put("userAgent", "Custom User Agent 1.0");
+                    forecast.setRequestParams(requestParam);
+                    forecast.makeRequest();
 
-                //Humidity is given in a float that ranges from 0-1 inclusive
-                //Change to a percentage out of 100
-                float relativeHumid = Float.parseFloat(Float.toString(humid));
-                relativeHumid = relativeHumid*100;
+                    String responseString = forecast.getResponseString();
+                    ForecastIOResponse FIOR = new ForecastIOResponse(responseString);
 
-                // TODO: Change what is returned? Or let the user choose
-                //Add the weather observation
-                String weatherResult = "Currently: " + currently + "\n"
-                                    +"Temperature: " + temperature +"°F"+ "\n"
-                                    +"Humidity: " + relativeHumid + "%" + "\n"
-                                    +"Pressure: " + pressure + " millibar" + "\n";
-                r.addObservation(new Weather(currently, temperature, relativeHumid, pressure));
-                r.reportToGui(linearLayout, context);
+                    //Retreive the current weather conditions
+                    String currently = FIOR.getCurrently().getValue("summary");
+                    float temperature = Float.parseFloat(FIOR.getCurrently().getValue("temperature"));
+                    float humid = Float.parseFloat(FIOR.getCurrently().getValue("humidity"));
+                    float pressure = Float.parseFloat(FIOR.getCurrently().getValue("pressure"));
+
+                    //Humidity is given in a float that ranges from 0-1 inclusive
+                    //Change to a percentage out of 100
+                    float relativeHumid = Float.parseFloat(Float.toString(humid));
+                    relativeHumid = relativeHumid*100;
+
+                    // TODO: Change what is returned? Or let the user choose
+                    //Add the weather observation
+                    String weatherResult = "Currently: " + currently + "\n"
+                            +"Temperature: " + temperature +"°F"+ "\n"
+                            +"Humidity: " + relativeHumid + "%" + "\n"
+                            +"Pressure: " + pressure + " millibar" + "\n";
+                    r.addObservation(new Weather(currently, temperature, relativeHumid, pressure));
+                    r.reportToGui(linearLayout, context);
+
+                }else{
+                    gps.showSettingsAlert();
+                }
             }
         });
 
