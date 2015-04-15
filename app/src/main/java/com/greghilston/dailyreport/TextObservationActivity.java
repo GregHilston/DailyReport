@@ -10,6 +10,7 @@ import android.widget.EditText;
 public class TextObservationActivity extends Activity {
     Button submitButton;
     Button cancelButton;
+    Button voiceButton;
     EditText text; // Text entered by the user for this TextObservation
 
     @Override
@@ -19,6 +20,7 @@ public class TextObservationActivity extends Activity {
 
         submitButton = (Button) findViewById(R.id.button2);
         cancelButton = (Button) findViewById(R.id.button);
+        voiceButton = (Button) findViewById(R.id.button3);
         text = (EditText) findViewById(R.id.edtxtInput);
 
         /**
@@ -47,6 +49,26 @@ public class TextObservationActivity extends Activity {
                 finish();
             }
         });
+        /**
+         * Creates a voice observation using google voice
+         */
+        voiceButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+                System.out.println("Voice Observation Submit Button Clicked!");
+
+                Intent voiceIntent = new Intent();
+
+                //Insert voice integration here.
+
+
+                //voiceIntent.putExtra("result", text.getText().toString());
+                //setResult(RESULT_OK, voiceIntent);
+                finish();
+            }
+        });
+
+
+
     }
 }
 
