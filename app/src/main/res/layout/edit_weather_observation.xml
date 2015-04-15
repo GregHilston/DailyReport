@@ -7,35 +7,35 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="52dp"
-        android:inputType="time|textMultiLine|numberDecimal"
+        android:inputType="text"
         android:ems="10"
         android:id="@+id/timeEditText" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="52dp"
-        android:inputType="textMultiLine|numberDecimal"
+        android:inputType="textMultiLine"
         android:ems="10"
         android:id="@+id/currentlyEditText" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="52dp"
-        android:inputType="textMultiLine|numberDecimal"
+        android:inputType="numberDecimal"
         android:ems="10"
         android:id="@+id/temperatureEditText" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="52dp"
-        android:inputType="textMultiLine|numberDecimal"
+        android:inputType="numberDecimal"
         android:ems="10"
         android:id="@+id/humidityEditText" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="52dp"
-        android:inputType="textMultiLine|numberDecimal"
+        android:inputType="numberDecimal"
         android:ems="10"
         android:id="@+id/pressureEditText" />
 

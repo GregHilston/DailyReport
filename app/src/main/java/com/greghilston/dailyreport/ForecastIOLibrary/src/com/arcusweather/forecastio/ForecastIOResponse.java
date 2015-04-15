@@ -32,57 +32,67 @@ public class ForecastIOResponse {
         try {
         	latitude = forecastJsonObject.getString("latitude");
 		} catch (JSONException e) {
+            e.printStackTrace();
 		}
         
         try {
         	longitude = forecastJsonObject.getString("longitude");
 		} catch (JSONException e) {
+            e.printStackTrace();
 		}
         
         try {
         	timezone = forecastJsonObject.getString("timezone");
 		} catch (JSONException e) {
+            e.printStackTrace();
 		}
         
         try {
         	offset = forecastJsonObject.getString("offset");
 		} catch (JSONException e) {
+            e.printStackTrace();
 		}
         
         try {
 			JSONObject currentlyJSONObject = forecastJsonObject.getJSONObject("currently");
 	        mOutputCurrently = buildForecastIOCurrently(currentlyJSONObject);
 		} catch (JSONException e) {
+            e.printStackTrace();
 		}
         
     	try {
 			JSONObject minutelyJSONObject = forecastJsonObject.getJSONObject("minutely");
 	        mOutputMinutely = buildForecastIOMinutely(minutelyJSONObject);
 		} catch (JSONException e) {
+            e.printStackTrace();
 		} 
         
     	try {
 			JSONObject hourlyJSONObject = forecastJsonObject.getJSONObject("hourly");
 	        mOutputHourly = buildForecastIOHourly(hourlyJSONObject);
 		} catch (JSONException e) {
+            e.printStackTrace();
 		} 
 
     	try {
 			JSONObject dailyJSONObject = forecastJsonObject.getJSONObject("daily");
 	        mOutputDaily = buildForecastIODaily(dailyJSONObject);
 		} catch (JSONException e) {
+            e.printStackTrace();
 		} 
 
         try {
         	JSONArray alertsJSONArray = forecastJsonObject.getJSONArray("alerts");
 	        mOutputAlerts = buildForecastIOAlerts(alertsJSONArray);
         } catch (JSONException e) {
+            e.printStackTrace();
         }
         
         try {
         	JSONObject flagsJSONObject = forecastJsonObject.getJSONObject("flags");
         	mOutputFlags = buildForecastIOFlags(flagsJSONObject);
         } catch (JSONException e) {
+            e.printStackTrace();
         }
         
 	}
@@ -90,7 +100,7 @@ public class ForecastIOResponse {
 	/**
 	 * This method will return a specific value based on the key string.
 	 * This method will return null if the value is not found.
-	 * @param keyString
+	 * @param keyString the value to get e.g. latitude or longitude
 	 * @return the value of the data point
 	 */
 	public String getValue(String keyString) {
@@ -99,22 +109,22 @@ public class ForecastIOResponse {
 		String value = null;
 
 		try {
-			if(level.equals(new String("latitude"))) {
+			if(level.equals("latitude")) {
 				value = latitude;
 			}
-			else if(level.equals(new String("longitude"))) {
+			else if(level.equals("longitude")) {
 				value = longitude;
 			}
-			else if(level.equals(new String("timezone"))) {
+			else if(level.equals("timezone")) {
 				value = timezone;
 			}
-			else if(level.equals(new String("offset"))) {
+			else if(level.equals("offset")) {
 				value = offset;
 			}
-			else if(level.equals(new String("currently"))) {
+			else if(level.equals("currently")) {
 				value = getCurrently().getValue(fields[1]);
 			}
-			else if(level.equals(new String("minutely"))) {
+			else if(level.equals("minutely")) {
 				try {
 					int listIndex = Integer.parseInt(fields[1]);
 					value = getMinutely().getData()[listIndex].getValue(fields[2]);
@@ -123,7 +133,7 @@ public class ForecastIOResponse {
 					value = getMinutely().getValue(fields[1]);
 				}
 			}
-			else if(level.equals(new String("hourly"))) {
+			else if(level.equals("hourly")) {
 				try {
 					int listIndex = Integer.parseInt(fields[1]);
 					value = getHourly().getData()[listIndex].getValue(fields[2]);
@@ -132,7 +142,7 @@ public class ForecastIOResponse {
 					value = getHourly().getValue(fields[1]);
 				}
 			}
-			else if(level.equals(new String("daily"))) {
+			else if(level.equals("daily")) {
 				try {
 					int listIndex = Integer.parseInt(fields[1]);
 					value = getDaily().getData()[listIndex].getValue(fields[2]);
@@ -141,7 +151,7 @@ public class ForecastIOResponse {
 					value = getDaily().getValue(fields[1]);
 				}
 			}
-			else if(level.equals(new String("alerts"))) {
+			else if(level.equals("alerts")) {
 				try {
 					int listIndex = Integer.parseInt(fields[1]);
 					value = getAlerts().getData()[listIndex].getValue(fields[2]);
@@ -150,11 +160,12 @@ public class ForecastIOResponse {
 					value = getAlerts().getData()[0].getValue(fields[1]);
 				}
 			}
-			else if(level.equals(new String("flags"))) {
+			else if(level.equals("flags")) {
 				value = getFlags().getValue(fields[1]);
 			}
 		}
 		catch(NullPointerException e) {
+            e.printStackTrace();
 			return null;
 		}
 		return value;
@@ -163,18 +174,18 @@ public class ForecastIOResponse {
 	/**
 	 * method which returns a list of ForecastIODataPoint 
 	 * @param keyString string which defines what data points are required.
-	 * @return
+	 * @return a list of ForecastIODataPoints
 	 */
 	public ForecastIODataPoint[] getDataPoints(String keyString) {
 		ForecastIODataPoint[] value = null;
 		try {
-			if(keyString == "minutely") {
+			if(keyString.equals("minutely")) {
 				value = getMinutely().getData();
 			}
-			else if(keyString == "hourly") {
+			else if(keyString.equals("hourly")) {
 				value = getHourly().getData();
 			}
-			else if(keyString == "daily") {
+			else if(keyString.equals("daily")) {
 				value = getDaily().getData();
 			}
 		}
@@ -186,7 +197,7 @@ public class ForecastIOResponse {
 	
 	/**
 	 * method which returns the currently object
-	 * @return
+	 * @return currently object
 	 */
 	public ForecastIOCurrently getCurrently() {
 		return mOutputCurrently;
@@ -204,7 +215,7 @@ public class ForecastIOResponse {
 
 	/**
 	 * method which returns the minutely object
-	 * @return
+	 * @return minutely object
 	 */
 	public ForecastIOMinutely getMinutely() {
 		return mOutputMinutely;
@@ -222,7 +233,7 @@ public class ForecastIOResponse {
 
 	/**
 	 * method which returns hourly object
-	 * @return
+	 * @return hourly object
 	 */
 	public ForecastIOHourly getHourly() {
 		return mOutputHourly;
@@ -240,7 +251,7 @@ public class ForecastIOResponse {
 
 	/**
 	 * method which returns the daily object in api call.
-	 * @return
+	 * @return daily object
 	 */
 	public ForecastIODaily getDaily() {
 		return mOutputDaily;

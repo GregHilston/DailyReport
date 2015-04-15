@@ -67,7 +67,7 @@ public class EditWeatherObservationActivity extends Activity {
 
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("index", index);
-                returnIntent.putExtra("time", timeEditText.getText().toString());
+                returnIntent.putExtra("date", timeEditText.getText().toString());
                 returnIntent.putExtra("currently", currentlyEditText.getText().toString());
                 returnIntent.putExtra("temperature", temperatureEditText.getText().toString());
                 returnIntent.putExtra("humidity", humidityEditText.getText().toString());

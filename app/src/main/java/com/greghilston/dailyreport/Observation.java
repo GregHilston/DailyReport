@@ -1,44 +1,61 @@
  package com.greghilston.dailyreport;
 
  import java.io.Serializable;
- import android.content.Context;
- import android.location.Location;
- import android.location.LocationManager;
-
+ import java.text.ParseException;
  import java.text.SimpleDateFormat;
+ import java.util.Calendar;
  import java.util.Date;
 
  /***
  * Represents an observation being made by the user
  */
-public abstract class Observation extends Notable implements Serializable {
-     protected String time;
+public abstract class Observation extends Notable implements Serializable{
+     protected Date date;
 
      public Observation() {
-         time = generateTime();
+         date = generateTime();
      }
 
      /**
-      * Gets the time in the form of h:mm:ss with a following am / pm
-      * @return time stamp
+      * Gets the date in the form of h:mm:ss with a following am / pm
+      * @return date stamp
       */
-    public static String generateTime() {
-        return new SimpleDateFormat("h:mm:ss a ").format(new Date());
+    public static Date generateTime() {
+        return new Date();
     }
 
      /**
-      * Returns the time stamp for when this observation was made
-      * @return time
+      * Returns the date stamp for when this observation was made
+      * @return date
       */
-     public String getTime() {
-         return time;
+     public Date getDate() {
+         return date;
      }
 
+     /**
+      * Returns the time stamp for when this observation was made
+      * @return  time
+      */
+     public String getTime() {
+         Calendar calendar = Calendar.getInstance();
+         calendar.setTime(date);
+         int hours = calendar.get(Calendar.HOUR_OF_DAY);
+         int minutes = calendar.get(Calendar.MINUTE);
+
+         // TODO: GET AM / PM
+         return hours + ":" + minutes;
+     }
 
      /**
-      * @param time  time to set for this observation
+      * @param date  date to set for this observation
       */
-     public void setTime(String time) {
-        this.time = time;
+     public void setDate(String date) {
+         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+
+         try {
+             this.date = formatter.parse(date);
+         } catch (ParseException e) {
+             e.printStackTrace();
+         }
      }
 }
