@@ -276,39 +276,88 @@ public class DocumentMaster {
             for(int i = 0; i < r.getObservationsCount(); i++) {
                 Observation o = r.observations.get(i);
 
-                // Time element
-                Element observationTime = doc.createElement("Time");
-                observationTime.appendChild(doc.createTextNode(o.getTime()));
-                observations.appendChild(observationTime);
+                if(o instanceof Text) {
+                    // Observation Element
+                    Element observation = doc.createElement("Observation");
 
-                if(o instanceof Weather) {
-                    // Weather element
-                    Element weather = doc.createElement("Weather");
-                    // TODO: GREHG HERE
-                    weather.appendChild(doc.createTextNode(((Weather) o).getCurrently()));
-                    weather.appendChild(doc.createTextNode(Float.toString(((Weather) o).getTemperature())));
-                    weather.appendChild(doc.createTextNode(Float.toString(((Weather) o).getHumidity())));
-                    weather.appendChild(doc.createTextNode(Float.toString(((Weather) o).getPressure())));
-                    observations.appendChild(weather);
-                }
-                else if(o instanceof Text) {
+                    // Type element
+                    Element type = doc.createElement("Type");;
+                    type.appendChild(doc.createTextNode("Text"));
+                    observation.appendChild(type);
+
+                    // Time element
+                    Element observationTime = doc.createElement("Time");
+                    observationTime.appendChild(doc.createTextNode(o.getTime()));
+                    observation.appendChild(observationTime);
+
                     // Text element
                     Element text = doc.createElement("Text");
                     text.appendChild(doc.createTextNode(((Text) o).getText()));
-                    observations.appendChild(text);
+                    observation.appendChild(text);
+
+                    // Note element
+                    Element note = doc.createElement("Note");
+                    note.appendChild(doc.createTextNode(o.getNote()));
+                    observation.appendChild(note);
+
+                    observations.appendChild(observation);
+                }
+                else if(o instanceof Weather) {
+                    // Observation Element
+                    Element observation = doc.createElement("Observation");
+
+                    // Type element
+                    Element type = doc.createElement("Type");;
+                    type.appendChild(doc.createTextNode("Weather"));
+                    observation.appendChild(type);
+
+                    // Time element
+                    Element observationTime = doc.createElement("Time");
+                    observationTime.appendChild(doc.createTextNode(o.getTime()));
+                    observation.appendChild(observationTime);
+
+                    // Currently element
+                    Element currently = doc.createElement("Currently");
+                    currently.appendChild(doc.createTextNode(((Weather) o).getCurrently()));
+                    observation.appendChild(currently);
+
+                    // Temperature element
+                    Element temperature = doc.createElement("Temperature");
+                    temperature.appendChild(doc.createTextNode(Float.toString(((Weather) o).getTemperature())));
+                    observation.appendChild(temperature);
+
+                    // Humidity element
+                    Element humidity = doc.createElement("Humidity");
+                    humidity.appendChild(doc.createTextNode(Float.toString(((Weather) o).getHumidity())));
+                    observation.appendChild(humidity);
+
+                    // Pressure element
+                    Element pressure = doc.createElement("Pressure");
+                    pressure.appendChild(doc.createTextNode(Float.toString(((Weather) o).getPressure())));
+                    observation.appendChild(pressure);
+
+                    // Note element
+                    Element note = doc.createElement("Note");
+                    note.appendChild(doc.createTextNode(o.getNote()));
+                    observation.appendChild(note);
+
+                    observations.appendChild(observation);
                 }
                 else if(o instanceof Picture){
+                    Element observation = doc.createElement("Observation");
 
+                    // Type element
+                    Element type = doc.createElement("Type");;
+                    observation.appendChild(doc.createTextNode("Picture"));
+
+
+                    type.appendChild(observation);
+                    observations.appendChild(type);
                 }
                 else {
                     System.err.println("Unknown Instance of Observation");
                     System.exit(-1);
                 }
-
-                // Note element
-                Element note = doc.createElement("Note");
-                note.appendChild(doc.createTextNode(o.getNote()));
-                observations.appendChild(note);
             }
 
             // Write the content into xml file
@@ -325,7 +374,7 @@ public class DocumentMaster {
             transformer.transform(source, result);
 
             System.out.println("XML File saved: " + outputFilePath);
-            // printXml(outputFilePath); // TODO: Remove this after demo
+            printXml(outputFilePath); // TODO: Remove this after demo
             return outputFilePath;
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
@@ -406,10 +455,41 @@ public class DocumentMaster {
                     }
 
                     System.out.println("\t\tObservatons:");
+
+                    int textObservationCount = 0;
+                    int weatherObservationCount = 0;
+                    int pictureObservationCount = 0;
+                    int totalObservationCount = textObservationCount + weatherObservationCount + pictureObservationCount;
+
                     for(int i = 0; i < oCount; i++) {
-                        System.out.println("\t\t\tTime: " + element.getElementsByTagName("Time").item(i).getTextContent());
-                        System.out.println("\t\t\tText: " + element.getElementsByTagName("Text").item(i).getTextContent());
-                        System.out.println("\t\t\tNote: " + element.getElementsByTagName("Note").item(i).getTextContent() + "\n");
+                        String type = element.getElementsByTagName("Type").item(i).getTextContent();
+
+                        if(type.equals("Text")) {
+                            System.out.println("\t\t\tType: Text");
+                            System.out.println("\t\t\tTime: " + element.getElementsByTagName("Time").item(totalObservationCount).getTextContent());
+                            System.out.println("\t\t\tText: " + element.getElementsByTagName("Text").item(textObservationCount).getTextContent());
+                            System.out.println("\t\t\tNote: " + element.getElementsByTagName("Note").item(totalObservationCount).getTextContent() + "\n");
+                            textObservationCount = textObservationCount + 1;
+                        }
+                        else if(type.equals("Weather")) {
+                            System.out.println("\t\t\tType: Weather");
+                            System.out.println("\t\t\tTime: " + element.getElementsByTagName("Time").item(totalObservationCount).getTextContent());
+                            System.out.println("\t\t\tCurrently: " + element.getElementsByTagName("Currently").item(weatherObservationCount).getTextContent());
+                            System.out.println("\t\t\tTemperature: " + element.getElementsByTagName("Temperature").item(weatherObservationCount).getTextContent());
+                            System.out.println("\t\t\tHumidity: " + element.getElementsByTagName("Humidity").item(weatherObservationCount).getTextContent());
+                            System.out.println("\t\t\tPressure: " + element.getElementsByTagName("Pressure").item(weatherObservationCount).getTextContent());
+                            System.out.println("\t\t\tNote: " + element.getElementsByTagName("Note").item(totalObservationCount).getTextContent() + "\n");
+                            weatherObservationCount = weatherObservationCount + 1;
+                        }
+                        else if(type.equals("Picture")) {
+                            System.out.println("\t\t\tType: Picture");
+                            pictureObservationCount = pictureObservationCount + 1;
+                        }
+                        else {
+                            System.err.println("XML file is corrupt. Unexpected observation: " + type);
+                        }
+
+                        totalObservationCount = textObservationCount + weatherObservationCount + pictureObservationCount; // Update
                     }
                 }
             }
