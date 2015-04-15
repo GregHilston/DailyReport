@@ -1,6 +1,9 @@
  package com.greghilston.dailyreport;
 
-/***
+ import java.text.ParseException;
+ import java.text.SimpleDateFormat;
+
+ /***
  * Represents a weather observation being made by the user
  */
 public class Weather extends Observation {
@@ -9,12 +12,45 @@ public class Weather extends Observation {
     private float humidity = 0.0f;
     private float pressure = 0.0f;
 
-    public Weather(String currently, float temperature, float humidity, float pressure) {
-        super();
+     /**
+      * Used when the user clicks the Weather Observation button
+      * @param currently
+      * @param temperature
+      * @param humidity
+      * @param pressure
+      */
+     public Weather(String currently, float temperature, float humidity, float pressure) {
+         super();
+
+         this.currently = currently;
+         this.temperature = temperature;
+         this.humidity = humidity;
+         this.pressure = pressure;
+     }
+
+     /**
+      * Used when creating a Weather Observation from an XML file
+      * @param dateAndTime
+      * @param currently
+      * @param temperature
+      * @param humidity
+      * @param pressure
+      * @param note
+      */
+    public Weather(String dateAndTime, String currently, float temperature, float humidity, float pressure, String note) {
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss a");
+
+        try {
+            this.date = formatter.parse(dateAndTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         this.currently = currently;
         this.temperature = temperature;
         this.humidity = humidity;
         this.pressure = pressure;
+        this.note = note;
     }
 
     /**

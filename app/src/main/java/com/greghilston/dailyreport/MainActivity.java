@@ -110,10 +110,6 @@ public class MainActivity extends Activity {
 
                        // TODO: Change what is returned? Or let the user choose
                        //Add the weather observation
-                       String weatherResult = "Currently: " + currently + "\n"
-                               + "Temperature: " + temperature + "°F" + "\n"
-                               + "Humidity: " + relativeHumid + "%" + "\n"
-                               + "Pressure: " + pressure + " millibar" + "\n";
                        r.addObservation(new Weather(currently, temperature, relativeHumid, pressure));
                        r.reportToGui(linearLayout, context);
                    }

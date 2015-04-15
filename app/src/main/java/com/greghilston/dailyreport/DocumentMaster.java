@@ -144,6 +144,49 @@ public class DocumentMaster {
                         Text o = new Text(time, text, note);
                         r.addObservation(o);
                     }
+
+
+                    // Observations
+
+                    int textObservationCount = 0;
+                    int weatherObservationCount = 0;
+                    int pictureObservationCount = 0;
+                    int totalObservationCount = textObservationCount + weatherObservationCount + pictureObservationCount;
+
+                    for(int i = 0; i < oCount; i++) {
+                        String type = element.getElementsByTagName("Type").item(i).getTextContent();
+
+                        if(type.equals("Text")) {
+                            String time = element.getElementsByTagName("Time").item(totalObservationCount).getTextContent();
+                            String text = element.getElementsByTagName("Text").item(textObservationCount).getTextContent();
+                            String note = element.getElementsByTagName("Note").item(totalObservationCount).getTextContent();
+
+                            Text o = new Text(time, text, note);
+                            r.addObservation(o);
+                            textObservationCount = textObservationCount + 1;
+                        }
+                        else if(type.equals("Weather")) {
+                            String time = element.getElementsByTagName("Time").item(totalObservationCount).getTextContent();
+                            String currently = element.getElementsByTagName("Currently").item(weatherObservationCount).getTextContent();
+                            Float temperature = Float.valueOf(element.getElementsByTagName("Temperature").item(weatherObservationCount).getTextContent());
+                            Float humidity = Float.valueOf(element.getElementsByTagName("Humidity").item(weatherObservationCount).getTextContent());
+                            Float pressure = Float.valueOf(element.getElementsByTagName("Pressure").item(weatherObservationCount).getTextContent());
+                            String note = element.getElementsByTagName("Note").item(totalObservationCount).getTextContent();
+
+                            Weather o = new Weather(time, currently, temperature, humidity, pressure, note);
+                            r.addObservation(o);
+                            weatherObservationCount = weatherObservationCount + 1;
+                        }
+                        else if(type.equals("Picture")) {
+                            System.out.println("\t\t\tType: Picture");
+                            pictureObservationCount = pictureObservationCount + 1;
+                        }
+                        else {
+                            System.err.println("XML file is corrupt. Unexpected observation: " + type);
+                        }
+
+                        totalObservationCount = textObservationCount + weatherObservationCount + pictureObservationCount; // Update
+                    }
                 }
             }
         } catch (Exception e) {
@@ -506,7 +549,6 @@ public class DocumentMaster {
      */
     @TargetApi(Build.VERSION_CODES.FROYO)
     public String createCsv(Report r, File file) {
-        // Commented out, as this creates a CSV from a report, rather than an XML file
         String fileName = r.getFileName();
         String outputFilePath = file + "/" + fileName +  ".csv";
 
@@ -557,17 +599,68 @@ public class DocumentMaster {
 
             writer.append("\nObservations\n");
             for(Observation o : r.getObservations()) {
+                writer.append(',');
                 writer.append(o.getTime());
                 writer.append(',');
 
-                // Text
+                // Text Observation
                 if(o instanceof Text) {
-                    writer.append(((Text) o).getText());
+                    writer.append("Text Observation");
+                    writer.append('\n');
                     writer.append(',');
+                    writer.append(',');
+
+
+                    writer.append("Text");
+                    writer.append(',');
+                    writer.append(((Text) o).getText());
+                }
+                // Weather Observation
+                else if(o instanceof Weather) {
+                    Weather w = ((Weather) o);
+
+                    writer.append("Weather Observation");
+                    writer.append('\n');
+                    writer.append(',');
+                    writer.append(',');
+
+                    writer.append("Currently");
+                    writer.append(',');
+                    writer.append(w.getCurrently());
+                    writer.append('\n');
+                    writer.append(',');
+                    writer.append(',');
+
+                    writer.append("Temperature");
+                    writer.append(',');
+                    writer.append(Float.toString(w.getTemperature()));
+                    writer.append('\n');
+                    writer.append(',');
+                    writer.append(',');
+
+                    writer.append("Humidity");
+                    writer.append(',');
+                    writer.append(Float.toString(w.getHumidity()));
+                    writer.append('\n');
+                    writer.append(',');
+                    writer.append(',');
+
+                    writer.append("Pressure");
+                    writer.append(',');
+                    writer.append(Float.toString(w.getPressure()));
+                }
+                // Picture Observation
+                else if(o instanceof Picture) {
+                    writer.append("Picture Observation");
                 }
 
-                writer.append(o.getNote());
+                writer.append('\n');
                 writer.append(',');
+                writer.append(',');
+                writer.append("Note");
+                writer.append(',');
+                writer.append(o.getNote());
+                writer.append('\n');
                 writer.append('\n');
             }
 

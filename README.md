@@ -1,5 +1,6 @@
 # DailyReport
 TODO:
+Editing a observation brings it to the top, as the seconds for the time is updated. Show seconds as a fix?
 Change XML to have type once for each observation (Greg)
 Get last location for weather observations (Evan)
     XML backend for Weather (Greg)
