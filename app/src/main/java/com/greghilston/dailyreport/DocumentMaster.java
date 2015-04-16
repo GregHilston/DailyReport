@@ -1,17 +1,13 @@
 package com.greghilston.dailyreport;
 
 import android.annotation.TargetApi;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 
 // For XML File creation
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -41,7 +37,8 @@ public class DocumentMaster {
     private static File reportsDir = new File("app/src/main/java/com/greghilston/dailyreport/Reports/");
 
     static {
-        createReportFolder();
+        createReportFolderInIDE();
+        createReportFolderOnDevice();
     }
 
     public static DocumentMaster getInstance() {
@@ -49,9 +46,9 @@ public class DocumentMaster {
     }
 
     /**
-     * Creates the "Reports" directory if does not already exist
+     * Creates the "Reports" directory if does not already exist in IDE
      */
-    public static void createReportFolder() {
+    public static void createReportFolderInIDE() {
         // If directory doesn't exist, then create it
         if (reportsDir.exists() || reportsDir.mkdir()) {
 
@@ -66,6 +63,14 @@ public class DocumentMaster {
                 }
             }
         }
+    }
+
+    /**
+     * Creates the "Reports" directory if does not already exist on device
+     */
+    public static void createReportFolderOnDevice() {
+        File directory = new File(Environment.getExternalStorageDirectory() + File.separator + "Reports");
+        directory.mkdirs();
     }
 
     /**

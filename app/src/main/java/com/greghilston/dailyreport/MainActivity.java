@@ -34,9 +34,9 @@ public class MainActivity extends Activity {
     public Context context = this;
     TextView textView;
     private File destination;
-
     private final String API_KEY = "cbbd1fc614026e05d5429175cdfb0d10";
     GPSLocation gps;
+    static final int REQUEST_IMAGE_CAPTURE = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +52,22 @@ public class MainActivity extends Activity {
         final Button cameraButton = (Button) findViewById(R.id.cameraButton);
         cameraButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
+                // File path attempt
                 String name =   dateToString(new Date(),"yyyy-MM-dd-hh-mm-ss");
                 destination = new File(Environment.getExternalStorageDirectory(), name  +  ".jpg");
 
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(destination));
                 startActivityForResult(takePictureIntent, CameraActivity.TAKE_PHOTO_CODE);
+
+                /*
+                //
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                }
+                */
             }
         });
 
@@ -130,6 +140,22 @@ public class MainActivity extends Activity {
                 startActivityForResult(nextScreen, 1);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        System.out.println("Application resumed");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        System.out.println("Application stopped");
+
+        // Application has stopped, save timeline as XML file to device
+        DocumentMaster.getInstance().createXml(r, getApplicationContext().getExternalFilesDir(null));
     }
 
     public String dateToString(Date date, String format) {
@@ -264,6 +290,7 @@ public class MainActivity extends Activity {
             }
         }
         else if(requestCode == 4 && resultCode == RESULT_OK) {
+            // File based work
             try {
                 FileInputStream in = new FileInputStream(destination);
                 String imagePath = destination.getAbsolutePath();
@@ -276,6 +303,16 @@ public class MainActivity extends Activity {
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
+
+            /*
+            // Bitmap attempt
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+
+            Intent cameraActivityIntent = new Intent(getApplicationContext(),CameraActivity.class);
+            cameraActivityIntent.putExtra("imageBitmap", imageBitmap);
+            startActivity(cameraActivityIntent);
+            */
         }
 
         r.reportToGui(linearLayout, context);

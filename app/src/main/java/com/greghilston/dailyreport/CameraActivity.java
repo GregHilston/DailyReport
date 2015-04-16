@@ -23,7 +23,7 @@ public class CameraActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        // File based
         super.onCreate(savedInstanceState);
         setContentView(R.layout.camera_observation);
         pictureTakenImageView = (ImageView) findViewById(R.id.imageView);
@@ -41,5 +41,17 @@ public class CameraActivity extends Activity {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+        /*
+        // Bitmap attempt
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.camera_observation);
+
+        Intent intent = getIntent();
+        Bitmap imageBitmap = (Bitmap) intent.getParcelableExtra("imageBitmap"); // If the bitmap exists as a file or a resource, its is always better to pass the URI or ResourceID of the bitmap and not the bitmap itself. Passing the entire bitmap requires a lot of memory. Passing the URL requires very little memory and allows each activity to load and scale the bitmap as they need it. –
+        pictureTakenImageView = (ImageView) findViewById(R.id.imageView);
+        System.out.println("Test");
+        pictureTakenImageView.setImageBitmap(imageBitmap);
+        */
     }
 }

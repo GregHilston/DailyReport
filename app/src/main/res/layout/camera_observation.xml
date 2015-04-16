@@ -14,7 +14,6 @@
         android:layout_weight="0.42"
         android:tint="@android:color/background_light"
         android:background="@android:color/background_light"
-
         />
 
     <TextView
