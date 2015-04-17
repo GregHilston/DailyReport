@@ -40,7 +40,7 @@ public class DocumentMasterTester {
         Text t = new Text("Won Superbowl");
         reportHandMade.addObservation(t);
 
-        DocumentMaster.getInstance().createXml(reportHandMade, new File("app/src/main/java/com/greghilston/dailyreport/Reports/"));
+        DocumentMaster.getInstance().createXml(reportHandMade);
     }
 
     public static void testCreateCsvFromHandmade() {
@@ -68,7 +68,7 @@ public class DocumentMasterTester {
         Text t = new Text("Won Superbowl");
         reportHandMade.addObservation(t);
 
-        DocumentMaster.getInstance().createCsv(reportHandMade, new File("app/src/main/java/com/greghilston/dailyreport/Reports/"));
+        DocumentMaster.getInstance().createCsv(reportHandMade);
     }
 
     public static void testCreateReportFromXml() {
@@ -96,7 +96,7 @@ public class DocumentMasterTester {
         Text t = new Text("Won Superbowl");
         reportHandMade.addObservation(t);
 
-        DocumentMaster.getInstance().createXml(reportHandMade, new File("app/src/main/java/com/greghilston/dailyreport/Reports/"));
+        DocumentMaster.getInstance().createXml(reportHandMade);
 
         // Testing the XML -> Report (Works)
         Report reportFromXml = DocumentMaster.getInstance().createReportFromXml(reportHandMade.getFileName());

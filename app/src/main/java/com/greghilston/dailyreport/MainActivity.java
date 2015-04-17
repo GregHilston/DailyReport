@@ -1,7 +1,9 @@
 package com.greghilston.dailyreport;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,7 +32,7 @@ import java.util.HashMap;
 
 public class MainActivity extends Activity {
     Project project = new Project("Construction", "ACME");
-    final Report r = new Report(project);
+    Report r;
     public LinearLayout linearLayout;
     public Context context = this;
     TextView textView;
@@ -37,6 +40,7 @@ public class MainActivity extends Activity {
     private final String API_KEY = "cbbd1fc614026e05d5429175cdfb0d10";
     GPSLocation gps;
     static final int REQUEST_IMAGE_CAPTURE = 4;
+    // XML file chooser
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +51,55 @@ public class MainActivity extends Activity {
         linearLayout = (LinearLayout) findViewById(R.id.timeLine);
         textView = new TextView(getApplicationContext());
 
-        r.reportToGui(linearLayout, this);
+        File[] contents = DocumentMaster.xmlDirPhone.listFiles();
+
+        if(contents.length == 0) {
+            r = new Report(project); //Create a new report
+            r.reportToGui(linearLayout, this);
+        }
+        else { // Atleast one previous report exists
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which){
+                        case DialogInterface.BUTTON_POSITIVE:
+                            //Yes button clicked
+                            System.out.println("Yes button pressed!");
+
+                            File mPath = new File(DocumentMaster.xmlDirPhone.getPath());
+                            FileDialog fileDialog = new FileDialog(MainActivity.this, mPath);
+                            fileDialog.setFileEndsWith(".xml");
+                            fileDialog.addFileListener(new FileDialog.FileSelectedListener() {
+                                public void fileSelected(File file) {
+                                    Log.d(getClass().getName(), "selected file " + file.toString());
+                                    r = DocumentMaster.getInstance().createReportFromXml(file.toString());
+                                    r.reportToGui(linearLayout, getBaseContext());
+                                }
+                            });
+                            //fileDialog.addDirectoryListener(new com.greghilston.dailyreport.FileDialog.DirectorySelectedListener() {
+                            //  public void directorySelected(File directory) {
+                            //      Log.d(getClass().getName(), "selected dir " + directory.toString());
+                            //  }
+                            //});
+                            //fileDialog.setSelectDirectoryOption(false);
+                            fileDialog.showDialog();
+
+                            break;
+
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            //No button clicked
+                            System.out.println("No button pressed!");
+                            r = new Report(project);
+                            r.reportToGui(linearLayout, getBaseContext());
+                            break;
+                    }
+                }
+            };
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setMessage("Would you like to open a saved report?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
+        }
+
 
         final Button cameraButton = (Button) findViewById(R.id.cameraButton);
         cameraButton.setOnClickListener(new View.OnClickListener() {
@@ -155,7 +207,7 @@ public class MainActivity extends Activity {
         System.out.println("Application stopped");
 
         // Application has stopped, save timeline as XML file to device
-        DocumentMaster.getInstance().createXml(r, getApplicationContext().getExternalFilesDir(null));
+        DocumentMaster.getInstance().createXml(r);
     }
 
     public String dateToString(Date date, String format) {
@@ -200,14 +252,14 @@ public class MainActivity extends Activity {
 
         else if (id == R.id.create_xml) {
             System.out.println("Generating a XML Document");
-            String filePath = DocumentMaster.getInstance().createXml(r, getApplicationContext().getExternalFilesDir(null));
+            String filePath = DocumentMaster.getInstance().createXml(r);
             System.out.println("filePath: " + filePath);
 
             emailFile(filePath);
         }
         else if (id == R.id.create_csv) {
             System.out.println("Generating a CSV Document");
-            String filePath = DocumentMaster.getInstance().createCsv(r, getApplicationContext().getExternalFilesDir(null));
+            String filePath = DocumentMaster.getInstance().createCsv(r);
             System.out.println("filePath: " + filePath);
 
             emailFile(filePath);

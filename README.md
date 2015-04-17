@@ -5,6 +5,8 @@ Poster
 Editing a field should pull up the appropiate keyboard (Evan)
 
 CameraActivity
+    Bitmap based work - http://developer.android.com/training/camera/photobasics.html#TaskPhotoView
+    File based work -
     Show thumbnail
     Add pictures for camera type
     Add cancel and submit buttons
@@ -20,8 +22,7 @@ Top of timeline
     company count
     equipment count
 
-On application close, save XML file to reports folder (Greg)
-On application open, prompt user to either create new report or open old one (Greg)
+Ability to delete report (Greg)
 
 Pretty GUI:
     + button

@@ -24,7 +24,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 // For XML File reading
-
+// TODO: Don't have folders hard coded strings, use final static strings instead
 
 /**
  * Responsible for creating human readable documents
@@ -34,11 +34,19 @@ import org.w3c.dom.NodeList;
  */
 public class DocumentMaster {
     private static DocumentMaster instance = new DocumentMaster();
-    private static File reportsDir = new File("app/src/main/java/com/greghilston/dailyreport/Reports/");
+    private static File reportsDirIDE = new File("app/src/main/java/com/greghilston/DailyReport/Reports/");
+    public static final File dailyReportDirPhone = new File(Environment.getExternalStorageDirectory() + File.separator + "DailyReport");
+    public static final File reportDirPhone = new File(Environment.getExternalStorageDirectory() + File.separator + "DailyReport" + File.separator + "Reports");
+    public static final File xmlDirPhone = new File(Environment.getExternalStorageDirectory() + File.separator + "DailyReport" + File.separator + "Reports" + File.separator + "XML");
+    public static final File csvDirPhone = new File(Environment.getExternalStorageDirectory() + File.separator + "DailyReport" + File.separator + "Reports" + File.separator + "CSV");
+
 
     static {
         createReportFolderInIDE();
-        createReportFolderOnDevice();
+        createDailyReportsFolderOnPhone();
+        createReportsFolderOnPhone();
+        createXmlFolderOnPhone();
+        createCsvFolderOnPhone();
     }
 
     public static DocumentMaster getInstance() {
@@ -50,14 +58,14 @@ public class DocumentMaster {
      */
     public static void createReportFolderInIDE() {
         // If directory doesn't exist, then create it
-        if (reportsDir.exists() || reportsDir.mkdir()) {
+        if (reportsDirIDE.exists() || reportsDirIDE.mkdir()) {
 
             // If file doesn't exist, then create it
-            if (!reportsDir.exists()) {
-                System.err.println("Warning: Reports folder was missing, creating folder now");
+            if (!reportsDirIDE.exists()) {
+                System.err.println("Warning: Reports folder was missing in IDE, creating folder now");
 
                 try {
-                    reportsDir.createNewFile();
+                    reportsDirIDE.createNewFile();
                 } catch (IOException e) {
                     e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                 }
@@ -66,11 +74,71 @@ public class DocumentMaster {
     }
 
     /**
-     * Creates the "Reports" directory if does not already exist on device
+     * Creates the "DailyReport" directory if does not already exist on the phone
      */
-    public static void createReportFolderOnDevice() {
-        File directory = new File(Environment.getExternalStorageDirectory() + File.separator + "Reports");
-        directory.mkdirs();
+    public static void createDailyReportsFolderOnPhone() {
+        boolean success = true;
+
+        if (!dailyReportDirPhone.exists()) {
+            success = dailyReportDirPhone.mkdir();
+        }
+
+        if (success) {
+            System.out.println("DailyReport Folder created successfully or already exist");
+        } else {
+            System.err.println("DailyReport creation failed"); // TODO: Handle this
+        }
+    }
+
+    /**
+     * Creates the "Reports" directory if does not already exist on the phone
+     */
+    public static void createReportsFolderOnPhone() {
+        boolean success = true;
+
+        if (!reportDirPhone.exists()) {
+            success = reportDirPhone.mkdir();
+        }
+
+        if (success) {
+            System.out.println("Reports Folder created successfully or already exist");
+        } else {
+            System.err.println("Reports Folder creation failed"); // TODO: Handle this
+        }
+    }
+
+    /**
+     * Creates the "Xml" directory if does not already exist on the phone
+     */
+    public static void createXmlFolderOnPhone() {
+        boolean success = true;
+
+        if (!xmlDirPhone.exists()) {
+            success = xmlDirPhone.mkdir();
+        }
+
+        if (success) {
+            System.out.println("Xml Folder created successfully or already exist");
+        } else {
+            System.err.println("Xml Folder creation failed"); // TODO: Handle this
+        }
+    }
+
+    /**
+     * Creates the "Csv" directory if does not already exist on the phone
+     */
+    public static void createCsvFolderOnPhone() {
+        boolean success = true;
+
+        if (!csvDirPhone.exists()) {
+            success = csvDirPhone.mkdir();
+        }
+
+        if (success) {
+            System.out.println("Csv Folder created successfully or already exist");
+        } else {
+            System.err.println("Csv Folder creation failed"); // TODO: Handle this
+        }
     }
 
     /**
@@ -80,9 +148,11 @@ public class DocumentMaster {
     @TargetApi(Build.VERSION_CODES.FROYO)
     public Report createReportFromXml(String fileName) {
         Report r = new Report();
+        r.removeObservation(0); // Removes the arrived on site observation the constuctor gives us TODO: Fix it so we don't have to do this
 
         try {
-            File file = new File("app/src/main/java/com/greghilston/dailyreport/Reports/" + fileName + ".xml");
+            File file = new File(fileName);
+
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(file);
@@ -104,6 +174,7 @@ public class DocumentMaster {
                     Element element = (Element) node;
 
                     r.setCompanyName(element.getElementsByTagName("Company").item(0).getTextContent());
+                    r.setProject(new Project(element.getElementsByTagName("prName").item(0).getTextContent(), element.getElementsByTagName("Company").item(0).getTextContent()));
                     r.setProjectName(element.getElementsByTagName("prName").item(0).getTextContent());
                     r.setDate(element.getElementsByTagName("Date").item(0).getTextContent());
 
@@ -141,18 +212,6 @@ public class DocumentMaster {
                     }
 
                     // Observations
-                    for(int i = 0; i < oCount; i++) {
-                        String time = element.getElementsByTagName("Time").item(i).getTextContent();
-                        String text = element.getElementsByTagName("Text").item(i).getTextContent();
-                        String note = element.getElementsByTagName("Note").item(i).getTextContent();
-
-                        Text o = new Text(time, text, note);
-                        r.addObservation(o);
-                    }
-
-
-                    // Observations
-
                     int textObservationCount = 0;
                     int weatherObservationCount = 0;
                     int pictureObservationCount = 0;
@@ -204,13 +263,18 @@ public class DocumentMaster {
     /**
      * Creates an XML file based on the report
      * @param r  the report to make the XML file from
-     * @param file  the file to write the xml from
      * @return  the file path or NULL if the file creation failed
      */
     @TargetApi(Build.VERSION_CODES.FROYO)
-    public String createXml(Report r, File file) {
+    public String createXml(Report r) {
+        System.out.println("createXml - printing report");
+        r.printReport();
+        System.out.print("r.getProject(): ");
+        System.out.println(r.getProject());
+
+
         String fileName = r.getFileName();
-        String outputFilePath = file + "/" + fileName +  ".xml";
+        String outputFilePath = xmlDirPhone + File.separator +  fileName +  ".xml";
 
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -549,13 +613,12 @@ public class DocumentMaster {
     /**
      * Creates a CSV based on the XML file
      * @param r  the report to make the CSV file from
-     * @param file  the file to write the csv from
      * @return  the file path or NULL if the file creation failed
      */
     @TargetApi(Build.VERSION_CODES.FROYO)
-    public String createCsv(Report r, File file) {
+    public String createCsv(Report r) {
         String fileName = r.getFileName();
-        String outputFilePath = file + "/" + fileName +  ".csv";
+        String outputFilePath = csvDirPhone + "/" + fileName +  ".csv";
 
         try
         {

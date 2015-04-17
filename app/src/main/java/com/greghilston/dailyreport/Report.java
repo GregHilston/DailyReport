@@ -127,6 +127,15 @@ public class Report {
             if(this.observations.get(i) instanceof Text) {
                 System.out.println("\t" + ((Text) this.observations.get(i)).getText());
             }
+            else if(this.observations.get(i) instanceof Weather) {
+                System.out.println("\t" + ((Weather) this.observations.get(i)).getCurrently());
+                System.out.println("\t" + ((Weather) this.observations.get(i)).getTemperature());
+                System.out.println("\t" + ((Weather) this.observations.get(i)).getHumidity());
+                System.out.println("\t" + ((Weather) this.observations.get(i)).getPressure());
+            }
+            else if(this.observations.get(i) instanceof Picture) {
+
+            }
 
             System.out.println("\t" + this.observations.get(i).getNote());
         }
@@ -306,5 +315,12 @@ public class Report {
      */
     public void setDate(String date) {
         this.date = date;
+    }
+
+    /**
+     * @param project  the project for this report
+     */
+    public void setProject(Project project) {
+        this.project = project;
     }
 }
