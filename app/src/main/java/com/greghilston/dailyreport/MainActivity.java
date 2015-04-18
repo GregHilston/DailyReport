@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -130,6 +131,22 @@ public class MainActivity extends Activity {
                 startActivityForResult(nextScreen, 1);
             }
         });
+        final Button headcountButton = (Button) findViewById(R.id.headcountButton);
+        headcountButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Toast.makeText(context, "Left Button Clicked",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+
+        final Button equipmentButton = (Button) findViewById(R.id.equipmentButton);
+        equipmentButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Toast.makeText(context, "Right Button Clicked",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 
     public String dateToString(Date date, String format) {

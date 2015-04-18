@@ -41,9 +41,21 @@ public abstract class Observation extends Notable implements Serializable{
          calendar.setTime(date);
          int hours = calendar.get(Calendar.HOUR_OF_DAY);
          int minutes = calendar.get(Calendar.MINUTE);
+         String m = Integer.toString(minutes);
+         m = String.format("%02d",minutes).replaceAll(" ", "0");
+
+         String stamp = "";
+
+         if (hours < 13) {
+             stamp = "AM";
+         }
+         else{
+             stamp = "PM";
+             hours = (hours - 12);
+         }
 
          // TODO: GET AM / PM
-         return hours + ":" + minutes;
+         return hours + ":" + m + "" + stamp;
      }
 
      /**

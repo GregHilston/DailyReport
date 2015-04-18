@@ -3,6 +3,25 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
         <!-- Customize your theme here. -->
+        <item name="android:actionBarStyle">@style/MyzActionBar</item>
     </style>
+
+    <style name = "Newforma_Base_Theme" parent="android:Theme.Holo.Light.DarkActionBar"> <!--parent="Base.Theme.AppCompat.Light.DarkActionBar">-->
+        <item name="android:windowBackground">@color/nfOrange</item>
+        <item name="android:colorBackground">@color/nfLOrange</item>
+        <item name="android:background">@color/nfBckD</item>
+    </style>
+
+<!--
+        nf_main Menu below
+    -->
+
+    <style name="MyzActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">@color/nfOrange</item>
+        <item name="android:height">100dp</item>
+        <item name="android:actionBarTabTextStyle">@color/white</item>
+    </style>
+
+
 
 </resources>

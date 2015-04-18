@@ -50,6 +50,7 @@
             android:text="Cancel"
             android:id="@+id/button"
             android:layout_gravity="center_horizontal"
+            android:background="@drawable/border"
             android:layout_weight="1" />
 
         <Button
@@ -58,6 +59,7 @@
             android:text="Submit"
             android:id="@+id/button2"
             android:layout_gravity="center_horizontal"
+            android:background="@drawable/border"
             android:layout_weight="1" />
 
         <Button
@@ -65,6 +67,7 @@
             android:layout_height="wrap_content"
             android:text="Remove Observation"
             android:id="@+id/button3"
+            android:background="@drawable/border"
             android:layout_weight="1" />
         </LinearLayout>
 

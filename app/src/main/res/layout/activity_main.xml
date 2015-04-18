@@ -1,50 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <Button
+            android:id="@+id/equipmentButton"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Equipment"
+            android:background="@drawable/hceqbordered"
+            android:layout_gravity="bottom"/>
+
+        <Button
+            android:id="@+id/headcountButton"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Headcount"
+            android:background="@drawable/hceqbordered"
+            android:layout_gravity="bottom" />
+
+        <!--
+
+
+        <ImageButton
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/imageButton"
+            android:contentDescription="HeadC"
+            android:src="@drawable/hc_svg"
+            android:scaleType="fitCenter"
+            android:background="@drawable/bborder"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/imageButton2"
+            android:contentDescription="EquipM"
+            android:src="@drawable/hc_svg"
+            android:scaleType="fitCenter"
+            android:background="@drawable/bborder"
+            android:layout_weight="1" />
+
+
+            -->
+
+
+    </LinearLayout>
+
+
 
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/scrollView"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="55dip">
+        android:background="@color/nfBckD"
+        >
 
         <LinearLayout
             android:id="@+id/timeLine"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
+
         </LinearLayout>
     </ScrollView>
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_gravity="bottom">
 
         <Button
             android:id="@+id/cameraButton"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="C" />
+            android:text="C"
+            android:background="@drawable/border"
+            android:layout_gravity="bottom"/>
 
         <Button
             android:id="@+id/weatherButton"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="W" />
+            android:text="W"
+            android:background="@drawable/border"
+            android:layout_gravity="bottom" />
 
         <Button
             android:id="@+id/noteButton"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="N" />
+            android:text="N"
+            android:background="@drawable/border"
+            android:layout_gravity="bottom" />
     </LinearLayout>
-</RelativeLayout>
+
+</LinearLayout>
