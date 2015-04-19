@@ -6,24 +6,7 @@
     android:id="@+id/camera"
     android:background="@android:color/darker_gray">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:inputType="date"
-        android:ems="10"
-        android:id="@+id/editText2"
-        android:layout_weight="0.20 "
-        android:background="@android:color/background_light"
-        android:text="Time" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/textView2" />
-
     <ImageView
-        android:src="@drawable/newforma_logo"
         android:layout_width="193dp"
         android:layout_height="wrap_content"
         android:id="@+id/imageView"
@@ -34,11 +17,12 @@
 
         />
 
-    <Button
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Take Picture"
-        android:id="@+id/picButton"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Observation Type"
+        android:id="@+id/textView"
         android:layout_gravity="center_horizontal" />
 
     <LinearLayout
@@ -88,28 +72,15 @@
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Observation Type"
-        android:id="@+id/textView" />
-
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
         android:ems="10"
         android:id="@+id/editText"
-        android:layout_weight="0.35"
+        android:layout_weight="0.54"
         android:background="@android:color/background_light"
-        android:text="Add Notable Here" />
-
-    <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/scrollView2" >
-
-    </ScrollView>
+        android:editable="true"
+        android:hint="Add notes about picture" />
 
 </LinearLayout>

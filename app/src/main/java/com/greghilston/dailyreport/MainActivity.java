@@ -3,17 +3,29 @@ package com.greghilston.dailyreport;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.greghilston.dailyreport.ForecastIOLibrary.src.com.arcusweather.forecastio.ForecastIO;
 import com.greghilston.dailyreport.ForecastIOLibrary.src.com.arcusweather.forecastio.ForecastIOResponse;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 public class MainActivity extends Activity {
@@ -22,6 +34,7 @@ public class MainActivity extends Activity {
     public LinearLayout linearLayout;
     public Context context = this;
     TextView textView;
+    private File destination;
 
     private final String API_KEY = "cbbd1fc614026e05d5429175cdfb0d10";
     GPSLocation gps;
@@ -40,8 +53,12 @@ public class MainActivity extends Activity {
         final Button cameraButton = (Button) findViewById(R.id.cameraButton);
         cameraButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent camScreen = new Intent(getApplicationContext(),CameraActivity.class);
-                startActivity(camScreen);
+                String name =   dateToString(new Date(),"yyyy-MM-dd-hh-mm-ss");
+                destination = new File(Environment.getExternalStorageDirectory(), name  +  ".jpg");
+
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(destination));
+                startActivityForResult(takePictureIntent, CameraActivity.TAKE_PHOTO_CODE);
             }
         });
 
@@ -63,41 +80,44 @@ public class MainActivity extends Activity {
                 if(gps.canGetLocation){
                     Double latitude = gps.getLatitude();
                     Double longitude = gps.getLongitude();
+                    //Boolean hasNetwork = false;
+                   if(gps.isNetworkAvailable()) {
 
-                    //Set the API key, Lat, and Lang
-                    ForecastIO forecast = new ForecastIO(API_KEY,latitude, longitude);
+                       //Set the API key, Lat, and Lang
+                       ForecastIO forecast = new ForecastIO(API_KEY, latitude, longitude);
 
-                    //Set the request parameters
-                    //ability to set the units, exclude blocks, extend options and user agent for the request. This is not required.
-                    HashMap<String, String> requestParam = new HashMap<String, String>();
-                    requestParam.put("units", "us");
-                    requestParam.put("userAgent", "Custom User Agent 1.0");
-                    forecast.setRequestParams(requestParam);
-                    forecast.makeRequest();
+                       //Set the request parameters
+                       //ability to set the units, exclude blocks, extend options and user agent for the request. This is not required.
+                       HashMap<String, String> requestParam = new HashMap<String, String>();
+                       requestParam.put("units", "us");
+                       requestParam.put("userAgent", "Custom User Agent 1.0");
+                       forecast.setRequestParams(requestParam);
+                       forecast.makeRequest();
 
-                    String responseString = forecast.getResponseString();
-                    ForecastIOResponse FIOR = new ForecastIOResponse(responseString);
+                       String responseString = forecast.getResponseString();
+                       ForecastIOResponse FIOR = new ForecastIOResponse(responseString);
 
-                    //Retreive the current weather conditions
-                    String currently = FIOR.getCurrently().getValue("summary");
-                    float temperature = Float.parseFloat(FIOR.getCurrently().getValue("temperature"));
-                    float humid = Float.parseFloat(FIOR.getCurrently().getValue("humidity"));
-                    float pressure = Float.parseFloat(FIOR.getCurrently().getValue("pressure"));
 
-                    //Humidity is given in a float that ranges from 0-1 inclusive
-                    //Change to a percentage out of 100
-                    float relativeHumid = Float.parseFloat(Float.toString(humid));
-                    relativeHumid = relativeHumid*100;
+                       //Retreive the current weather conditions
+                       String currently = FIOR.getCurrently().getValue("summary");
+                       float temperature = Float.parseFloat(FIOR.getCurrently().getValue("temperature"));
+                       float humid = Float.parseFloat(FIOR.getCurrently().getValue("humidity"));
+                       float pressure = Float.parseFloat(FIOR.getCurrently().getValue("pressure"));
 
-                    // TODO: Change what is returned? Or let the user choose
-                    //Add the weather observation
-                    String weatherResult = "Currently: " + currently + "\n"
-                            +"Temperature: " + temperature +"°F"+ "\n"
-                            +"Humidity: " + relativeHumid + "%" + "\n"
-                            +"Pressure: " + pressure + " millibar" + "\n";
-                    r.addObservation(new Weather(currently, temperature, relativeHumid, pressure));
-                    r.reportToGui(linearLayout, context);
+                       //Humidity is given in a float that ranges from 0-1 inclusive
+                       //Change to a percentage out of 100
+                       float relativeHumid = Float.parseFloat(Float.toString(humid));
+                       relativeHumid = relativeHumid * 100;
 
+                       // TODO: Change what is returned? Or let the user choose
+                       //Add the weather observation
+                       r.addObservation(new Weather(currently, temperature, relativeHumid, pressure));
+                       r.reportToGui(linearLayout, context);
+                   }
+                    else{
+                       Toast.makeText(context, "Network unavailable, please try again later.",
+                               Toast.LENGTH_LONG).show();
+                   }
                 }else{
                     gps.showSettingsAlert();
                 }
@@ -111,6 +131,27 @@ public class MainActivity extends Activity {
                 startActivityForResult(nextScreen, 1);
             }
         });
+        final Button headcountButton = (Button) findViewById(R.id.headcountButton);
+        headcountButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Toast.makeText(context, "Left Button Clicked",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+
+        final Button equipmentButton = (Button) findViewById(R.id.equipmentButton);
+        equipmentButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Toast.makeText(context, "Right Button Clicked",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
+    public String dateToString(Date date, String format) {
+        SimpleDateFormat df = new SimpleDateFormat(format);
+        return df.format(date);
     }
 
     /**
@@ -237,6 +278,20 @@ public class MainActivity extends Activity {
             else if (resultCode == EditWeatherObservationActivity.RESULT_DELETE_WEATHER_OBSERVATION){
                 System.out.println("Removing Weather Observation");
                 r.getObservations().remove(data.getIntExtra("index", 0));
+            }
+        }
+        else if(requestCode == 4 && resultCode == RESULT_OK) {
+            try {
+                FileInputStream in = new FileInputStream(destination);
+                String imagePath = destination.getAbsolutePath();
+
+                System.out.println("imagePath: " + imagePath);
+
+                Intent cameraActivityIntent = new Intent(getApplicationContext(),CameraActivity.class);
+                cameraActivityIntent.putExtra("imagePath", imagePath);
+                startActivity(cameraActivityIntent);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
         }
 
