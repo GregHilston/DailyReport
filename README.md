@@ -1,7 +1,5 @@
 # DailyReport
 TODO:
-Poster
-
 Editing a field should pull up the appropiate keyboard (Evan)
 
 CameraActivity
@@ -9,6 +7,7 @@ CameraActivity
     File based work -
     Show thumbnail
     Add pictures for camera type
+    Get pictures to work on the timeline
     Add cancel and submit buttons
 
 Backend for Camera (Greg)
@@ -29,8 +28,8 @@ Pretty GUI:
         Piece of paper (text)
         Sun shining (weather)
         Camera (picture)
-        Camera (picture)
 
 Stretch Goals:
     Different projects
     Server syncronization
+    Have tasks with future dates set

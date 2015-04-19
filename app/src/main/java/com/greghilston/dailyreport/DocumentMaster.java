@@ -36,21 +36,37 @@ public class DocumentMaster {
     private static DocumentMaster instance = new DocumentMaster();
     private static File reportsDirIDE = new File("app/src/main/java/com/greghilston/DailyReport/Reports/");
     public static final File dailyReportDirPhone = new File(Environment.getExternalStorageDirectory() + File.separator + "DailyReport");
-    public static final File reportDirPhone = new File(Environment.getExternalStorageDirectory() + File.separator + "DailyReport" + File.separator + "Reports");
-    public static final File xmlDirPhone = new File(Environment.getExternalStorageDirectory() + File.separator + "DailyReport" + File.separator + "Reports" + File.separator + "XML");
-    public static final File csvDirPhone = new File(Environment.getExternalStorageDirectory() + File.separator + "DailyReport" + File.separator + "Reports" + File.separator + "CSV");
-
+    public static final File reportDirPhone = new File(dailyReportDirPhone.getPath() + File.separator + "Reports");
+    public static final File xmlDirPhone = new File(reportDirPhone.getPath() + File.separator + "XML");
+    public static final File csvDirPhone = new File(reportDirPhone.getPath() + File.separator + "CSV");
 
     static {
         createReportFolderInIDE();
         createDailyReportsFolderOnPhone();
         createReportsFolderOnPhone();
-        createXmlFolderOnPhone();
-        createCsvFolderOnPhone();
     }
 
     public static DocumentMaster getInstance() {
         return instance;
+    }
+
+
+    public static void createReportFolderStructureOnPhone(Report r) {
+        boolean success = true;
+        System.out.println("createReportFolderStructureOnPhone: " + reportDirPhone.getPath() + File.separator + r.getFileName());
+        r.setIndividualReportFolderPath(reportDirPhone.getPath() + File.separator + r.getFileName());
+        File individualReportFolder = new File(r.getIndividualReportFolderPath());
+
+        // Create a folder for this report
+        if (!individualReportFolder.exists()) {
+            success = individualReportFolder.mkdir();
+        }
+
+        if (success) {
+            System.out.println("Individual Report Folder created successfully or already exist");
+        } else {
+            System.err.println("Individual Report Folder creation failed"); // TODO: Handle this
+        }
     }
 
     /**
@@ -267,14 +283,13 @@ public class DocumentMaster {
      */
     @TargetApi(Build.VERSION_CODES.FROYO)
     public String createXml(Report r) {
-        System.out.println("createXml - printing report");
-        r.printReport();
-        System.out.print("r.getProject(): ");
-        System.out.println(r.getProject());
+        System.out.println("createXml(Report r)");
+        // r.printReport();
+        // System.out.print("r.getProject(): ");
+        // System.out.println(r.getProject());
 
-
-        String fileName = r.getFileName();
-        String outputFilePath = xmlDirPhone + File.separator +  fileName +  ".xml";
+        String outputFilePath = r.getXmlFilePath();
+        System.out.println("outputFilePath: " + r.getXmlFilePath());
 
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -486,7 +501,7 @@ public class DocumentMaster {
             transformer.transform(source, result);
 
             System.out.println("XML File saved: " + outputFilePath);
-            printXml(outputFilePath); // TODO: Remove this after demo
+            // printXml(outputFilePath); // TODO: Remove this after demo
             return outputFilePath;
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();

@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,6 +28,8 @@ public class Report {
     protected ArrayList<Observation> observations = new ArrayList<Observation>();
     public static final int RESULT_CANCELED    = 0;
     public static final int RESULT_OK           = -1;
+    private String individualReportFolderPath;
+    private String xmlFilePath;
 
     /**
      * Creates a report. Used when created a report from an XML file
@@ -322,5 +325,30 @@ public class Report {
      */
     public void setProject(Project project) {
         this.project = project;
+    }
+
+    /**
+     * @param individualReportFolderPath  path for this reports folder
+     */
+    public void setIndividualReportFolderPath(String individualReportFolderPath) {
+        System.out.println("setIndividualReportFolderPath: " + individualReportFolderPath);
+
+        this.individualReportFolderPath = individualReportFolderPath;
+        setXmlFilePath(individualReportFolderPath + File.separator + getFileName() + ".xml");
+    }
+
+    /**
+     * @return  path for this reports folder
+     */
+    public String getIndividualReportFolderPath() {
+        return individualReportFolderPath;
+    }
+
+    public void setXmlFilePath(String xmlFilePath) {
+        this.xmlFilePath = xmlFilePath;
+    }
+
+    public String getXmlFilePath() {
+        return this.xmlFilePath;
     }
 }
