@@ -30,7 +30,11 @@ public class CameraActivity extends Activity {
 
         String imagePath = getIntent().getStringExtra("imagePath");
         System.out.println("imagePath: " + imagePath);
-        File destination = new File(imagePath);
+
+        Bitmap bmp= BitmapFactory.decodeFile(imagePath);
+        pictureTakenImageView.setImageBitmap(bmp);
+
+        /*File destination = new File(imagePath);
         FileInputStream in = null;
         try {
             in = new FileInputStream(destination);
@@ -40,7 +44,7 @@ public class CameraActivity extends Activity {
             pictureTakenImageView.setImageBitmap(bmp);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }
+        }*/
 
         /*
         // Bitmap attempt

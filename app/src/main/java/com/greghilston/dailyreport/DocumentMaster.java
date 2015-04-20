@@ -283,13 +283,13 @@ public class DocumentMaster {
      */
     @TargetApi(Build.VERSION_CODES.FROYO)
     public String createXml(Report r) {
-        System.out.println("createXml(Report r)");
+        // System.out.println("createXml(Report r)");
         // r.printReport();
         // System.out.print("r.getProject(): ");
         // System.out.println(r.getProject());
 
         String outputFilePath = r.getXmlFilePath();
-        System.out.println("outputFilePath: " + r.getXmlFilePath());
+        // System.out.println("outputFilePath: " + r.getXmlFilePath());
 
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -474,12 +474,21 @@ public class DocumentMaster {
                     Element observation = doc.createElement("Observation");
 
                     // Type element
-                    Element type = doc.createElement("Type");;
+                    Element type = doc.createElement("Type");
                     observation.appendChild(doc.createTextNode("Picture"));
+                    observation.appendChild(type);
 
+                    // Picture Name element
+                    Element name = doc.createElement("picName");
+                    name.appendChild(doc.createTextNode(((Picture) o).getPictureName()));
+                    observation.appendChild(name);
 
-                    type.appendChild(observation);
-                    observations.appendChild(type);
+                    // Picture Path element
+                    Element path = doc.createElement("picPath");
+                    path.appendChild(doc.createTextNode(((Picture) o).getPicturePath()));
+                    observation.appendChild(path);
+
+                    observations.appendChild(observation);
                 }
                 else {
                     System.err.println("Unknown Instance of Observation");
@@ -520,7 +529,7 @@ public class DocumentMaster {
     @TargetApi(Build.VERSION_CODES.FROYO)
     public void printXml(String fileName) {
         try {
-            // File file = new File("app/src/main/java/com/greghilston/dailyreport/Reports/" + fileName + ".xml");
+            // File file = new File("app/src/main/java/com/greghilston/dailyreport/Reports/" + pictureName + ".xml");
             File file = new File(fileName);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();

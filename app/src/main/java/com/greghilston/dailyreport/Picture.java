@@ -4,9 +4,28 @@
  * Represents a picture observation being made by the user
  */
 public class Picture extends Observation {
-     // TODO: Store the filelocation and name of the picture
+     String picturePath = "";
+     String pictureName = "";
 
-     public Picture() {
+     public Picture(String pictureName, String picturePath) {
          super();
+         this.pictureName = pictureName;
+         this.picturePath = picturePath;
+     }
+
+     public String getPictureName() {
+         return pictureName;
+     }
+
+     public void setPictureName(String pictureName) {
+         this.pictureName = pictureName;
+     }
+
+     public String getPicturePath() {
+         return picturePath;
+     }
+
+     public void setPicturePath(String picturePath) {
+         this.picturePath = picturePath;
      }
  }

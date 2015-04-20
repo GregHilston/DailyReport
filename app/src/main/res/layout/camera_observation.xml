@@ -6,15 +6,17 @@
     android:id="@+id/camera"
     android:background="@android:color/darker_gray">
 
+    <!-- TODO: Change dp from hard code to relative for width and height -->
     <ImageView
-        android:layout_width="193dp"
-        android:layout_height="wrap_content"
         android:id="@+id/imageView"
-        android:layout_gravity="center_horizontal"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center_horizontal" />
+
+        <!-- android:layout_gravity="center_horizontal"
         android:layout_weight="0.42"
         android:tint="@android:color/background_light"
-        android:background="@android:color/background_light"
-        />
+        android:background="@android:color/background_light" -->
 
     <TextView
         android:layout_width="wrap_content"

@@ -24,11 +24,15 @@ import com.greghilston.dailyreport.ForecastIOLibrary.src.com.arcusweather.foreca
 import com.greghilston.dailyreport.ForecastIOLibrary.src.com.arcusweather.forecastio.ForecastIOResponse;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends Activity {
     Project project = new Project("Construction", "ACME");
@@ -51,13 +55,23 @@ public class MainActivity extends Activity {
         linearLayout = (LinearLayout) findViewById(R.id.timeLine);
         textView = new TextView(getApplicationContext());
 
-        File[] contents = DocumentMaster.xmlDirPhone.listFiles();
+        File[] parents = DocumentMaster.reportDirPhone.listFiles();
+        ArrayList<File> children = new ArrayList<File>();
 
-        if(contents.length == 0) {
-            r = new Report(project); //Create a new report
-            r.reportToGui(linearLayout, this);
+        for(File parent : parents) {
+            if(parent.isDirectory()) {
+                File[] child = parent.listFiles(new FileFilter() {
+                    public boolean accept(File file) {
+                        return !file.isDirectory() && file.getName().toLowerCase().endsWith(".xml");
+                    }
+                });
+
+                List<File> c = Arrays.asList(child);
+                children.addAll(c);
+            }
         }
-        else { // Atleast one previous report exists
+
+        if(!children.isEmpty()) { // Atleast one previous report exists
             DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -66,7 +80,7 @@ public class MainActivity extends Activity {
                             //Yes button clicked
                             System.out.println("Yes button pressed!");
 
-                            File mPath = new File(DocumentMaster.xmlDirPhone.getPath());
+                            File mPath = new File(DocumentMaster.reportDirPhone.getPath());
                             FileDialog fileDialog = new FileDialog(MainActivity.this, mPath);
                             fileDialog.setFileEndsWith(".xml");
                             fileDialog.addFileListener(new FileDialog.FileSelectedListener() {
@@ -90,11 +104,16 @@ public class MainActivity extends Activity {
                             //No button clicked
                             System.out.println("No button pressed!");
                             r = new Report(project);
+                            DocumentMaster.createReportFolderStructureOnPhone(r);
                             r.reportToGui(linearLayout, getBaseContext());
                             break;
                     }
                 }
             };
+
+            r = new Report(project); //Create a new report
+            DocumentMaster.createReportFolderStructureOnPhone(r);
+            r.reportToGui(linearLayout, this);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setMessage("Would you like to open a saved report?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
@@ -107,7 +126,8 @@ public class MainActivity extends Activity {
 
                 // File path attempt
                 String name =   dateToString(new Date(),"yyyy-MM-dd-hh-mm-ss");
-                destination = new File(Environment.getExternalStorageDirectory(), name  +  ".jpg");
+                destination = new File(r.getIndividualReportFolderPath() + File.separator + r.getPictureCount() + ".jpg");
+                r.setPictureCount(r.getPictureCount() + 1); // increment our file counter
 
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(destination));
@@ -253,14 +273,14 @@ public class MainActivity extends Activity {
         else if (id == R.id.create_xml) {
             System.out.println("Generating a XML Document");
             String filePath = DocumentMaster.getInstance().createXml(r);
-            System.out.println("filePath: " + filePath);
+            System.out.println("picturePath: " + filePath);
 
             emailFile(filePath);
         }
         else if (id == R.id.create_csv) {
             System.out.println("Generating a CSV Document");
             String filePath = DocumentMaster.getInstance().createCsv(r);
-            System.out.println("filePath: " + filePath);
+            System.out.println("picturePath: " + filePath);
 
             emailFile(filePath);
         }
@@ -345,9 +365,11 @@ public class MainActivity extends Activity {
             // File based work
             try {
                 FileInputStream in = new FileInputStream(destination);
-                String imagePath = destination.getAbsolutePath();
-
+                String imageName = (r.getPictureCount() - 1) + ".jpg";
+                String imagePath = r.getIndividualReportFolderPath() + File.separator + (r.getPictureCount() - 1) + ".jpg";
                 System.out.println("imagePath: " + imagePath);
+
+                r.addObservation(new Picture(imageName, imagePath));
 
                 Intent cameraActivityIntent = new Intent(getApplicationContext(),CameraActivity.class);
                 cameraActivityIntent.putExtra("imagePath", imagePath);
