@@ -40,12 +40,6 @@ public class DocumentMaster {
     public static final File xmlDirPhone = new File(reportDirPhone.getPath() + File.separator + "XML");
     public static final File csvDirPhone = new File(reportDirPhone.getPath() + File.separator + "CSV");
 
-    static {
-        createReportFolderInIDE();
-        createDailyReportsFolderOnPhone();
-        createReportsFolderOnPhone();
-    }
-
     public static DocumentMaster getInstance() {
         return instance;
     }

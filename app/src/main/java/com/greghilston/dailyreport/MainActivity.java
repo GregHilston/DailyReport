@@ -46,10 +46,18 @@ public class MainActivity extends Activity {
     static final int REQUEST_IMAGE_CAPTURE = 4;
     // XML file chooser
 
+    static {
+        // Setup our folder structure
+        DocumentMaster.createReportFolderInIDE();
+        DocumentMaster.createDailyReportsFolderOnPhone();
+        DocumentMaster.createReportsFolderOnPhone();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         LocationMaster.init(getApplicationContext());
 
         linearLayout = (LinearLayout) findViewById(R.id.timeLine);
@@ -87,6 +95,7 @@ public class MainActivity extends Activity {
                                 public void fileSelected(File file) {
                                     Log.d(getClass().getName(), "selected file " + file.toString());
                                     r = DocumentMaster.getInstance().createReportFromXml(file.toString());
+                                    DocumentMaster.createReportFolderStructureOnPhone(r);
                                     r.reportToGui(linearLayout, getBaseContext());
                                 }
                             });
@@ -111,14 +120,13 @@ public class MainActivity extends Activity {
                 }
             };
 
-            r = new Report(project); //Create a new report
-            DocumentMaster.createReportFolderStructureOnPhone(r);
-            r.reportToGui(linearLayout, this);
-
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setMessage("Would you like to open a saved report?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
         }
 
+        r = new Report(project); //Create a new report
+        DocumentMaster.createReportFolderStructureOnPhone(r);
+        r.reportToGui(linearLayout, this);
 
         final Button cameraButton = (Button) findViewById(R.id.cameraButton);
         cameraButton.setOnClickListener(new View.OnClickListener() {
