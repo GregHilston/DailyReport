@@ -3,7 +3,10 @@ package com.greghilston.dailyreport;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -205,9 +208,16 @@ public class Report {
             }
             else if(o instanceof Picture) { // TODO
                 TextView textView = new TextView(context);
-
                 textView.setText(o.getTime() + ": " + ((Picture) o).getPictureName() + "\n");
                 ll.addView(textView);
+
+                ImageView imageView = new ImageView(context);
+                BitmapFactory.Options options = null;
+                options = new BitmapFactory.Options();
+                options.inSampleSize = 2; // Fixes OutOfMemory Exceptions for working with Bitmaps
+                Bitmap bmp = BitmapFactory.decodeFile(((Picture) o).getPicturePath(), options);
+                imageView.setImageBitmap(bmp);
+                ll.addView(imageView);
             }
         }
     }
