@@ -28,8 +28,9 @@ public class Report {
     protected ArrayList<Observation> observations = new ArrayList<Observation>();
     public static final int RESULT_CANCELED    = 0;
     public static final int RESULT_OK           = -1;
-    private String individualReportFolderPath;
+    private String individualReportFolderPath = DocumentMaster.reportDirPhone.getPath() + File.separator + getFileName();
     private String xmlFilePath;
+    private int pictureCount = 0; // How many pictures have been taken for this report (also used for naming pictures)
 
     /**
      * Creates a report. Used when created a report from an XML file
@@ -203,7 +204,10 @@ public class Report {
                 ll.addView(textView);
             }
             else if(o instanceof Picture) { // TODO
+                TextView textView = new TextView(context);
 
+                textView.setText(o.getTime() + ": " + ((Picture) o).getPictureName() + "\n");
+                ll.addView(textView);
             }
         }
     }
@@ -350,5 +354,13 @@ public class Report {
 
     public String getXmlFilePath() {
         return this.xmlFilePath;
+    }
+
+    public int getPictureCount() {
+        return pictureCount;
+    }
+
+    public void setPictureCount(int pictureCount) {
+        this.pictureCount = pictureCount;
     }
 }
