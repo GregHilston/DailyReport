@@ -27,7 +27,7 @@ public class Text extends Observation {
       * @param note any note
       */
      public Text(String dateAndTime, String text, String note) {
-         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss a");
+         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
 
          try {
              this.date = formatter.parse(dateAndTime);

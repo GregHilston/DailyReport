@@ -3,10 +3,14 @@ package com.greghilston.dailyreport;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,6 +31,9 @@ public class Report {
     protected ArrayList<Observation> observations = new ArrayList<Observation>();
     public static final int RESULT_CANCELED    = 0;
     public static final int RESULT_OK           = -1;
+    private String individualReportFolderPath = DocumentMaster.reportDirPhone.getPath() + File.separator + getFileName();
+    private String xmlFilePath;
+    private int pictureCount = 0; // How many pictures have been taken for this report (also used for naming pictures)
 
     /**
      * Creates a report. Used when created a report from an XML file
@@ -127,6 +134,15 @@ public class Report {
             if(this.observations.get(i) instanceof Text) {
                 System.out.println("\t" + ((Text) this.observations.get(i)).getText());
             }
+            else if(this.observations.get(i) instanceof Weather) {
+                System.out.println("\t" + ((Weather) this.observations.get(i)).getCurrently());
+                System.out.println("\t" + ((Weather) this.observations.get(i)).getTemperature());
+                System.out.println("\t" + ((Weather) this.observations.get(i)).getHumidity());
+                System.out.println("\t" + ((Weather) this.observations.get(i)).getPressure());
+            }
+            else if(this.observations.get(i) instanceof Picture) {
+
+            }
 
             System.out.println("\t" + this.observations.get(i).getNote());
         }
@@ -191,7 +207,17 @@ public class Report {
                 ll.addView(textView);
             }
             else if(o instanceof Picture) { // TODO
+                TextView textView = new TextView(context);
+                textView.setText(o.getTime() + ": " + ((Picture) o).getPictureName() + "\n");
+                ll.addView(textView);
 
+                ImageView imageView = new ImageView(context);
+                BitmapFactory.Options options = null;
+                options = new BitmapFactory.Options();
+                options.inSampleSize = 2; // Fixes OutOfMemory Exceptions for working with Bitmaps
+                Bitmap bmp = BitmapFactory.decodeFile(((Picture) o).getPicturePath(), options);
+                imageView.setImageBitmap(bmp);
+                ll.addView(imageView);
             }
         }
     }
@@ -306,5 +332,45 @@ public class Report {
      */
     public void setDate(String date) {
         this.date = date;
+    }
+
+    /**
+     * @param project  the project for this report
+     */
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    /**
+     * @param individualReportFolderPath  path for this reports folder
+     */
+    public void setIndividualReportFolderPath(String individualReportFolderPath) {
+        System.out.println("setIndividualReportFolderPath: " + individualReportFolderPath);
+
+        this.individualReportFolderPath = individualReportFolderPath;
+        setXmlFilePath(individualReportFolderPath + File.separator + getFileName() + ".xml");
+    }
+
+    /**
+     * @return  path for this reports folder
+     */
+    public String getIndividualReportFolderPath() {
+        return individualReportFolderPath;
+    }
+
+    public void setXmlFilePath(String xmlFilePath) {
+        this.xmlFilePath = xmlFilePath;
+    }
+
+    public String getXmlFilePath() {
+        return this.xmlFilePath;
+    }
+
+    public int getPictureCount() {
+        return pictureCount;
+    }
+
+    public void setPictureCount(int pictureCount) {
+        this.pictureCount = pictureCount;
     }
 }

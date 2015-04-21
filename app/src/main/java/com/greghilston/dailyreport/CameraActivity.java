@@ -17,29 +17,26 @@ import java.io.*;
 import java.util.Date;
 
 public class CameraActivity extends Activity {
-    private ImageButton safetyImageButton, issueImageButton, progressImageButton;
     private ImageView pictureTakenImageView;
     public static final int TAKE_PHOTO_CODE = 4; // TODO: Figure out what this does...
+    private Bitmap bmp;
+    private String imagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        // File based
         super.onCreate(savedInstanceState);
         setContentView(R.layout.camera_observation);
         pictureTakenImageView = (ImageView) findViewById(R.id.imageView);
 
-        String imagePath = getIntent().getStringExtra("imagePath");
+        imagePath = getIntent().getStringExtra("imagePath");
         System.out.println("imagePath: " + imagePath);
-        File destination = new File(imagePath);
-        FileInputStream in = null;
-        try {
-            in = new FileInputStream(destination);
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inSampleSize = 10;
-            Bitmap bmp = BitmapFactory.decodeStream(in, null, options);
-            pictureTakenImageView.setImageBitmap(bmp);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+
+        BitmapFactory.Options options = null;
+        options = new BitmapFactory.Options();
+        options.inSampleSize = 2; // Fixes OutOfMemory Exceptions for working with Bitmaps
+        bmp = BitmapFactory.decodeFile(imagePath, options);
+
+        pictureTakenImageView.setImageBitmap(bmp);
     }
 }

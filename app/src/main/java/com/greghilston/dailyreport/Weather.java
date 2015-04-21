@@ -38,7 +38,7 @@ public class Weather extends Observation {
       * @param note
       */
     public Weather(String dateAndTime, String currently, float temperature, float humidity, float pressure, String note) {
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss a");
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
 
         try {
             this.date = formatter.parse(dateAndTime);

@@ -1,7 +1,9 @@
 package com.greghilston.dailyreport;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,43 +25,130 @@ import com.greghilston.dailyreport.ForecastIOLibrary.src.com.arcusweather.foreca
 import com.greghilston.dailyreport.ForecastIOLibrary.src.com.arcusweather.forecastio.ForecastIOResponse;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends Activity {
     Project project = new Project("Construction", "ACME");
-    final Report r = new Report(project);
+    Report r;
     public LinearLayout linearLayout;
     public Context context = this;
     TextView textView;
     private File destination;
-
     private final String API_KEY = "cbbd1fc614026e05d5429175cdfb0d10";
     GPSLocation gps;
+    static final int REQUEST_IMAGE_CAPTURE = 4;
+    // XML file chooser
+
+    static {
+        // Setup our folder structure
+        DocumentMaster.createReportFolderInIDE();
+        DocumentMaster.createDailyReportsFolderOnPhone();
+        DocumentMaster.createReportsFolderOnPhone();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         LocationMaster.init(getApplicationContext());
 
         linearLayout = (LinearLayout) findViewById(R.id.timeLine);
         textView = new TextView(getApplicationContext());
 
+        File[] parents = DocumentMaster.reportDirPhone.listFiles();
+        ArrayList<File> children = new ArrayList<File>();
+
+        for(File parent : parents) {
+            if(parent.isDirectory()) {
+                File[] child = parent.listFiles(new FileFilter() {
+                    public boolean accept(File file) {
+                        return !file.isDirectory() && file.getName().toLowerCase().endsWith(".xml");
+                    }
+                });
+
+                List<File> c = Arrays.asList(child);
+                children.addAll(c);
+            }
+        }
+
+        if(!children.isEmpty()) { // Atleast one previous report exists
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which){
+                        case DialogInterface.BUTTON_POSITIVE:
+                            //Yes button clicked
+                            System.out.println("Yes button pressed!");
+
+                            File mPath = new File(DocumentMaster.reportDirPhone.getPath());
+                            FileDialog fileDialog = new FileDialog(MainActivity.this, mPath);
+                            fileDialog.setFileEndsWith(".xml");
+                            fileDialog.addFileListener(new FileDialog.FileSelectedListener() {
+                                public void fileSelected(File file) {
+                                    Log.d(getClass().getName(), "selected file " + file.toString());
+                                    r = DocumentMaster.getInstance().createReportFromXml(file.toString());
+                                    DocumentMaster.createReportFolderStructureOnPhone(r);
+                                    r.reportToGui(linearLayout, getBaseContext());
+                                }
+                            });
+                            //fileDialog.addDirectoryListener(new com.greghilston.dailyreport.FileDialog.DirectorySelectedListener() {
+                            //  public void directorySelected(File directory) {
+                            //      Log.d(getClass().getName(), "selected dir " + directory.toString());
+                            //  }
+                            //});
+                            //fileDialog.setSelectDirectoryOption(false);
+                            fileDialog.showDialog();
+
+                            break;
+
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            //No button clicked
+                            System.out.println("No button pressed!");
+                            r = new Report(project);
+                            DocumentMaster.createReportFolderStructureOnPhone(r);
+                            r.reportToGui(linearLayout, getBaseContext());
+                            break;
+                    }
+                }
+            };
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setMessage("Would you like to open a saved report?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
+        }
+
+        r = new Report(project); //Create a new report
+        DocumentMaster.createReportFolderStructureOnPhone(r);
         r.reportToGui(linearLayout, this);
 
         final Button cameraButton = (Button) findViewById(R.id.cameraButton);
         cameraButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
+                // File path attempt
                 String name =   dateToString(new Date(),"yyyy-MM-dd-hh-mm-ss");
-                destination = new File(Environment.getExternalStorageDirectory(), name  +  ".jpg");
+                destination = new File(r.getIndividualReportFolderPath() + File.separator + r.getPictureCount() + ".jpg");
+                r.setPictureCount(r.getPictureCount() + 1); // increment our file counter
 
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(destination));
                 startActivityForResult(takePictureIntent, CameraActivity.TAKE_PHOTO_CODE);
+
+                /*
+                //
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                }
+                */
             }
         });
 
@@ -149,6 +239,22 @@ public class MainActivity extends Activity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        System.out.println("Application resumed");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        System.out.println("Application stopped");
+
+        // Application has stopped, save timeline as XML file to device
+        DocumentMaster.getInstance().createXml(r);
+    }
+
     public String dateToString(Date date, String format) {
         SimpleDateFormat df = new SimpleDateFormat(format);
         return df.format(date);
@@ -191,15 +297,15 @@ public class MainActivity extends Activity {
 
         else if (id == R.id.create_xml) {
             System.out.println("Generating a XML Document");
-            String filePath = DocumentMaster.getInstance().createXml(r, getApplicationContext().getExternalFilesDir(null));
-            System.out.println("filePath: " + filePath);
+            String filePath = DocumentMaster.getInstance().createXml(r);
+            System.out.println("picturePath: " + filePath);
 
             emailFile(filePath);
         }
         else if (id == R.id.create_csv) {
             System.out.println("Generating a CSV Document");
-            String filePath = DocumentMaster.getInstance().createCsv(r, getApplicationContext().getExternalFilesDir(null));
-            System.out.println("filePath: " + filePath);
+            String filePath = DocumentMaster.getInstance().createCsv(r);
+            System.out.println("picturePath: " + filePath);
 
             emailFile(filePath);
         }
@@ -281,11 +387,14 @@ public class MainActivity extends Activity {
             }
         }
         else if(requestCode == 4 && resultCode == RESULT_OK) {
+            // File based work
             try {
                 FileInputStream in = new FileInputStream(destination);
-                String imagePath = destination.getAbsolutePath();
-
+                String imageName = (r.getPictureCount() - 1) + ".jpg";
+                String imagePath = r.getIndividualReportFolderPath() + File.separator + (r.getPictureCount() - 1) + ".jpg";
                 System.out.println("imagePath: " + imagePath);
+
+                r.addObservation(new Picture(imageName, imagePath));
 
                 Intent cameraActivityIntent = new Intent(getApplicationContext(),CameraActivity.class);
                 cameraActivityIntent.putExtra("imagePath", imagePath);
@@ -293,6 +402,16 @@ public class MainActivity extends Activity {
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
+
+            /*
+            // Bitmap attempt
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+
+            Intent cameraActivityIntent = new Intent(getApplicationContext(),CameraActivity.class);
+            cameraActivityIntent.putExtra("imageBitmap", imageBitmap);
+            startActivity(cameraActivityIntent);
+            */
         }
 
         r.reportToGui(linearLayout, context);
