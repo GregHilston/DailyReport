@@ -252,7 +252,13 @@ public class DocumentMaster {
                             weatherObservationCount = weatherObservationCount + 1;
                         }
                         else if(type.equals("Picture")) {
-                            System.out.println("\t\t\tType: Picture");
+                            String time = element.getElementsByTagName("Time").item(totalObservationCount).getTextContent();
+                            String picName = element.getElementsByTagName("picName").item(pictureObservationCount).getTextContent();
+                            String picPath = element.getElementsByTagName("picPath").item(pictureObservationCount).getTextContent();
+                            String note = element.getElementsByTagName("Note").item(totalObservationCount).getTextContent();
+
+                            Picture o = new Picture(time, picName, picPath, note);
+                            r.addObservation(o);
                             pictureObservationCount = pictureObservationCount + 1;
                         }
                         else {
@@ -613,6 +619,9 @@ public class DocumentMaster {
                         }
                         else if(type.equals("Picture")) {
                             System.out.println("\t\t\tType: Picture");
+                            System.out.println("\t\t\tPicture Name: " + element.getElementsByTagName("picName").item(pictureObservationCount).getTextContent() + "\n");
+                            System.out.println("\t\t\tPicture Path: " + element.getElementsByTagName("picPath").item(pictureObservationCount).getTextContent() + "\n");
+                            System.out.println("\t\t\tNote: " + element.getElementsByTagName("Note").item(totalObservationCount).getTextContent() + "\n");
                             pictureObservationCount = pictureObservationCount + 1;
                         }
                         else {
