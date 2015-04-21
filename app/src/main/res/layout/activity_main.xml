@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/scrollView"
         android:layout_gravity="center_horizontal"
-        android:background="@color/nfBckD"
+        android:background="@color/white"
         >
 
         <LinearLayout
@@ -84,6 +84,15 @@
             android:text="N"
             android:background="@drawable/border"
             android:layout_gravity="bottom" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton"
+            android:src="@drawable/compose_button"
+            android:background="@color/white"
+            android:layout_gravity="bottom"
+            android:layout_weight="1" />
     </LinearLayout>
 
 </LinearLayout>

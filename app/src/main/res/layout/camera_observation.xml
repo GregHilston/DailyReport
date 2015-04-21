@@ -1,21 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:weightSum="1"
     android:id="@+id/camera"
     android:background="@android:color/white">
 
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="102dp"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:id="@+id/editText"
-        android:background="@drawable/bborder"
-        android:editable="true"
-        android:hint="Add notes about picture" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -24,25 +14,61 @@
         android:text="Observation Type"
         android:id="@+id/textView"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="30dp" />
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp" />
 
     <Spinner
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/spinner"
-        android:layout_gravity="right"
         android:background="@drawable/bborder"
-        android:layout_marginBottom="60dp" />
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp" />
 
     <ImageView
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:scaleType="fitXY"
+        android:id="@+id/imageView"
+        android:background="@drawable/bborder"
+        android:adjustViewBounds="true"
+        android:layout_gravity="center_horizontal" />
+
+    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/imageView"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="1"
-        android:background="@drawable/bborder" />
-       <!-- android:tint="@android:color/background_light"
-        android:background="@drawable/bborder" -->
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/editText"
+        android:background="@drawable/bborder"
+        android:editable="true"
+        android:hint="Add notes about picture"
+        android:padding="50dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="25dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:id="@+id/cancelButton"
+            android:layout_weight="1" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:id="@+id/submitButton"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <!-- android:tint="@android:color/background_light"
+     android:background="@drawable/bborder" -->
 
 
 

@@ -19,7 +19,7 @@ import java.util.Calendar;
 /**
  * Created by tcollins on 4/19/2015.
  */
-public class HeadcountActivity extends Activity {
+public class EquipmentActivity extends Activity {
 
 
     public Context context = this;
@@ -139,8 +139,8 @@ public class HeadcountActivity extends Activity {
                             Toast.LENGTH_LONG).show();
                 }
                 else
-                // Nothing
-                break;
+                    // Nothing
+                    break;
             case R.id.checkBox10:
                 if (checked){
                     Toast.makeText(context, "Checked Research",
@@ -148,7 +148,7 @@ public class HeadcountActivity extends Activity {
                 }
                 else
                     // Nothing
-                break;
+                    break;
         }
 
 

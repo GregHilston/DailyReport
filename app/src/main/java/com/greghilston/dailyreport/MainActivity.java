@@ -1,20 +1,28 @@
 package com.greghilston.dailyreport;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +48,7 @@ public class MainActivity extends Activity {
     public static Context context;
     TextView textView;
     private File destination;
+    ImageButton nflo;
 
     private final String API_KEY = "cbbd1fc614026e05d5429175cdfb0d10";
     GPSLocation gps;
@@ -59,6 +68,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         context = MainActivity.this;
 
+
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -77,6 +87,16 @@ public class MainActivity extends Activity {
 
         linearLayout = (LinearLayout) findViewById(R.id.timeLine);
         textView = new TextView(context);
+
+/*
+        Fab fabButton = new Fab.Builder(this)
+                .withDrawable(getResources().getDrawable(R.drawable.newforma_logo))
+                .withButtonColor(Color.WHITE)
+                .withGravity(Gravity.BOTTOM | Gravity.RIGHT)
+                .withMargins(0, 0, 16, 16)
+                .create();
+*/
+
 
         File[] parents = DocumentMaster.reportDirPhone.listFiles();
         ArrayList<File> children = new ArrayList<File>();
@@ -139,6 +159,18 @@ public class MainActivity extends Activity {
         r = new Report(project); //Create a new report
         DocumentMaster.createReportFolderStructureOnPhone(r);
         r.reportToGui(linearLayout);
+
+        final ImageButton nflo = (ImageButton) findViewById(R.id.imageButton);
+        nflo.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
+                anim.setDuration(1000);
+                anim.setRepeatCount(2);
+                anim.setRepeatMode(Animation.REVERSE);
+                nflo.startAnimation(anim);
+            }
+        });
 
         final Button cameraButton = (Button) findViewById(R.id.cameraButton);
         cameraButton.setOnClickListener(new View.OnClickListener() {
@@ -410,5 +442,9 @@ public class MainActivity extends Activity {
         }
 
         r.reportToGui(linearLayout);
+
+
+
     }
+
 }
