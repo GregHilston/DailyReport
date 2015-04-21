@@ -32,68 +32,79 @@ public class ForecastIOResponse {
         try {
         	latitude = forecastJsonObject.getString("latitude");
 		} catch (JSONException e) {
-            e.printStackTrace();
+            if(ForecastIO.printStackTrace) {
+                e.printStackTrace();
+            }
 		}
         
         try {
         	longitude = forecastJsonObject.getString("longitude");
 		} catch (JSONException e) {
-            e.printStackTrace();
-		}
+            if(ForecastIO.printStackTrace) {
+                e.printStackTrace();
+            }		}
         
         try {
         	timezone = forecastJsonObject.getString("timezone");
 		} catch (JSONException e) {
-            e.printStackTrace();
-		}
+            if(ForecastIO.printStackTrace) {
+                e.printStackTrace();
+            }		}
         
         try {
         	offset = forecastJsonObject.getString("offset");
 		} catch (JSONException e) {
-            e.printStackTrace();
-		}
+            if(ForecastIO.printStackTrace) {
+                e.printStackTrace();
+            }		}
         
         try {
 			JSONObject currentlyJSONObject = forecastJsonObject.getJSONObject("currently");
 	        mOutputCurrently = buildForecastIOCurrently(currentlyJSONObject);
 		} catch (JSONException e) {
-            e.printStackTrace();
-		}
+            if(ForecastIO.printStackTrace) {
+                e.printStackTrace();
+            }		}
         
     	try {
 			JSONObject minutelyJSONObject = forecastJsonObject.getJSONObject("minutely");
 	        mOutputMinutely = buildForecastIOMinutely(minutelyJSONObject);
 		} catch (JSONException e) {
-            e.printStackTrace();
-		} 
+            if(ForecastIO.printStackTrace) {
+                e.printStackTrace();
+            }		}
         
     	try {
 			JSONObject hourlyJSONObject = forecastJsonObject.getJSONObject("hourly");
 	        mOutputHourly = buildForecastIOHourly(hourlyJSONObject);
 		} catch (JSONException e) {
-            e.printStackTrace();
-		} 
+            if(ForecastIO.printStackTrace) {
+                e.printStackTrace();
+            }		}
 
     	try {
 			JSONObject dailyJSONObject = forecastJsonObject.getJSONObject("daily");
 	        mOutputDaily = buildForecastIODaily(dailyJSONObject);
 		} catch (JSONException e) {
-            e.printStackTrace();
-		} 
+            if(ForecastIO.printStackTrace) {
+                e.printStackTrace();
+            }		}
 
         try {
         	JSONArray alertsJSONArray = forecastJsonObject.getJSONArray("alerts");
 	        mOutputAlerts = buildForecastIOAlerts(alertsJSONArray);
         } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            if(ForecastIO.printStackTrace) {
+                e.printStackTrace();
+            }        }
         
         try {
         	JSONObject flagsJSONObject = forecastJsonObject.getJSONObject("flags");
         	mOutputFlags = buildForecastIOFlags(flagsJSONObject);
         } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            if(ForecastIO.printStackTrace) {
+                e.printStackTrace();
+            }        }
         
 	}
 
@@ -165,8 +176,11 @@ public class ForecastIOResponse {
 			}
 		}
 		catch(NullPointerException e) {
-            e.printStackTrace();
-			return null;
+            if(ForecastIO.printStackTrace) {
+                e.printStackTrace();
+            }
+
+            return null;
 		}
 		return value;
 	}

@@ -62,7 +62,9 @@ public class EditWeatherObservationActivity extends FragmentActivity {
          */
         cancelButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                System.out.println("Weather Text Observation Cancel Button Clicked!");
+                if(MainActivity.debugeMode) {
+                    System.out.println("Weather Text Observation Cancel Button Clicked!");
+                }
 
                 Intent returnIntent = new Intent();
                 setResult(RESULT_CANCELED, returnIntent);
@@ -75,7 +77,9 @@ public class EditWeatherObservationActivity extends FragmentActivity {
          */
         submitButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                System.out.println("Weather Text Observation Submit Button Clicked!");
+                if(MainActivity.debugeMode) {
+                    System.out.println("Weather Text Observation Submit Button Clicked!");
+                }
 
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("index", index);
@@ -94,7 +98,9 @@ public class EditWeatherObservationActivity extends FragmentActivity {
          */
         removeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                System.out.println("Remove Weather Observation Button Clicked!");
+                if(MainActivity.debugeMode) {
+                    System.out.println("Remove Weather Observation Button Clicked!");
+                }
 
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("index", index);

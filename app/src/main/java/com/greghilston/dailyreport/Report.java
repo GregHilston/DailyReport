@@ -156,7 +156,9 @@ public class Report {
      * TODO: See if this is the correct thing to do, or the correct place to do it
      */
     public void reportToGui(LinearLayout ll) {
-        System.out.println("reportToGui");
+        if(MainActivity.debugeMode) {
+            System.out.println("reportToGui");
+        }
 
         Collections.sort(observations, new Comparator<Observation>() {
             public int compare(Observation o1, Observation o2) {
@@ -346,7 +348,9 @@ public class Report {
      * @param individualReportFolderPath  path for this reports folder
      */
     public void setIndividualReportFolderPath(String individualReportFolderPath) {
-        System.out.println("setIndividualReportFolderPath: " + individualReportFolderPath);
+        if(MainActivity.debugeMode) {
+            System.out.println("setIndividualReportFolderPath: " + individualReportFolderPath);
+        }
 
         this.individualReportFolderPath = individualReportFolderPath;
         setXmlFilePath(individualReportFolderPath + File.separator + getFileName() + ".xml");

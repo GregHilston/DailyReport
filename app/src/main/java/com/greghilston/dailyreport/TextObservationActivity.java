@@ -26,7 +26,9 @@ public class TextObservationActivity extends Activity {
          */
         cancelButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                System.out.println("Text Observation Cancel Button Clicked!");
+                if(MainActivity.debugeMode) {
+                    System.out.println("Text Observation Cancel Button Clicked!");
+                }
 
                 Intent returnIntent = new Intent();
                 setResult(RESULT_CANCELED, returnIntent);
@@ -39,7 +41,9 @@ public class TextObservationActivity extends Activity {
          */
         submitButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                System.out.println("Text Observation Submit Button Clicked!");
+                if(MainActivity.debugeMode) {
+                    System.out.println("Text Observation Submit Button Clicked!");
+                }
 
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("result", text.getText().toString());
