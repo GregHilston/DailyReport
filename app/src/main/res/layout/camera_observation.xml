@@ -4,19 +4,18 @@
     android:layout_height="match_parent"
     android:weightSum="1"
     android:id="@+id/camera"
-    android:background="@android:color/darker_gray">
+    android:background="@android:color/white">
 
-    <!-- TODO: Change dp from hard code to relative for width and height -->
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_gravity="center_horizontal" />
 
-        <!-- android:layout_gravity="center_horizontal"
-        android:layout_weight="0.42"
-        android:tint="@android:color/background_light"
-        android:background="@android:color/background_light" -->
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="102dp"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/editText"
+        android:background="@drawable/bborder"
+        android:editable="true"
+        android:hint="Add notes about picture" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -24,64 +23,27 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Observation Type"
         android:id="@+id/textView"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="30dp" />
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="51dp"
-        android:background="@android:color/background_light"
-        android:weightSum="1">
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/sel1"
-            android:layout_weight="0.1666" />
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/sel2"
-            android:layout_weight="0.1666"
-            android:layout_gravity="center_horizontal" />
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/sel3"
-            android:layout_weight="0.1666" />
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/sel4"
-            android:layout_weight="0.1666"
-            android:layout_gravity="center_horizontal" />
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/sel5"
-            android:layout_weight="0.1666" />
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/sel6"
-            android:layout_weight="0.1666"
-            android:layout_gravity="center_horizontal" />
-
-
-    </LinearLayout>
-
-    <EditText
+    <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:id="@+id/editText"
-        android:layout_weight="0.54"
-        android:background="@android:color/background_light"
-        android:editable="true"
-        android:hint="Add notes about picture" />
+        android:id="@+id/spinner"
+        android:layout_gravity="right"
+        android:background="@drawable/bborder"
+        android:layout_marginBottom="60dp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1"
+        android:background="@drawable/bborder" />
+       <!-- android:tint="@android:color/background_light"
+        android:background="@drawable/bborder" -->
+
+
 
 </LinearLayout>

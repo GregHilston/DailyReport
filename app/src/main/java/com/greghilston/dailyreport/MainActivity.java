@@ -15,6 +15,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -31,9 +33,11 @@ import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends Activity {
     Project project = new Project("Construction", "ACME");
@@ -42,6 +46,7 @@ public class MainActivity extends Activity {
     public Context context = this;
     TextView textView;
     private File destination;
+
     private final String API_KEY = "cbbd1fc614026e05d5429175cdfb0d10";
     GPSLocation gps;
     static final int REQUEST_IMAGE_CAPTURE = 4;
@@ -57,8 +62,23 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
+
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        //   window.setStatusBarColor(this.getResources().getColor(R.color.white));
+
+        //Set up the Title of the app
+        String weekDay;
+        SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE, MMM dd, yyyy", Locale.getDefault());
+
+        Calendar calendar = Calendar.getInstance();
+        weekDay = dayFormat.format(calendar.getTime());
+
+        setTitle(weekDay);
+
+        setContentView(R.layout.activity_main);
         LocationMaster.init(getApplicationContext());
 
         linearLayout = (LinearLayout) findViewById(R.id.timeLine);
@@ -141,14 +161,6 @@ public class MainActivity extends Activity {
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(destination));
                 startActivityForResult(takePictureIntent, CameraActivity.TAKE_PHOTO_CODE);
-
-                /*
-                //
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-                }
-                */
             }
         });
 
@@ -224,8 +236,10 @@ public class MainActivity extends Activity {
         final Button headcountButton = (Button) findViewById(R.id.headcountButton);
         headcountButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Toast.makeText(context, "Left Button Clicked",
+                Toast.makeText(context, "Opening Headcount",
                         Toast.LENGTH_LONG).show();
+                Intent nextScreen = new Intent(getApplicationContext(), HeadcountActivity.class);
+                startActivityForResult(nextScreen, 1);
             }
         });
 
@@ -402,16 +416,6 @@ public class MainActivity extends Activity {
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-
-            /*
-            // Bitmap attempt
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-
-            Intent cameraActivityIntent = new Intent(getApplicationContext(),CameraActivity.class);
-            cameraActivityIntent.putExtra("imageBitmap", imageBitmap);
-            startActivity(cameraActivityIntent);
-            */
         }
 
         r.reportToGui(linearLayout, context);

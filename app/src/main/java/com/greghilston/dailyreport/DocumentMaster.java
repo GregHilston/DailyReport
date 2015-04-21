@@ -279,6 +279,7 @@ public class DocumentMaster {
     /**
      * Creates an XML file based on the report
      * @param r  the report to make the XML file from
+     * @param file  the file to write the xml from
      * @return  the file path or NULL if the file creation failed
      */
     @TargetApi(Build.VERSION_CODES.FROYO)

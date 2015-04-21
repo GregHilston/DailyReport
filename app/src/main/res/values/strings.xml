@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">DailyReport</string>
-    <string name="text_observation_activity">TextObservationActitiy</string>
+    <string name="text_observation_activity">Field Note</string>
     <string name="edit_text_observation_activity">EditTextObservationActivity</string>
-    <string name="edit_weather_observation_activity">EditWeatherObservationActivity</string>
-    <string name="camera_observation_activity">CameraObservationActitiy</string>
+    <string name="edit_weather_observation_activity">Edit Camera Observation</string>
+    <string name="camera_observation_activity">Camera Observation</string>
     <string name="action_settings">Settings</string>
     <string name="create_xml">Generate XML</string>
     <string name="create_csv">Generate CSV</string>
+
+    <string-array name="spinner">
+        <item>Field Note</item>
+        <item>Safety Note</item>
+        <item>Building Progress</item>
+        <item>Weather</item>
+    </string-array>
+
 </resources>

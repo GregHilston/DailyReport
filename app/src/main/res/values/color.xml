@@ -18,6 +18,7 @@
     Custom Down Here
     -->
 
+    <color name="nfDorange">#ffaa44</color>
     <color name="nfOrange">#ffa000</color>
     <color name="nfDivider">#1f1f1f</color>
     <color name="nfLOrange">#ffc107</color>
