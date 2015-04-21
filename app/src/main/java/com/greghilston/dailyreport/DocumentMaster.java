@@ -47,7 +47,6 @@ public class DocumentMaster {
 
     public static void createReportFolderStructureOnPhone(Report r) {
         boolean success = true;
-        System.out.println("createReportFolderStructureOnPhone: " + reportDirPhone.getPath() + File.separator + r.getFileName());
         r.setIndividualReportFolderPath(reportDirPhone.getPath() + File.separator + r.getFileName());
         File individualReportFolder = new File(r.getIndividualReportFolderPath());
 
@@ -57,7 +56,9 @@ public class DocumentMaster {
         }
 
         if (success) {
-            System.out.println("Individual Report Folder created successfully or already exist");
+            if(MainActivity.debugeMode) {
+                System.out.println("Individual Report Folder created successfully or already exist");
+            }
         } else {
             System.err.println("Individual Report Folder creation failed"); // TODO: Handle this
         }
@@ -94,9 +95,11 @@ public class DocumentMaster {
         }
 
         if (success) {
-            System.out.println("DailyReport Folder created successfully or already exist");
+            if(MainActivity.debugeMode) {
+                System.out.println("DailyReport Folder created successfully or already exist");
+            }
         } else {
-            System.err.println("DailyReport creation failed"); // TODO: Handle this
+                System.err.println("DailyReport creation failed"); // TODO: Handle this
         }
     }
 
@@ -111,7 +114,9 @@ public class DocumentMaster {
         }
 
         if (success) {
-            System.out.println("Reports Folder created successfully or already exist");
+            if(MainActivity.debugeMode) {
+                System.out.println("Reports Folder created successfully or already exist");
+            }
         } else {
             System.err.println("Reports Folder creation failed"); // TODO: Handle this
         }
@@ -128,7 +133,9 @@ public class DocumentMaster {
         }
 
         if (success) {
-            System.out.println("Xml Folder created successfully or already exist");
+            if(MainActivity.debugeMode) {
+                System.out.println("Xml Folder created successfully or already exist");
+            }
         } else {
             System.err.println("Xml Folder creation failed"); // TODO: Handle this
         }
@@ -145,7 +152,9 @@ public class DocumentMaster {
         }
 
         if (success) {
-            System.out.println("Csv Folder created successfully or already exist");
+            if(MainActivity.debugeMode) {
+                System.out.println("Csv Folder created successfully or already exist");
+            }
         } else {
             System.err.println("Csv Folder creation failed"); // TODO: Handle this
         }
@@ -262,7 +271,7 @@ public class DocumentMaster {
                             pictureObservationCount = pictureObservationCount + 1;
                         }
                         else {
-                            System.err.println("XML file is corrupt. Unexpected observation: " + type);
+                            System.err.println("XML file is corrupt. Unexpected observation type: " + type);
                         }
 
                         totalObservationCount = textObservationCount + weatherObservationCount + pictureObservationCount; // Update
@@ -273,9 +282,10 @@ public class DocumentMaster {
             e.printStackTrace();
         }
 
-        System.out.println("Report createReportFromXml(String " + fileName + ")");
-        r.printReport();
-
+        if(MainActivity.debugeMode) {
+            System.out.println("Report createReportFromXml(String " + fileName + ")");
+            r.printReport();
+        }
         return r;
     }
 
@@ -286,13 +296,7 @@ public class DocumentMaster {
      */
     @TargetApi(Build.VERSION_CODES.FROYO)
     public String createXml(Report r) {
-        System.out.println("createXml(Report r)");
-        r.printReport();
-        // System.out.print("r.getProject(): ");
-        // System.out.println(r.getProject());
-
         String outputFilePath = r.getXmlFilePath();
-        // System.out.println("outputFilePath: " + r.getXmlFilePath());
 
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -474,12 +478,18 @@ public class DocumentMaster {
                     observations.appendChild(observation);
                 }
                 else if(o instanceof Picture){
+                    // Observation Element
                     Element observation = doc.createElement("Observation");
 
                     // Type element
-                    Element type = doc.createElement("Type");
-                    observation.appendChild(doc.createTextNode("Picture"));
+                    Element type = doc.createElement("Type");;
+                    type.appendChild(doc.createTextNode("Picture"));
                     observation.appendChild(type);
+
+                    // Time element
+                    Element observationTime = doc.createElement("Time");
+                    observationTime.appendChild(doc.createTextNode(o.getTime()));
+                    observation.appendChild(observationTime);
 
                     // Picture Name element
                     Element name = doc.createElement("picName");
@@ -490,6 +500,11 @@ public class DocumentMaster {
                     Element path = doc.createElement("picPath");
                     path.appendChild(doc.createTextNode(((Picture) o).getPicturePath()));
                     observation.appendChild(path);
+
+                    // Note element
+                    Element note = doc.createElement("Note");
+                    note.appendChild(doc.createTextNode(o.getNote()));
+                    observation.appendChild(note);
 
                     observations.appendChild(observation);
                 }
@@ -512,8 +527,10 @@ public class DocumentMaster {
 
             transformer.transform(source, result);
 
-            System.out.println("XML File saved: " + outputFilePath);
-            // printXml(outputFilePath); // TODO: Remove this after demo
+            if(MainActivity.debugeMode) {
+                System.out.println("XML File saved: " + outputFilePath);
+            }
+
             return outputFilePath;
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
@@ -762,8 +779,9 @@ public class DocumentMaster {
                 writer.append('\n');
             }
 
-            System.out.println("CSV File saved: " + outputFilePath);
-
+            if(MainActivity.debugeMode) {
+                System.out.println("CSV File saved: " + outputFilePath);
+            }
             writer.flush();
             writer.close();
 

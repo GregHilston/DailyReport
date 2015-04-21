@@ -50,7 +50,9 @@ public class EditTextObservationActivity extends Activity {
          */
         cancelButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                System.out.println("Edit Text Observation Cancel Button Clicked!");
+                if(MainActivity.debugeMode) {
+                    System.out.println("Edit Text Observation Cancel Button Clicked!");
+                }
 
                 Intent returnIntent = new Intent();
                 setResult(RESULT_CANCELED, returnIntent);
@@ -63,7 +65,9 @@ public class EditTextObservationActivity extends Activity {
          */
         submitButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                System.out.println("Edit Text Observation Submit Button Clicked!");
+                if(MainActivity.debugeMode) {
+                    System.out.println("Edit Text Observation Submit Button Clicked!");
+                }
 
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("text", textEditText.getText().toString());
@@ -79,7 +83,9 @@ public class EditTextObservationActivity extends Activity {
          */
         removeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                System.out.println("Remove Text Observation Button Clicked!");
+                if(MainActivity.debugeMode) {
+                    System.out.println("Remove Text Observation Button Clicked!");
+                }
 
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("index", index);

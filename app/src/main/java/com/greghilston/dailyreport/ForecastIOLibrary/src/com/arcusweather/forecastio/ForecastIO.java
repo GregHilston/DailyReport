@@ -17,6 +17,7 @@ public class ForecastIO {
 	private String mUserAgent;
 	private HashMap<String, String> mRequestOptions;
 	private String mUrl;
+    public static final Boolean printStackTrace = false; // TODO: Flip to true. To much output to work with for now
 	
 	/**
 	 * Constructor for the class which takes the apiKey, latitude and logitude arguments.

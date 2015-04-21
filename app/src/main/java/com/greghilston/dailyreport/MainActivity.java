@@ -40,10 +40,10 @@ public class MainActivity extends Activity {
     public static Context context;
     TextView textView;
     private File destination;
-
     private final String API_KEY = "cbbd1fc614026e05d5429175cdfb0d10";
     GPSLocation gps;
     static final int REQUEST_IMAGE_CAPTURE = 4;
+    public static final Boolean debugeMode = false;
     // XML file chooser
 
     static {
@@ -101,14 +101,19 @@ public class MainActivity extends Activity {
                     switch (which){
                         case DialogInterface.BUTTON_POSITIVE:
                             //Yes button clicked
-                            System.out.println("Yes button pressed!");
+                            if(MainActivity.debugeMode) {
+                                System.out.println("Yes button pressed!");
+                            }
 
                             File mPath = new File(DocumentMaster.reportDirPhone.getPath());
-                            FileDialog fileDialog = new FileDialog(getParent(), mPath);
+                            FileDialog fileDialog = new FileDialog(MainActivity.this, mPath);
                             fileDialog.setFileEndsWith(".xml");
                             fileDialog.addFileListener(new FileDialog.FileSelectedListener() {
                                 public void fileSelected(File file) {
-                                    Log.d(getClass().getName(), "selected file " + file.toString());
+                                    if(MainActivity.debugeMode) {
+                                        System.out.println("selected file " + file.toString());
+                                    }
+
                                     r = DocumentMaster.getInstance().createReportFromXml(file.toString());
                                     DocumentMaster.createReportFolderStructureOnPhone(r);
                                     r.reportToGui(linearLayout);
@@ -119,7 +124,10 @@ public class MainActivity extends Activity {
 
                         case DialogInterface.BUTTON_NEGATIVE:
                             //No button clicked
-                            System.out.println("No button pressed!");
+                            if(MainActivity.debugeMode) {
+                                System.out.println("No button pressed!");
+                            }
+
                             r = new Report(project);
                             DocumentMaster.createReportFolderStructureOnPhone(r);
                             r.reportToGui(linearLayout);
@@ -143,7 +151,6 @@ public class MainActivity extends Activity {
         final Button cameraButton = (Button) findViewById(R.id.cameraButton);
         cameraButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
                 // File path attempt
                 String name =   dateToString(new Date(),"yyyy-MM-dd-hh-mm-ss");
                 destination = new File(r.getIndividualReportFolderPath() + File.separator + r.getPictureCount() + ".jpg");
@@ -248,13 +255,17 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
 
-        System.out.println("Application resumed");
+        if(MainActivity.debugeMode) {
+            System.out.println("Application resumed");
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        System.out.println("Application stopped");
+        if(MainActivity.debugeMode) {
+            System.out.println("Application stopped");
+        }
 
         // Application has stopped, save timeline as XML file to device
         DocumentMaster.getInstance().createXml(r);
@@ -320,34 +331,45 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        System.out.println("onActivityResult");
-        System.out.println("\t requestCode: " + requestCode);
-        System.out.println("\t resultCode: " + resultCode);
+        if(MainActivity.debugeMode) {
+            System.out.println("onActivityResult");
+            System.out.println("\t requestCode: " + requestCode);
+            System.out.println("\t resultCode: " + resultCode);
+        }
 
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
                 String result =  data.getStringExtra("result");
 
                 if(result != "") { // Do not make an observation for an empty string
-                    System.out.println("\t\tText Observation Returned: " + result);
+                    if(MainActivity.debugeMode) {
+                        System.out.println("\t\tText Observation Returned: " + result);
+                    }
+
                     r.addObservation(new Text(result));
                     r.reportToGui((LinearLayout) findViewById(R.id.timeLine));
                 }
             }
             else if (resultCode == RESULT_CANCELED) {
-                System.out.println("\t\tText Observation: Cancelled!");
+                if(MainActivity.debugeMode) {
+                    System.out.println("\t\tText Observation: Cancelled!");
+                }
             }
         }
         else if (requestCode == 2) {
             if(resultCode == RESULT_OK) {
-                System.out.println("\t\tEdit Text Observation: changes made!");
+                if(MainActivity.debugeMode) {
+                    System.out.println("\t\tEdit Text Observation: changes made!");
+                }
 
                 int index = data.getIntExtra("index", 0);
                 String time = data.getStringExtra("date");
                 String t = data.getStringExtra("text");
 
-                System.out.print(time);
-                System.out.print(t);
+                if(MainActivity.debugeMode) {
+                    System.out.print(time);
+                    System.out.print(t);
+                }
 
                 Text text = (Text) r.getObservations().remove(index);
                 text.setDate(time);
@@ -355,16 +377,23 @@ public class MainActivity extends Activity {
                 r.getObservations().add(index, text);
             }
             else if (resultCode == RESULT_CANCELED) {
-                System.out.println("\t\tEdit Text Observation: Cancelled!");
+                if(MainActivity.debugeMode) {
+                    System.out.println("\t\tEdit Text Observation: Cancelled!");
+                }
             }
             else if (resultCode == EditTextObservationActivity.RESULT_DELETE_TEXT_OBSERVATION){
-                System.out.println("Removing Text Observation");
+                if(MainActivity.debugeMode) {
+                    System.out.println("Removing Text Observation");
+                }
+
                 r.getObservations().remove(data.getIntExtra("index", 0));
             }
         }
         else if (requestCode == 3) {
             if(resultCode == RESULT_OK) {
-                System.out.println("\t\tWeather Observation: changes made!");
+                if(MainActivity.debugeMode) {
+                    System.out.println("\t\tWeather Observation: changes made!");
+                }
 
                 int index = data.getIntExtra("index", 0);
                 String time = data.getStringExtra("date");
@@ -384,10 +413,15 @@ public class MainActivity extends Activity {
                 r.getObservations().add(index, weather);
             }
             else if (resultCode == RESULT_CANCELED) {
-                System.out.println("\t\tEdit Text Observation: Cancelled!");
+                if(MainActivity.debugeMode) {
+                    System.out.println("\t\tEdit Text Observation: Cancelled!");
+                }
             }
             else if (resultCode == EditWeatherObservationActivity.RESULT_DELETE_WEATHER_OBSERVATION){
-                System.out.println("Removing Weather Observation");
+                if(MainActivity.debugeMode) {
+                    System.out.println("Removing Weather Observation");
+                }
+
                 r.getObservations().remove(data.getIntExtra("index", 0));
             }
         }
@@ -397,7 +431,10 @@ public class MainActivity extends Activity {
                 FileInputStream in = new FileInputStream(destination);
                 String imageName = (r.getPictureCount() - 1) + ".jpg";
                 String imagePath = r.getIndividualReportFolderPath() + File.separator + (r.getPictureCount() - 1) + ".jpg";
-                System.out.println("imagePath: " + imagePath);
+
+                if(MainActivity.debugeMode) {
+                    System.out.println("imagePath: " + imagePath);
+                }
 
                 r.addObservation(new Picture(imageName, imagePath));
 

@@ -50,8 +50,6 @@ public class CameraActivity extends Activity implements AdapterView.OnItemSelect
 
 
         imagePath = getIntent().getStringExtra("imagePath");
-        imagePath = getIntent().getStringExtra("imagePath");
-        System.out.println("imagePath: " + imagePath);
 
         BitmapFactory.Options options = null;
         options = new BitmapFactory.Options();
