@@ -273,19 +273,21 @@ public class DocumentMaster {
             e.printStackTrace();
         }
 
+        System.out.println("Report createReportFromXml(String " + fileName + ")");
+        r.printReport();
+
         return r;
     }
 
     /**
      * Creates an XML file based on the report
      * @param r  the report to make the XML file from
-     * @param file  the file to write the xml from
      * @return  the file path or NULL if the file creation failed
      */
     @TargetApi(Build.VERSION_CODES.FROYO)
     public String createXml(Report r) {
-        // System.out.println("createXml(Report r)");
-        // r.printReport();
+        System.out.println("createXml(Report r)");
+        r.printReport();
         // System.out.print("r.getProject(): ");
         // System.out.println(r.getProject());
 

@@ -10,7 +10,6 @@
         android:layout_gravity="right"
         android:background="@color/white" >
 
-
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"

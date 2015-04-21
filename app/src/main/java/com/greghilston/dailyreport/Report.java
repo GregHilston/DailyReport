@@ -141,7 +141,8 @@ public class Report {
                 System.out.println("\t" + ((Weather) this.observations.get(i)).getPressure());
             }
             else if(this.observations.get(i) instanceof Picture) {
-
+                System.out.println("\t" + ((Picture) this.observations.get(i)).getPictureName());
+                System.out.println("\t" + ((Picture) this.observations.get(i)).getPicturePath());
             }
 
             System.out.println("\t" + this.observations.get(i).getNote());
@@ -154,7 +155,7 @@ public class Report {
      * Transcribes the Report's timeLine to the GUI
      * TODO: See if this is the correct thing to do, or the correct place to do it
      */
-    public void reportToGui(LinearLayout ll, final Context context) {
+    public void reportToGui(LinearLayout ll) {
         System.out.println("reportToGui");
 
         Collections.sort(observations, new Comparator<Observation>() {
@@ -169,18 +170,18 @@ public class Report {
             Observation o = getObservations().get(i);
 
             if(o instanceof Text) {
-                TextView textView = new TextView(context);
+                TextView textView = new TextView(MainActivity.context);
 
                 final int finalI = i;
                 final Observation finalO = o;
                 textView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent nextScreen = new Intent(context, EditTextObservationActivity.class);
+                        Intent nextScreen = new Intent(MainActivity.context, EditTextObservationActivity.class);
                         nextScreen.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);   // The SingleTop - makes it act Modal (from : http://mono-for-android.1047100.n5.nabble.com/OnActivityResult-not-being-called-td4802915.html)
                         nextScreen.putExtra("observation", finalO);
                         nextScreen.putExtra("index", finalI);
-                        ((Activity)context).startActivityForResult(nextScreen, 2);
+                        ((Activity)MainActivity.context).startActivityForResult(nextScreen, 2);
                     }
                 });
 
@@ -188,18 +189,18 @@ public class Report {
                 ll.addView(textView);
             }
             else if(o instanceof Weather) {
-                TextView textView = new TextView(context);
+                TextView textView = new TextView(MainActivity.context);
 
                 final int finalI = i;
                 final Observation finalO = o;
                 textView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent nextScreen = new Intent(context, EditWeatherObservationActivity.class);
+                        Intent nextScreen = new Intent(MainActivity.context, EditWeatherObservationActivity.class);
                         nextScreen.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);   // The SingleTop - makes it act Modal (from : http://mono-for-android.1047100.n5.nabble.com/OnActivityResult-not-being-called-td4802915.html)
                         nextScreen.putExtra("observation", finalO);
                         nextScreen.putExtra("index", finalI);
-                        ((Activity)context).startActivityForResult(nextScreen, 3);
+                        ((Activity)MainActivity.context).startActivityForResult(nextScreen, 3);
                     }
                 });
 
@@ -207,11 +208,11 @@ public class Report {
                 ll.addView(textView);
             }
             else if(o instanceof Picture) { // TODO
-                TextView textView = new TextView(context);
+                TextView textView = new TextView(MainActivity.context);
                 textView.setText(o.getTime() + ": " + ((Picture) o).getPictureName() + "\n");
                 ll.addView(textView);
 
-                ImageView imageView = new ImageView(context);
+                ImageView imageView = new ImageView(MainActivity.context);
                 BitmapFactory.Options options = null;
                 options = new BitmapFactory.Options();
                 options.inSampleSize = 2; // Fixes OutOfMemory Exceptions for working with Bitmaps

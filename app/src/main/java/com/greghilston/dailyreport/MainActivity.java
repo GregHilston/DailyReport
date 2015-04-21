@@ -5,11 +5,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
@@ -18,14 +15,11 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.greghilston.dailyreport.ForecastIOLibrary.src.com.arcusweather.forecastio.ForecastIO;
 import com.greghilston.dailyreport.ForecastIOLibrary.src.com.arcusweather.forecastio.ForecastIOResponse;
-
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
@@ -43,7 +37,7 @@ public class MainActivity extends Activity {
     Project project = new Project("Construction", "ACME");
     Report r;
     public LinearLayout linearLayout;
-    public Context context = this;
+    public static Context context;
     TextView textView;
     private File destination;
 
@@ -62,7 +56,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_main);
+        context = MainActivity.this;
 
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -78,11 +73,10 @@ public class MainActivity extends Activity {
 
         setTitle(weekDay);
 
-        setContentView(R.layout.activity_main);
-        LocationMaster.init(getApplicationContext());
+        LocationMaster.init(context);
 
         linearLayout = (LinearLayout) findViewById(R.id.timeLine);
-        textView = new TextView(getApplicationContext());
+        textView = new TextView(context);
 
         File[] parents = DocumentMaster.reportDirPhone.listFiles();
         ArrayList<File> children = new ArrayList<File>();
@@ -110,24 +104,17 @@ public class MainActivity extends Activity {
                             System.out.println("Yes button pressed!");
 
                             File mPath = new File(DocumentMaster.reportDirPhone.getPath());
-                            FileDialog fileDialog = new FileDialog(MainActivity.this, mPath);
+                            FileDialog fileDialog = new FileDialog(getParent(), mPath);
                             fileDialog.setFileEndsWith(".xml");
                             fileDialog.addFileListener(new FileDialog.FileSelectedListener() {
                                 public void fileSelected(File file) {
                                     Log.d(getClass().getName(), "selected file " + file.toString());
                                     r = DocumentMaster.getInstance().createReportFromXml(file.toString());
                                     DocumentMaster.createReportFolderStructureOnPhone(r);
-                                    r.reportToGui(linearLayout, getBaseContext());
+                                    r.reportToGui(linearLayout);
                                 }
                             });
-                            //fileDialog.addDirectoryListener(new com.greghilston.dailyreport.FileDialog.DirectorySelectedListener() {
-                            //  public void directorySelected(File directory) {
-                            //      Log.d(getClass().getName(), "selected dir " + directory.toString());
-                            //  }
-                            //});
-                            //fileDialog.setSelectDirectoryOption(false);
                             fileDialog.showDialog();
-
                             break;
 
                         case DialogInterface.BUTTON_NEGATIVE:
@@ -135,19 +122,23 @@ public class MainActivity extends Activity {
                             System.out.println("No button pressed!");
                             r = new Report(project);
                             DocumentMaster.createReportFolderStructureOnPhone(r);
-                            r.reportToGui(linearLayout, getBaseContext());
+                            r.reportToGui(linearLayout);
                             break;
                     }
                 }
             };
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            r = new Report(project);
+            DocumentMaster.createReportFolderStructureOnPhone(r);
+            r.reportToGui(linearLayout);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setMessage("Would you like to open a saved report?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
         }
 
         r = new Report(project); //Create a new report
         DocumentMaster.createReportFolderStructureOnPhone(r);
-        r.reportToGui(linearLayout, this);
+        r.reportToGui(linearLayout);
 
         final Button cameraButton = (Button) findViewById(R.id.cameraButton);
         cameraButton.setOnClickListener(new View.OnClickListener() {
@@ -214,7 +205,7 @@ public class MainActivity extends Activity {
                        // TODO: Change what is returned? Or let the user choose
                        //Add the weather observation
                        r.addObservation(new Weather(currently, temperature, relativeHumid, pressure));
-                       r.reportToGui(linearLayout, context);
+                       r.reportToGui(linearLayout);
                    }
                     else{
                        Toast.makeText(context, "Network unavailable, please try again later.",
@@ -229,7 +220,7 @@ public class MainActivity extends Activity {
         final Button noteButton = (Button) findViewById(R.id.noteButton);
         noteButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent nextScreen = new Intent(getApplicationContext(), TextObservationActivity.class);
+                Intent nextScreen = new Intent(context, TextObservationActivity.class);
                 startActivityForResult(nextScreen, 1);
             }
         });
@@ -238,7 +229,7 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 Toast.makeText(context, "Opening Headcount",
                         Toast.LENGTH_LONG).show();
-                Intent nextScreen = new Intent(getApplicationContext(), HeadcountActivity.class);
+                Intent nextScreen = new Intent(context, HeadcountActivity.class);
                 startActivityForResult(nextScreen, 1);
             }
         });
@@ -340,7 +331,7 @@ public class MainActivity extends Activity {
                 if(result != "") { // Do not make an observation for an empty string
                     System.out.println("\t\tText Observation Returned: " + result);
                     r.addObservation(new Text(result));
-                    r.reportToGui((LinearLayout) findViewById(R.id.timeLine), this);
+                    r.reportToGui((LinearLayout) findViewById(R.id.timeLine));
                 }
             }
             else if (resultCode == RESULT_CANCELED) {
@@ -410,7 +401,7 @@ public class MainActivity extends Activity {
 
                 r.addObservation(new Picture(imageName, imagePath));
 
-                Intent cameraActivityIntent = new Intent(getApplicationContext(),CameraActivity.class);
+                Intent cameraActivityIntent = new Intent(context,CameraActivity.class);
                 cameraActivityIntent.putExtra("imagePath", imagePath);
                 startActivity(cameraActivityIntent);
             } catch (FileNotFoundException e) {
@@ -418,6 +409,6 @@ public class MainActivity extends Activity {
             }
         }
 
-        r.reportToGui(linearLayout, context);
+        r.reportToGui(linearLayout);
     }
 }
