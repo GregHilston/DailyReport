@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -35,11 +35,11 @@
 
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:id="@+id/scrollView"
         android:layout_gravity="center_horizontal"
         android:background="@color/white"
-        >
+        android:layout_weight="1">
 
         <LinearLayout
             android:id="@+id/timeLine"
@@ -50,13 +50,15 @@
         </LinearLayout>
     </ScrollView>
 
+    <!--
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:orientation="horizontal"
-        android:layout_gravity="bottom">
+        android:layout_gravity="bottom"
+        android:gravity="bottom">
 
         <Button
             android:id="@+id/cameraButton"
@@ -85,14 +87,53 @@
             android:background="@drawable/border"
             android:layout_gravity="bottom" />
 
+    </LinearLayout>
+
+    -->
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
         <ImageButton
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageButton"
-            android:src="@drawable/compose_button"
+            android:layout_height="111dp"
+            android:id="@+id/camera_ib"
+            android:src="@drawable/cam_button"
             android:background="@color/white"
-            android:layout_gravity="bottom"
+            android:layout_gravity="right"
+            android:layout_weight="1"
+            android:visibility="invisible"
+            />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="111dp"
+            android:id="@+id/weather_ib"
+            android:src="@drawable/we_button"
+            android:background="@color/white"
+            android:layout_gravity="right"
+            android:layout_weight="1"
+            android:visibility="invisible" />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="111dp"
+            android:id="@+id/compose_ib"
+            android:src="@drawable/cp_button"
+            android:background="@color/white"
+            android:layout_gravity="right"
+            android:layout_weight="1"
+            android:visibility="invisible" />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="111dp"
+            android:id="@+id/add_ib2"
+            android:src="@drawable/add_button"
+            android:background="@color/white"
+            android:layout_gravity="right"
             android:layout_weight="1" />
+
     </LinearLayout>
 
 </LinearLayout>

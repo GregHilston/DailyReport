@@ -43,6 +43,10 @@ public class MainActivity extends Activity {
     TextView textView;
     private File destination;
     ImageButton nflo;
+    ImageButton cabo;
+    ImageButton webo;
+    ImageButton nobo;
+
     private final String API_KEY = "cbbd1fc614026e05d5429175cdfb0d10";
     GPSLocation gps;
     static final int REQUEST_IMAGE_CAPTURE = 4;
@@ -153,20 +157,31 @@ public class MainActivity extends Activity {
         DocumentMaster.createReportFolderStructureOnPhone(r);
         r.reportToGui(linearLayout);
 
-        final ImageButton nflo = (ImageButton) findViewById(R.id.imageButton);
+        final ImageButton cameraButton = (ImageButton) findViewById(R.id.camera_ib);
+        final ImageButton weatherButton  = (ImageButton) findViewById(R.id.weather_ib);
+        final ImageButton noteButton = (ImageButton) findViewById(R.id.compose_ib);
+
+        final ImageButton nflo = (ImageButton) findViewById(R.id.add_ib2);
         nflo.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
                 AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
-                anim.setDuration(1000);
-                anim.setRepeatCount(2);
-                anim.setRepeatMode(Animation.REVERSE);
-                nflo.startAnimation(anim);
+                anim.setDuration(4000);
+                //anim.setRepeatCount(1);
+           //     anim.setRepeatMode(Animation.REVERSE);
+                cameraButton.startAnimation(anim);
+                weatherButton.startAnimation(anim);
+                noteButton.startAnimation(anim);
+
+            //    nflo.startAnimation(anim);
             }
         });
 
-        final Button cameraButton = (Button) findViewById(R.id.cameraButton);
-        cameraButton.setOnClickListener(new View.OnClickListener() {
+    //    final Button cameraButton = (Button) findViewById(R.id.cameraButton);
+    //    cameraButton.setOnClickListener(new View.OnClickListener() {
+
+    //        final ImageButton cameraButton = (ImageButton) findViewById(R.id.camera_ib);
+           cameraButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
                 // File path attempt
@@ -183,9 +198,13 @@ public class MainActivity extends Activity {
         /**
          * For testing purposes, should just create an observation for the current weather of Durham
          */
-        final Button weatherButton = (Button) findViewById(R.id.weatherButton);
-        weatherButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) { //Changing this to open up txt text screen
+ //       final Button weatherButton = (Button) findViewById(R.id.weatherButton);
+ //       weatherButton.setOnClickListener(new View.OnClickListener() {
+
+      //      final ImageButton weatherButton  = (ImageButton) findViewById(R.id.weather_ib);
+            weatherButton.setOnClickListener(new View.OnClickListener() {
+
+                public void onClick(View v) { //Changing this to open up txt text screen
 
                 //Double Lat = LocationMaster.getInstance().getLatitude();
                 //Double Long = LocationMaster.getInstance().getLongitude();
@@ -242,9 +261,13 @@ public class MainActivity extends Activity {
             }
         });
 
-        final Button noteButton = (Button) findViewById(R.id.noteButton);
-        noteButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+    //    final Button noteButton = (Button) findViewById(R.id.noteButton);
+    //    noteButton.setOnClickListener(new View.OnClickListener() {
+
+//            final ImageButton noteButton = (ImageButton) findViewById(R.id.compose_ib);
+            noteButton.setOnClickListener(new View.OnClickListener() {
+
+                public void onClick(View v) {
                 Intent nextScreen = new Intent(context, TextObservationActivity.class);
                 startActivityForResult(nextScreen, 1);
             }

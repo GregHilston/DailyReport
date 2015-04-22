@@ -4,7 +4,10 @@
     android:layout_height="wrap_content"
     android:weightSum="1"
     android:id="@+id/camera"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    >
 
 
     <TextView
@@ -23,7 +26,8 @@
         android:id="@+id/spinner"
         android:background="@drawable/bborder"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="10dp"
+        android:cacheColorHint="#00000000" />
 
     <ImageView
         android:layout_width="250dp"
