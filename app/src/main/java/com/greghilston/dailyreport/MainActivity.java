@@ -5,12 +5,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +15,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -47,12 +43,13 @@ public class MainActivity extends Activity {
     TextView textView;
     private File destination;
     ImageButton nflo;
-
     private final String API_KEY = "cbbd1fc614026e05d5429175cdfb0d10";
     GPSLocation gps;
     static final int REQUEST_IMAGE_CAPTURE = 4;
-    public static final Boolean debugeMode = false;
-    // XML file chooser
+    static final int HEAD_COUNT = 5;
+    static final int EQUIPMENT_COUNT = 6;
+    public static final Boolean debugMode = false;
+    Button headcountButton;
 
     static {
         // Setup our folder structure
@@ -109,7 +106,7 @@ public class MainActivity extends Activity {
                     switch (which){
                         case DialogInterface.BUTTON_POSITIVE:
                             //Yes button clicked
-                            if(MainActivity.debugeMode) {
+                            if(MainActivity.debugMode) {
                                 System.out.println("Yes button pressed!");
                             }
 
@@ -118,7 +115,7 @@ public class MainActivity extends Activity {
                             fileDialog.setFileEndsWith(".xml");
                             fileDialog.addFileListener(new FileDialog.FileSelectedListener() {
                                 public void fileSelected(File file) {
-                                    if(MainActivity.debugeMode) {
+                                    if(MainActivity.debugMode) {
                                         System.out.println("selected file " + file.toString());
                                     }
 
@@ -132,7 +129,7 @@ public class MainActivity extends Activity {
 
                         case DialogInterface.BUTTON_NEGATIVE:
                             //No button clicked
-                            if(MainActivity.debugeMode) {
+                            if(MainActivity.debugMode) {
                                 System.out.println("No button pressed!");
                             }
 
@@ -252,21 +249,18 @@ public class MainActivity extends Activity {
                 startActivityForResult(nextScreen, 1);
             }
         });
-        final Button headcountButton = (Button) findViewById(R.id.headcountButton);
+        headcountButton = (Button) findViewById(R.id.headcountButton);
         headcountButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Toast.makeText(context, "Opening Headcount",
-                        Toast.LENGTH_LONG).show();
                 Intent nextScreen = new Intent(context, HeadcountActivity.class);
-                startActivityForResult(nextScreen, 1);
+                startActivityForResult(nextScreen, HEAD_COUNT);
             }
         });
 
         final Button equipmentButton = (Button) findViewById(R.id.equipmentButton);
         equipmentButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Toast.makeText(context, "Right Button Clicked",
-                        Toast.LENGTH_LONG).show();
+
             }
         });
 
@@ -276,7 +270,7 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
 
-        if(MainActivity.debugeMode) {
+        if(MainActivity.debugMode) {
             System.out.println("Application resumed");
         }
     }
@@ -284,7 +278,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onStop() {
         super.onStop();
-        if(MainActivity.debugeMode) {
+        if(MainActivity.debugMode) {
             System.out.println("Application stopped");
         }
 
@@ -352,7 +346,7 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(MainActivity.debugeMode) {
+        if(MainActivity.debugMode) {
             System.out.println("onActivityResult");
             System.out.println("\t requestCode: " + requestCode);
             System.out.println("\t resultCode: " + resultCode);
@@ -363,7 +357,7 @@ public class MainActivity extends Activity {
                 String result =  data.getStringExtra("result");
 
                 if(result != "") { // Do not make an observation for an empty string
-                    if(MainActivity.debugeMode) {
+                    if(MainActivity.debugMode) {
                         System.out.println("\t\tText Observation Returned: " + result);
                     }
 
@@ -372,14 +366,14 @@ public class MainActivity extends Activity {
                 }
             }
             else if (resultCode == RESULT_CANCELED) {
-                if(MainActivity.debugeMode) {
+                if(MainActivity.debugMode) {
                     System.out.println("\t\tText Observation: Cancelled!");
                 }
             }
         }
         else if (requestCode == 2) {
             if(resultCode == RESULT_OK) {
-                if(MainActivity.debugeMode) {
+                if(MainActivity.debugMode) {
                     System.out.println("\t\tEdit Text Observation: changes made!");
                 }
 
@@ -387,7 +381,7 @@ public class MainActivity extends Activity {
                 String time = data.getStringExtra("date");
                 String t = data.getStringExtra("text");
 
-                if(MainActivity.debugeMode) {
+                if(MainActivity.debugMode) {
                     System.out.print(time);
                     System.out.print(t);
                 }
@@ -398,12 +392,12 @@ public class MainActivity extends Activity {
                 r.getObservations().add(index, text);
             }
             else if (resultCode == RESULT_CANCELED) {
-                if(MainActivity.debugeMode) {
+                if(MainActivity.debugMode) {
                     System.out.println("\t\tEdit Text Observation: Cancelled!");
                 }
             }
             else if (resultCode == EditTextObservationActivity.RESULT_DELETE_TEXT_OBSERVATION){
-                if(MainActivity.debugeMode) {
+                if(MainActivity.debugMode) {
                     System.out.println("Removing Text Observation");
                 }
 
@@ -412,7 +406,7 @@ public class MainActivity extends Activity {
         }
         else if (requestCode == 3) {
             if(resultCode == RESULT_OK) {
-                if(MainActivity.debugeMode) {
+                if(MainActivity.debugMode) {
                     System.out.println("\t\tWeather Observation: changes made!");
                 }
 
@@ -434,26 +428,26 @@ public class MainActivity extends Activity {
                 r.getObservations().add(index, weather);
             }
             else if (resultCode == RESULT_CANCELED) {
-                if(MainActivity.debugeMode) {
+                if(MainActivity.debugMode) {
                     System.out.println("\t\tEdit Text Observation: Cancelled!");
                 }
             }
             else if (resultCode == EditWeatherObservationActivity.RESULT_DELETE_WEATHER_OBSERVATION){
-                if(MainActivity.debugeMode) {
+                if(MainActivity.debugMode) {
                     System.out.println("Removing Weather Observation");
                 }
 
                 r.getObservations().remove(data.getIntExtra("index", 0));
             }
         }
-        else if(requestCode == 4 && resultCode == RESULT_OK) {
+        else if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             // File based work
             try {
                 FileInputStream in = new FileInputStream(destination);
                 String imageName = (r.getPictureCount() - 1) + ".jpg";
                 String imagePath = r.getIndividualReportFolderPath() + File.separator + (r.getPictureCount() - 1) + ".jpg";
 
-                if(MainActivity.debugeMode) {
+                if(MainActivity.debugMode) {
                     System.out.println("imagePath: " + imagePath);
                 }
 
@@ -465,6 +459,67 @@ public class MainActivity extends Activity {
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
+        }
+        else if(requestCode == HEAD_COUNT && resultCode == RESULT_OK) {
+
+            if(MainActivity.debugMode) {
+                System.out.println("\t\tHeadcount: Modified!");
+            }
+
+            int employeeCount =  data.getIntExtra("employeeCount", 0);
+
+            Boolean grehgCheckBoxSelected = data.getExtras().getBoolean("grehgCheckBoxSelected", false);
+            Boolean evanCheckBoxSelected = data.getExtras().getBoolean("evanCheckBoxSelected", false);
+            Boolean tylerCheckBoxSelected = data.getExtras().getBoolean("tylerCheckBoxSelected", false);
+            Boolean jimCheckBoxSelected = data.getExtras().getBoolean("jimCheckBoxSelected", false);
+            Boolean walterCheckBoxSelected = data.getExtras().getBoolean("walterCheckBoxSelected", false);
+            Boolean mikeCheckBoxSelected = data.getExtras().getBoolean("mikeCheckBoxSelected", false);
+            Boolean colletteCheckBoxSelected = data.getExtras().getBoolean("colletteCheckBoxSelected", false);
+            Boolean acmeCheckBoxSelected = data.getExtras().getBoolean("acmeCheckBoxSelected", false);
+            Boolean researchCheckBoxSelected = data.getExtras().getBoolean("researchCheckBoxSelected", false);
+            Boolean destructionCheckBoxSelected = data.getExtras().getBoolean("destructionCheckBoxSelected", false);
+
+            r.clearPeople();
+            r.clearCompanies();
+
+            if(grehgCheckBoxSelected) {
+                r.addPerson(new Person("Grehg", "CEO", 40));
+            }
+            if(evanCheckBoxSelected) {
+                r.addPerson(new Person("Evan", "Fighter Pilot", 40));
+            }
+            if(tylerCheckBoxSelected) {
+                r.addPerson(new Person("Tyler", "Begger", 40));
+            }
+            if(jimCheckBoxSelected) {
+                r.addPerson(new Person("Jim", "Garbage Man", 40));
+            }
+            if(walterCheckBoxSelected) {
+                r.addPerson(new Person("Walter", "Chemistry Teacher", 40));
+            }
+            if(mikeCheckBoxSelected) {
+                r.addPerson(new Person("Mike", "Private Investigator", 40));
+            }
+            if(colletteCheckBoxSelected) {
+                r.addPerson(new Person("Collette", "Best Teacher Ever", 40));
+            }
+            if(acmeCheckBoxSelected) {
+                r.addCompany(new Company("Acme Construction Co.", getIntent().getIntExtra("acmeEmployeeCount", 0)));
+            }
+            if(researchCheckBoxSelected) {
+                r.addCompany(new Company("Research Construction Co.", getIntent().getIntExtra("ResearchEmployeeCount", 0)));
+            }
+            if(destructionCheckBoxSelected) {
+                r.addCompany(new Company("Destruction Construction Co.", getIntent().getIntExtra("destructionEmployeeCount", 0)));
+            }
+
+            headcountButton.setText("Headcount: " + employeeCount);
+            if(MainActivity.debugMode) {
+                System.out.println("\t\temployeeCount: " + employeeCount);
+            }
+        }
+        else if(requestCode == EQUIPMENT_COUNT) {
+
         }
 
         r.reportToGui(linearLayout);

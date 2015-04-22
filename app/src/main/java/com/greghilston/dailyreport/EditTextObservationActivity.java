@@ -50,7 +50,7 @@ public class EditTextObservationActivity extends Activity {
          */
         cancelButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                if(MainActivity.debugeMode) {
+                if(MainActivity.debugMode) {
                     System.out.println("Edit Text Observation Cancel Button Clicked!");
                 }
 
@@ -65,7 +65,7 @@ public class EditTextObservationActivity extends Activity {
          */
         submitButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                if(MainActivity.debugeMode) {
+                if(MainActivity.debugMode) {
                     System.out.println("Edit Text Observation Submit Button Clicked!");
                 }
 
@@ -83,7 +83,7 @@ public class EditTextObservationActivity extends Activity {
          */
         removeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                if(MainActivity.debugeMode) {
+                if(MainActivity.debugMode) {
                     System.out.println("Remove Text Observation Button Clicked!");
                 }
 

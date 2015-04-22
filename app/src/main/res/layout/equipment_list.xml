@@ -10,60 +10,54 @@
         android:layout_gravity="right"
         android:background="@color/white" >
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bulldozer"
+                android:id="@+id/bullDozer"
+                android:checked="false" />
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Bulldozer"
-            android:id="@+id/checkBox3"
-            android:checked="false" />
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Steamroller"
-            android:id="@+id/checkBox"
-            android:checked="false" />
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cherry Picker"
-            android:id="@+id/checkBox2"
-            android:checked="false" />
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hammer"
-            android:id="@+id/checkBox4"
-            android:checked="false" />
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nail"
-            android:id="@+id/checkBox5"
-            android:checked="false" />
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Another Nail"
-            android:id="@+id/checkBox6"
-            android:checked="false" />
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="A Great Attitude"
-            android:id="@+id/checkBox7"
-            android:checked="false" />
-
-
-    </LinearLayout>
-
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Steamroller"
+                android:id="@+id/steamRoller"
+                android:checked="false" />
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cherry Picker"
+                android:id="@+id/cherryPicker"
+                android:checked="false" />
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hammer"
+                android:id="@+id/hammer"
+                android:checked="false" />
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nail"
+                android:id="@+id/nail"
+                android:checked="false" />
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Another Nail"
+                android:id="@+id/anotherNail"
+                android:checked="false" />
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="A Great Attitude"
+                android:id="@+id/aGreatAttitude"
+                android:checked="false" />
+        </LinearLayout>
     </ScrollView>
-
-
 </LinearLayout>

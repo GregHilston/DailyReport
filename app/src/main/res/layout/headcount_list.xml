@@ -10,181 +10,161 @@
         android:layout_gravity="right"
         android:background="@color/white" >
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="My Company"
-            android:id="@+id/textView2"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="------------------------------------------------------------------------------------------------"
-            android:id="@+id/textView3" />
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="      Tyler"
-            android:id="@+id/checkBox3"
-            android:textSize="15dp"
-            android:textStyle="bold"
-            android:checked="false"
-            android:layout_margin="4dp" />
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="      Grehg"
-            android:id="@+id/checkBox"
-            android:textSize="15dp"
-            android:textStyle="bold"
-            android:checked="false"
-            android:layout_margin="4dp" />
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="      Evan"
-            android:id="@+id/checkBox2"
-            android:textSize="15dp"
-            android:textStyle="bold"
-            android:checked="false"
-            android:layout_margin="4dp" />
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="      Jim"
-            android:id="@+id/checkBox4"
-            android:textSize="15dp"
-            android:textStyle="bold"
-            android:checked="false"
-            android:layout_margin="4dp" />
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="      Walter"
-            android:id="@+id/checkBox5"
-            android:textSize="15dp"
-            android:textStyle="bold"
-            android:checked="false"
-            android:layout_margin="4dp" />
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="      Mike"
-            android:id="@+id/checkBox6"
-            android:textSize="15dp"
-            android:textStyle="bold"
-            android:checked="false"
-            android:layout_margin="4dp" />
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="      Collette"
-            android:id="@+id/checkBox7"
-            android:textSize="15dp"
-            android:textStyle="bold"
-            android:checked="false"
-            android:layout_margin="4dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Other Companies"
-            android:id="@+id/textView4"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="------------------------------------------------------------------------------------------------"
-            android:id="@+id/textView5" />
-
         <LinearLayout
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:weightSum="1">
+            android:layout_height="fill_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="My Company"
+                android:id="@+id/textView2"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="------------------------------------------------------------------------------------------------"
+                android:id="@+id/textView3" />
 
             <CheckBox
                 android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:text="      Acme Construction Co."
-                android:id="@+id/checkBox8"
+                android:layout_height="wrap_content"
+                android:text="      Tyler"
+                android:id="@+id/tylerCheckBox"
                 android:textSize="15dp"
                 android:textStyle="bold"
                 android:checked="false"
                 android:layout_margin="4dp" />
 
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="      Grehg"
+                android:id="@+id/grehgCheckBox"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:checked="false"
+                android:layout_margin="4dp" />
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="      Evan"
+                android:id="@+id/evanCheckBox"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:checked="false"
+                android:layout_margin="4dp" />
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="      Jim"
+                android:id="@+id/jimCheckBox"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:checked="false"
+                android:layout_margin="4dp" />
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="      Walter"
+                android:id="@+id/walterCheckBox"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:checked="false"
+                android:layout_margin="4dp" />
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="      Mike"
+                android:id="@+id/mikeCheckBox"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:checked="false"
+                android:layout_margin="4dp" />
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="      Collette"
+                android:id="@+id/colletteCheckBox"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:checked="false"
+                android:layout_margin="4dp"/>
+
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Other Companies"
+                android:id="@+id/textView4"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="3"
-                android:id="@+id/textView6"
-                android:layout_weight="0.17"
-                android:editable="true" />
+                android:text="------------------------------------------------------------------------------------------------"
+                android:id="@+id/textView5" />
 
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:weightSum="1">
 
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:text="      Acme Construction Co."
+                    android:id="@+id/acmeCheckBox"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:checked="false"
+                    android:layout_margin="4dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="3"
+                    android:id="@+id/textView6"
+                    android:layout_weight="0.17"
+                    android:editable="true" />
+            </LinearLayout>
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="      Research Construction Co."
+                android:id="@+id/researchCheckBox"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:checked="false"
+                android:layout_margin="4dp" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="      Destruction Construction Co."
+                android:id="@+id/destructionCheckBox"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:checked="false"
+                android:layout_margin="4dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Submit"
+                android:id="@+id/submitButton" />
         </LinearLayout>
-
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="      Acme Construction Co."
-            android:id="@+id/checkBox9"
-            android:textSize="15dp"
-            android:textStyle="bold"
-            android:checked="false"
-            android:layout_margin="4dp"
-
-            />
-
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="      Research Construction Co."
-            android:id="@+id/checkBox10"
-            android:textSize="15dp"
-            android:textStyle="bold"
-            android:checked="false"
-            android:layout_margin="4dp" />
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="      Destruction Construction Co."
-            android:id="@+id/checkBox11"
-            android:textSize="15dp"
-            android:textStyle="bold"
-            android:checked="false"
-            android:layout_margin="4dp" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="List"
-            android:id="@+id/submitlist" />
-
-    </LinearLayout>
-
     </ScrollView>
-
-
 </LinearLayout>

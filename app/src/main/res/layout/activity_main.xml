@@ -15,7 +15,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Equipment"
+            android:text="Equipment: 0"
             android:background="@drawable/bborder"
             android:layout_gravity="bottom"/>
 
@@ -24,7 +24,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Headcount"
+            android:text="Headcount: 0"
             android:background="@drawable/bborder"
             android:layout_gravity="bottom" />
 

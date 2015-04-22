@@ -1,7 +1,6 @@
 package com.greghilston.dailyreport;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -95,6 +94,10 @@ public class Report {
         return observations.remove(index);
     }
 
+    public int getPeopleCount() {
+        return this.people.size();
+    }
+
     /**
      * Prints a friendly overview of the report to Standard Out
      */
@@ -156,7 +159,7 @@ public class Report {
      * TODO: See if this is the correct thing to do, or the correct place to do it
      */
     public void reportToGui(LinearLayout ll) {
-        if(MainActivity.debugeMode) {
+        if(MainActivity.debugMode) {
             System.out.println("reportToGui");
         }
 
@@ -348,7 +351,7 @@ public class Report {
      * @param individualReportFolderPath  path for this reports folder
      */
     public void setIndividualReportFolderPath(String individualReportFolderPath) {
-        if(MainActivity.debugeMode) {
+        if(MainActivity.debugMode) {
             System.out.println("setIndividualReportFolderPath: " + individualReportFolderPath);
         }
 
@@ -377,5 +380,13 @@ public class Report {
 
     public void setPictureCount(int pictureCount) {
         this.pictureCount = pictureCount;
+    }
+
+    public void clearPeople() {
+        people.clear();
+    }
+
+    public void clearCompanies() {
+        companies.clear();
     }
 }

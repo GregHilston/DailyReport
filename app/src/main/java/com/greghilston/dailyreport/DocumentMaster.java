@@ -56,7 +56,7 @@ public class DocumentMaster {
         }
 
         if (success) {
-            if(MainActivity.debugeMode) {
+            if(MainActivity.debugMode) {
                 System.out.println("Individual Report Folder created successfully or already exist");
             }
         } else {
@@ -95,7 +95,7 @@ public class DocumentMaster {
         }
 
         if (success) {
-            if(MainActivity.debugeMode) {
+            if(MainActivity.debugMode) {
                 System.out.println("DailyReport Folder created successfully or already exist");
             }
         } else {
@@ -114,7 +114,7 @@ public class DocumentMaster {
         }
 
         if (success) {
-            if(MainActivity.debugeMode) {
+            if(MainActivity.debugMode) {
                 System.out.println("Reports Folder created successfully or already exist");
             }
         } else {
@@ -133,7 +133,7 @@ public class DocumentMaster {
         }
 
         if (success) {
-            if(MainActivity.debugeMode) {
+            if(MainActivity.debugMode) {
                 System.out.println("Xml Folder created successfully or already exist");
             }
         } else {
@@ -152,7 +152,7 @@ public class DocumentMaster {
         }
 
         if (success) {
-            if(MainActivity.debugeMode) {
+            if(MainActivity.debugMode) {
                 System.out.println("Csv Folder created successfully or already exist");
             }
         } else {
@@ -282,7 +282,7 @@ public class DocumentMaster {
             e.printStackTrace();
         }
 
-        if(MainActivity.debugeMode) {
+        if(MainActivity.debugMode) {
             System.out.println("Report createReportFromXml(String " + fileName + ")");
             r.printReport();
         }
@@ -327,6 +327,13 @@ public class DocumentMaster {
             Element headCount = doc.createElement("HeadCount");
             headCount.appendChild(doc.createTextNode(String.valueOf(r.getHeadCount())));
             project.appendChild(headCount);
+
+            // Heads
+            for(int i = 0; i < r.getPeopleCount(); i++) {
+                Element person = doc.createElement("Person");
+                person.appendChild(doc.createTextNode(String.valueOf(r.people.get(i).getName())));
+                project.appendChild(person);
+            }
 
             // Company count
             Element companyCount = doc.createElement("CompanyCount");
@@ -527,7 +534,7 @@ public class DocumentMaster {
 
             transformer.transform(source, result);
 
-            if(MainActivity.debugeMode) {
+            if(MainActivity.debugMode) {
                 System.out.println("XML File saved: " + outputFilePath);
             }
 
@@ -779,7 +786,7 @@ public class DocumentMaster {
                 writer.append('\n');
             }
 
-            if(MainActivity.debugeMode) {
+            if(MainActivity.debugMode) {
                 System.out.println("CSV File saved: " + outputFilePath);
             }
             writer.flush();

@@ -1,157 +1,182 @@
 package com.greghilston.dailyreport;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.TimePickerDialog;
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.TextView;
-import android.widget.TimePicker;
-import android.widget.Toast;
 
-import java.util.Calendar;
-
-
-/**
- * Created by tcollins on 4/19/2015.
- */
 public class HeadcountActivity extends Activity {
-
-
-    public Context context = this;
-
-    Button Submit;
-
-    CheckBox cb1;
-    CheckBox cb2;
-    CheckBox cb3;
-    CheckBox cb4;
-    CheckBox cb5;
-    CheckBox cb6;
-    CheckBox cb7;
-
-    CheckBox acmeBox;
-    CheckBox researchBox;
-    CheckBox destructionBox;
-
-
-
-
-    protected int counter;
+    // Static fields to determine if checkboxes should be checked
+    static Boolean checkGrehgCheckBox = false;
+    static Boolean checkEvanCheckBox = false;
+    static Boolean checkTylerCheckBox = false;
+    static Boolean checkJimCheckBox = false;
+    static Boolean checkWalterCheckBox = false;
+    static Boolean checkMikeCheckBox = false;
+    static Boolean checkColletteCheckBox = false;
+    static Boolean checkAcmeCheckBox = false;
+    static Boolean checkResearchCheckBox = false;
+    static Boolean checkDestructionCheckBox = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.headcount_list);
 
-        final CheckBox acmeBox = (CheckBox) findViewById(R.id.checkBox9);
-        final CheckBox researchBox = (CheckBox) findViewById(R.id.checkBox10);
-        final CheckBox destructionBox = (CheckBox) findViewById(R.id.checkBox11);
+        // Employee Checkboxes (Filled with example employees)
+        final CheckBox grehgCheckBox = (CheckBox) findViewById(R.id.grehgCheckBox);
+        grehgCheckBox.setChecked(checkGrehgCheckBox);
 
-        final CheckBox cb1 = (CheckBox) findViewById(R.id.checkBox);
-        final CheckBox cb2 = (CheckBox) findViewById(R.id.checkBox2);
-        final CheckBox cb3 = (CheckBox) findViewById(R.id.checkBox3);
-        final CheckBox cb4 = (CheckBox) findViewById(R.id.checkBox4);
-        final CheckBox cb5 = (CheckBox) findViewById(R.id.checkBox5);
-        final CheckBox cb6 = (CheckBox) findViewById(R.id.checkBox6);
-        final CheckBox cb7 = (CheckBox) findViewById(R.id.checkBox7);
+        final CheckBox evanCheckBox = (CheckBox) findViewById(R.id.evanCheckBox);
+        evanCheckBox.setChecked(checkEvanCheckBox);
 
-        final Button sub = (Button) findViewById(R.id.submitlist);
+        final CheckBox tylerCheckBox = (CheckBox) findViewById(R.id.tylerCheckBox);
+        tylerCheckBox.setChecked(checkTylerCheckBox);
 
-        counter = 0;
+        final CheckBox jimCheckBox = (CheckBox) findViewById(R.id.jimCheckBox);
+        jimCheckBox.setChecked(checkJimCheckBox);
 
+        final CheckBox walterCheckBox = (CheckBox) findViewById(R.id.walterCheckBox);
+        walterCheckBox.setChecked(checkWalterCheckBox);
 
+        final CheckBox mikeCheckBox = (CheckBox) findViewById(R.id.mikeCheckBox);
+        mikeCheckBox.setChecked(checkMikeCheckBox);
 
-        acmeBox.setOnClickListener(new View.OnClickListener() {
+        final CheckBox colletteCheckBox = (CheckBox) findViewById(R.id.colletteCheckBox);
+        colletteCheckBox.setChecked(checkColletteCheckBox);
+
+        // Company Checkboxes (Filled with example companies)
+        final CheckBox acmeCheckBox = (CheckBox) findViewById(R.id.acmeCheckBox);
+        acmeCheckBox.setChecked(checkAcmeCheckBox);
+
+        final CheckBox researchCheckBox = (CheckBox) findViewById(R.id.researchCheckBox);
+        researchCheckBox.setChecked(checkResearchCheckBox);
+
+        final CheckBox destructionCheckBox = (CheckBox) findViewById(R.id.destructionCheckBox);
+        destructionCheckBox.setChecked(checkDestructionCheckBox);
+
+        // Our submit button
+        Button submitButton = (Button) findViewById(R.id.submitButton);
+        submitButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                int employeeCount = 0;
+                Intent returnIntent = new Intent();
 
-                if (acmeBox.isChecked()){
-                    counter = counter + 1;
+                if(MainActivity.debugMode) {
+                    System.out.println("Headcount Submit Button Clicked!");
+                }
+
+                if (grehgCheckBox.isChecked()) {
+                    returnIntent.putExtra("grehgCheckBoxSelected", true);
+                    checkGrehgCheckBox = true;
+                    employeeCount++;
                 }
                 else {
-                    counter = counter - 1;
+                    checkGrehgCheckBox = false;
+                    returnIntent.putExtra("grehgCheckBoxSelected", false);
                 }
-            }
-        });
-        researchBox.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
 
-                if (researchBox.isChecked()){
-                    counter = counter + 1;
+                if (evanCheckBox.isChecked()) {
+                    checkEvanCheckBox = true;
+                    returnIntent.putExtra("evanCheckBoxSelected", true);
+                    employeeCount++;
                 }
                 else {
-                    counter = counter - 1;
+                    checkEvanCheckBox = false;
+                    returnIntent.putExtra("evanCheckBoxSelected", false);
                 }
+
+                if (tylerCheckBox.isChecked()) {
+                    checkTylerCheckBox = true;
+                    returnIntent.putExtra("tylerCheckBoxSelected", true);
+                    employeeCount++;
+                }
+                else {
+                    checkTylerCheckBox = false;
+                    returnIntent.putExtra("tylerCheckBoxSelected", false);
+                }
+
+                if (jimCheckBox.isChecked()) {
+                    checkJimCheckBox = true;
+                    returnIntent.putExtra("jimCheckBoxSelected", true);
+                    employeeCount++;
+                }
+                else {
+                    checkJimCheckBox = false;
+                    returnIntent.putExtra("jimCheckBoxSelected", false);
+                }
+
+                if (walterCheckBox.isChecked()) {
+                    checkWalterCheckBox = true;
+                    returnIntent.putExtra("walterCheckBoxSelected", true);
+                    employeeCount++;
+                }
+                else {
+                    checkWalterCheckBox = false;
+                    returnIntent.putExtra("walterCheckBoxSelected", false);
+                }
+
+                if (mikeCheckBox.isChecked()) {
+                    checkMikeCheckBox = true;
+                    returnIntent.putExtra("mikeCheckBoxSelected", true);
+                    employeeCount++;
+                }
+                else {
+                    checkMikeCheckBox = false;
+                    returnIntent.putExtra("mikeCheckBoxSelected", false);
+                }
+
+                if (colletteCheckBox.isChecked()) {
+                    checkColletteCheckBox = true;
+                    returnIntent.putExtra("colletteCheckBoxSelected", true);
+                    employeeCount++;
+                }
+                else {
+                    checkColletteCheckBox = false;
+                    returnIntent.putExtra("colletteCheckBoxSelected", false);
+                }
+
+                if (acmeCheckBox.isChecked()) {
+                    checkAcmeCheckBox = true;
+                    returnIntent.putExtra("acmeCheckBoxSelected", true);
+                    returnIntent.putExtra("acmeEmployeeCount", 0); // TODO: Change the 0 to the real number
+                }
+                else {
+                    checkAcmeCheckBox = false;
+                    returnIntent.putExtra("acmeCheckBoxSelected", false);
+                }
+
+                if (researchCheckBox.isChecked()) {
+                    checkResearchCheckBox = true;
+                    returnIntent.putExtra("researchCheckBoxSelected", true);
+                    returnIntent.putExtra("researchEmployeeCount", 0); // TODO: Change the 0 to the real number
+                }
+                else {
+                    checkResearchCheckBox = false;
+                    returnIntent.putExtra("researchCheckBoxSelected", false);
+                }
+
+                if (destructionCheckBox.isChecked()) {
+                    checkDestructionCheckBox = true;
+                    returnIntent.putExtra("destructionCheckBoxSelected", true);
+                    returnIntent.putExtra("destructionEmployeeCount", 0); // TODO: Change the 0 to the real number
+                }
+                else {
+                    checkDestructionCheckBox = false;
+                    returnIntent.putExtra("destructionCheckBoxSelected", false);
+                }
+
+                if(MainActivity.debugMode) {
+                    System.out.println("Employee Count: " + employeeCount);
+                }
+
+                returnIntent.putExtra("employeeCount", employeeCount);
+
+                setResult(RESULT_OK, returnIntent);
+                finish();
             }
         });
-
-
-        destructionBox.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-                Toast.makeText(context, String.valueOf(counter),
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        sub.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-                counter = 0;
-
-                if(cb1.isChecked())
-                    counter++; // you can save this as checked somewhere
-                if(cb2.isChecked())
-                    counter++; // you can save this as checked somewhere
-                if(cb3.isChecked())
-                    counter++; // you can save this as checked somewhere
-                if(cb4.isChecked())
-                    counter++; // you can save this as checked somewhere
-                if(cb5.isChecked())
-                    counter++; // you can save this as checked somewhere
-                if(cb6.isChecked())
-                    counter++; // you can save this as checked somewhere
-                if(cb7.isChecked())
-                    counter++; // you can save this as checked somewhere
-
-
-                Toast.makeText(context, String.valueOf(counter),
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
-
     }
-
-    public void onCheckboxClicked(View view) {
-        // Is the view now checked?
-        boolean checked = ((CheckBox) view).isChecked();
-
-        switch(view.getId()) {
-            case R.id.checkBox9:
-                if (checked){
-                    Toast.makeText(context, "Checked ACME",
-                            Toast.LENGTH_LONG).show();
-                }
-                else
-                // Nothing
-                break;
-            case R.id.checkBox10:
-                if (checked){
-                    Toast.makeText(context, "Checked Research",
-                            Toast.LENGTH_LONG).show();
-                }
-                else
-                    // Nothing
-                break;
-        }
-
-
-    }
-
 }

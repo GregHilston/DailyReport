@@ -1,14 +1,11 @@
 package com.greghilston.dailyreport;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.Fragment;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.text.format.DateFormat;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -62,7 +59,7 @@ public class EditWeatherObservationActivity extends FragmentActivity {
          */
         cancelButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                if(MainActivity.debugeMode) {
+                if(MainActivity.debugMode) {
                     System.out.println("Weather Text Observation Cancel Button Clicked!");
                 }
 
@@ -77,7 +74,7 @@ public class EditWeatherObservationActivity extends FragmentActivity {
          */
         submitButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                if(MainActivity.debugeMode) {
+                if(MainActivity.debugMode) {
                     System.out.println("Weather Text Observation Submit Button Clicked!");
                 }
 
@@ -98,7 +95,7 @@ public class EditWeatherObservationActivity extends FragmentActivity {
          */
         removeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                if(MainActivity.debugeMode) {
+                if(MainActivity.debugMode) {
                     System.out.println("Remove Weather Observation Button Clicked!");
                 }
 
