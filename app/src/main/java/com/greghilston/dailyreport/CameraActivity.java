@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.view.Display;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -57,6 +59,18 @@ public class CameraActivity extends Activity implements AdapterView.OnItemSelect
         bmp = BitmapFactory.decodeFile(imagePath, options);
 
         pictureTakenImageView.setImageBitmap(bmp);
+
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int height = size.y;
+        int width = size.x;
+
+        pictureTakenImageView.setAdjustViewBounds(true);
+        pictureTakenImageView.setMaxHeight(height / 4);
+        pictureTakenImageView.setMinimumHeight(height / 4);
+        pictureTakenImageView.setMaxWidth(width / 2);
+        pictureTakenImageView.setMinimumWidth(width / 2);
     }
 
     public void onItemSelected(AdapterView<?> parent, View view,

@@ -1,10 +1,13 @@
 package com.greghilston.dailyreport;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -223,6 +226,18 @@ public class Report {
                 options.inSampleSize = 2; // Fixes OutOfMemory Exceptions for working with Bitmaps
                 Bitmap bmp = BitmapFactory.decodeFile(((Picture) o).getPicturePath(), options);
                 imageView.setImageBitmap(bmp);
+
+                WindowManager wm = (WindowManager) MainActivity.context.getSystemService(Context.WINDOW_SERVICE);
+                Display display = wm.getDefaultDisplay();
+                int width = display.getWidth();
+                int height = display.getHeight();
+
+                imageView.setAdjustViewBounds(true);
+                imageView.setMaxHeight(height / 4);
+                imageView.setMinimumHeight(height / 4);
+                imageView.setMaxWidth(width / 2);
+                imageView.setMinimumWidth(width / 2);
+
                 ll.addView(imageView);
             }
         }
