@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.TextView;
 
 public class HeadcountActivity extends Activity {
     // Static fields to determine if checkboxes should be checked
@@ -50,12 +52,15 @@ public class HeadcountActivity extends Activity {
         // Company Checkboxes (Filled with example companies)
         final CheckBox acmeCheckBox = (CheckBox) findViewById(R.id.acmeCheckBox);
         acmeCheckBox.setChecked(checkAcmeCheckBox);
+        final EditText acmeCount = (EditText) findViewById(R.id.acmeText);
 
         final CheckBox researchCheckBox = (CheckBox) findViewById(R.id.researchCheckBox);
         researchCheckBox.setChecked(checkResearchCheckBox);
+        final EditText researchCount = (EditText) findViewById(R.id.researchText);
 
         final CheckBox destructionCheckBox = (CheckBox) findViewById(R.id.destructionCheckBox);
         destructionCheckBox.setChecked(checkDestructionCheckBox);
+        final EditText destructionCount = (EditText) findViewById(R.id.destructionText);
 
         // Our submit button
         Button submitButton = (Button) findViewById(R.id.submitButton);
@@ -140,8 +145,10 @@ public class HeadcountActivity extends Activity {
 
                 if (acmeCheckBox.isChecked()) {
                     checkAcmeCheckBox = true;
+                    System.out.println("HeadcountActivity acmeCheckBoxSelected is true. acmeCount.getText().toString(): " + acmeCount.getText().toString());
+
                     returnIntent.putExtra("acmeCheckBoxSelected", true);
-                    returnIntent.putExtra("acmeEmployeeCount", 0); // TODO: Change the 0 to the real number
+                    returnIntent.putExtra("acmeEmployeeCount", Integer.parseInt(acmeCount.getText().toString())); // TODO: Change the 0 to the real number
                 }
                 else {
                     checkAcmeCheckBox = false;
@@ -151,7 +158,7 @@ public class HeadcountActivity extends Activity {
                 if (researchCheckBox.isChecked()) {
                     checkResearchCheckBox = true;
                     returnIntent.putExtra("researchCheckBoxSelected", true);
-                    returnIntent.putExtra("researchEmployeeCount", 0); // TODO: Change the 0 to the real number
+                    returnIntent.putExtra("researchEmployeeCount", Integer.parseInt(researchCount.getText().toString())); // TODO: Change the 0 to the real number
                 }
                 else {
                     checkResearchCheckBox = false;
@@ -161,7 +168,7 @@ public class HeadcountActivity extends Activity {
                 if (destructionCheckBox.isChecked()) {
                     checkDestructionCheckBox = true;
                     returnIntent.putExtra("destructionCheckBoxSelected", true);
-                    returnIntent.putExtra("destructionEmployeeCount", 0); // TODO: Change the 0 to the real number
+                    returnIntent.putExtra("destructionEmployeeCount", Integer.parseInt(destructionCount.getText().toString())); // TODO: Change the 0 to the real number
                 }
                 else {
                     checkDestructionCheckBox = false;

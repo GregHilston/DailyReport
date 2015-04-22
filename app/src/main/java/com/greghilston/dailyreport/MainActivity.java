@@ -467,6 +467,9 @@ public class MainActivity extends Activity {
             }
 
             int employeeCount =  data.getIntExtra("employeeCount", 0);
+            int acmeEmployeeCount = data.getIntExtra("acmeEmployeeCount", 0);
+            int researchEmployeeCount = data.getIntExtra("researchEmployeeCount", 0);
+            int destructionEmployeeCount = data.getIntExtra("destructionEmployeeCount", 0);
 
             Boolean grehgCheckBoxSelected = data.getExtras().getBoolean("grehgCheckBoxSelected", false);
             Boolean evanCheckBoxSelected = data.getExtras().getBoolean("evanCheckBoxSelected", false);
@@ -504,13 +507,18 @@ public class MainActivity extends Activity {
                 r.addPerson(new Person("Collette", "Best Teacher Ever", 40));
             }
             if(acmeCheckBoxSelected) {
-                r.addCompany(new Company("Acme Construction Co.", getIntent().getIntExtra("acmeEmployeeCount", 0)));
+                System.out.println("AcmeChecked. acmeEmployeeCount: " + acmeEmployeeCount);
+
+                employeeCount += acmeEmployeeCount;
+                r.addCompany(new Company("Acme Construction Co.", acmeEmployeeCount));
             }
             if(researchCheckBoxSelected) {
-                r.addCompany(new Company("Research Construction Co.", getIntent().getIntExtra("ResearchEmployeeCount", 0)));
+                employeeCount += researchEmployeeCount;
+                r.addCompany(new Company("Research Construction Co.", researchEmployeeCount));
             }
             if(destructionCheckBoxSelected) {
-                r.addCompany(new Company("Destruction Construction Co.", getIntent().getIntExtra("destructionEmployeeCount", 0)));
+                employeeCount += destructionEmployeeCount;
+                r.addCompany(new Company("Destruction Construction Co.", destructionEmployeeCount));
             }
 
             headcountButton.setText("Headcount: " + employeeCount);

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -130,35 +132,69 @@
                     android:checked="false"
                     android:layout_margin="4dp" />
 
-                <TextView
+                <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="3"
-                    android:id="@+id/textView6"
+                    android:text="0"
+                    android:inputType="number"
+                    android:id="@+id/acmeText"
                     android:layout_weight="0.17"
                     android:editable="true" />
             </LinearLayout>
 
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="      Research Construction Co."
-                android:id="@+id/researchCheckBox"
-                android:textSize="15dp"
-                android:textStyle="bold"
-                android:checked="false"
-                android:layout_margin="4dp" />
 
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="      Destruction Construction Co."
-                android:id="@+id/destructionCheckBox"
-                android:textSize="15dp"
-                android:textStyle="bold"
-                android:checked="false"
-                android:layout_margin="4dp" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:weightSum="1">
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="      Research Construction Co."
+                    android:id="@+id/researchCheckBox"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:checked="false"
+                    android:layout_margin="4dp" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="0"
+                    android:inputType="number"
+                    android:id="@+id/researchText"
+                    android:layout_weight="0.17"
+                    android:editable="true" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:weightSum="1">
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="      Destruction Construction Co."
+                    android:id="@+id/destructionCheckBox"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:checked="false"
+                    android:layout_margin="4dp" />
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="0"
+                    android:inputType="number"
+                    android:id="@+id/destructionText"
+                    android:layout_weight="0.17"
+                    android:editable="true" />
+            </LinearLayout>
 
             <Button
                 android:layout_width="wrap_content"
