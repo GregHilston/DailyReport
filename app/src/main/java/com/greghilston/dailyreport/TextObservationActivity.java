@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+/**
+ * Allows the user to create a text observation
+ */
 public class TextObservationActivity extends Activity {
     Button submitButton;
     Button cancelButton;
@@ -41,7 +44,7 @@ public class TextObservationActivity extends Activity {
          */
         submitButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                if(MainActivity.debugMode) {
+                if (MainActivity.debugMode) {
                     System.out.println("Text Observation Submit Button Clicked!");
                 }
 

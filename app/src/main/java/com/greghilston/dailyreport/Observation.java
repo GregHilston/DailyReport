@@ -18,6 +18,7 @@ public abstract class Observation extends Notable implements Serializable{
 
      /**
       * Gets the date in the form of h:mm:ss with a following am / pm
+      *
       * @return date stamp
       */
     public static Date generateTime() {
@@ -26,6 +27,7 @@ public abstract class Observation extends Notable implements Serializable{
 
      /**
       * Returns the date stamp for when this observation was made
+      *
       * @return date
       */
      public Date getDate() {
@@ -34,6 +36,7 @@ public abstract class Observation extends Notable implements Serializable{
 
      /**
       * Returns the time stamp for when this observation was made
+      *
       * @return  time
       */
      public String getTime() {

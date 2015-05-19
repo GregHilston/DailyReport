@@ -18,7 +18,6 @@ public class WeatherTester {
 
     
     public static void main(String args[]) {
-
         //Set the API key, Lat, and Lang
         ForecastIO forecast = new ForecastIO(API_KEY,Lat, Lang);
 

@@ -18,6 +18,7 @@ public class Picture extends Observation {
 
      /**
       * Used when creating a Weather Observation from an XML file
+      *
       * @param time
       * @param picName
       * @param picPath

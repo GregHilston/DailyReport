@@ -10,7 +10,6 @@ public class Project {
     private String companyName;
 	private ArrayList<Report> reports = new ArrayList<>();
 
-
     public Project(String projectName, String companyName) {
         this.projectName = projectName;
         this.companyName = companyName;

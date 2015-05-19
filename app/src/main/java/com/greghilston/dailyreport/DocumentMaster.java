@@ -45,6 +45,11 @@ public class DocumentMaster {
     }
 
 
+    /**
+     * Creates the file structure on the phone or tablet
+     *
+     * @param r the report to set file paths for
+     */
     public static void createReportFolderStructureOnPhone(Report r) {
         boolean success = true;
         r.setIndividualReportFolderPath(reportDirPhone.getPath() + File.separator + r.getFileName());
@@ -798,13 +803,5 @@ public class DocumentMaster {
         }
 
         return null; // TODO: Handle this
-    }
-
-
-    /**
-     * Creates a PDF based on the XML file
-     */
-    public void createPdf(String fileName) {
-
     }
 }

@@ -14,6 +14,7 @@ public class Weather extends Observation {
 
      /**
       * Used when the user clicks the Weather Observation button
+      *
       * @param currently
       * @param temperature
       * @param humidity
@@ -30,6 +31,7 @@ public class Weather extends Observation {
 
      /**
       * Used when creating a Weather Observation from an XML file
+      *
       * @param dateAndTime
       * @param currently
       * @param temperature

@@ -7,6 +7,10 @@ public class Company extends Notable{
     private String name;
     private int quantity; // The number of employees on site for said company
 
+    /**
+     * @param name name of the company
+     * @param quantity number of employees on site for this company
+     */
     public Company(String name, int quantity) {
         this.name = name;
         this.quantity = quantity;

@@ -1,7 +1,7 @@
 package com.greghilston.dailyreport;
 
 /**
- * A class that has a notes field
+ * A class that has a notes field. Extended by many observations
  */
 public class Notable {
     String note = "";

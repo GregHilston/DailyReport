@@ -10,6 +10,7 @@ public class Person extends Notable{
 
     /**
      * A person object is used by a report so a manager can list which employees of his were on site
+     *
      * @param name  name of person
      * @param jobTitle  job title of person
      * @param hoursOnSite  hours on site today
